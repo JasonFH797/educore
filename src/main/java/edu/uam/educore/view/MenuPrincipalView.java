@@ -1,11 +1,13 @@
 package edu.uam.educore.view;
 
 import edu.uam.educore.dao.ListaEstudianteRepo;
+import edu.uam.educore.dao.ListaEmpleadoRepo;
 import java.util.Scanner;
 
 public class MenuPrincipalView extends VistaBase {
 
   private final EstudianteView estudianteView;
+private final EmpleadoView empleadoView;
 
   public MenuPrincipalView(Scanner scanner) {
     super(scanner);
@@ -13,12 +15,14 @@ public class MenuPrincipalView extends VistaBase {
     // Repositorios compartidos — una sola instancia por entidad.
     // Los módulos que necesiten acceder a los mismos datos reciben la misma instancia.
     ListaEstudianteRepo estudianteRepo = new ListaEstudianteRepo();
-    // ListaEmpleadoRepo empleadoRepo = new ListaEmpleadoRepo();  // TODO: Módulo Empleados
+    ListaEmpleadoRepo empleadoRepo = new ListaEmpleadoRepo();
+     // TODO: Módulo Empleados
     // ListaEdificioRepo edificioRepo = new ListaEdificioRepo();  // TODO: Módulo Académico
     // ListaSeccionRepo  seccionRepo  = new ListaSeccionRepo();   // TODO: Módulo Académico
 
     this.estudianteView = new EstudianteView(scanner, estudianteRepo);
-    // this.empleadoView = new EmpleadoView(scanner, empleadoRepo);
+    this.empleadoView = new EmpleadoView(scanner, empleadoRepo);
+    
     // this.edificioView = new EdificioView(scanner, edificioRepo);
     // this.seccionView  = new SeccionView(scanner, seccionRepo, empleadoRepo, estudianteRepo,
     // edificioRepo);
@@ -30,7 +34,7 @@ public class MenuPrincipalView extends VistaBase {
     while (corriendo) {
       switch (mostrarMenuPrincipal()) {
         case 1 -> estudianteView.iniciar();
-        case 2 -> mostrarMensaje("Módulo de empleados — pendiente (mismo patrón que Estudiantes)");
+        case 2 -> empleadoView.iniciar();
         case 3 -> mostrarMensaje("Módulo académico — pendiente (mismo patrón que Estudiantes)");
         case 0 -> {
           mostrarMensaje("¡Hasta pronto!");
