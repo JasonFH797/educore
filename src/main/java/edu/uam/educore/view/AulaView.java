@@ -9,205 +9,223 @@ import edu.uam.educore.model.infraestructura.Edificio;
 import java.util.List;
 import java.util.Scanner;
 
-public class AulaView {
+public class AulaView extends VistaBase {
 
     private final AulaController controller;
     private final EdificioController edificioController;
-    private final Scanner scanner = new Scanner(System.in);
 
     public AulaView(
+            Scanner scanner,
             Repositorio<Aula> aulaRepo,
-            EdificioController edificioController) {
+            Repositorio<Edificio> edificioRepo) {
+
+        super(scanner);
 
         this.controller = new AulaController(aulaRepo);
-        this.edificioController = edificioController;
+        this.edificioController = new EdificioController(edificioRepo);
     }
 
-    public void menu() {
+    public void iniciar() {
 
-        int opcion;
+        boolean activo = true;
 
-        do {
+        while (activo) {
 
-            System.out.println("\n===== GESTIÓN DE AULAS =====");
-            System.out.println("1. Registrar aula");
-            System.out.println("2. Listar aulas");
-            System.out.println("3. Actualizar aula");
-            System.out.println("4. Eliminar aula");
-            System.out.println("0. Volver");
-            System.out.print("Seleccione una opción: ");
+            switch (mostrarMenu()) {
 
-            opcion = Integer.parseInt(scanner.nextLine());
+                case 1 -> registrar();
 
-            try {
+                case 2 -> listar();
 
-                switch (opcion) {
+                case 3 -> actualizar();
 
-                    case 1 ->
-                        registrar();
+                case 4 -> eliminar();
 
-                    case 2 ->
-                        listar();
+                case 0 -> activo = false;
 
-                    case 3 ->
-                        actualizar();
-
-                    case 4 ->
-                        eliminar();
-
-                    case 0 ->
-                        System.out.println("Regresando...");
-
-                    default ->
-                        System.out.println("Opción inválida.");
-
-                }
-
-            } catch (Exception e) {
-
-                System.out.println("Error: " + e.getMessage());
+                default -> mostrarError("Opción inválida.");
 
             }
 
-        } while (opcion != 0);
+        }
 
     }
 
-    private void registrar() throws Exception {
+    private void registrar() {
 
-        System.out.println("\n--- Registrar Aula ---");
+        try {
 
-        System.out.print("Código: ");
-        String codigo = scanner.nextLine();
+            String codigo = leerTexto("Código");
+            int capacidad = leerEntero("Capacidad");
 
-        System.out.print("Capacidad: ");
-        int capacidad = Integer.parseInt(scanner.nextLine());
+            TipoAula[] tipos = TipoAula.values();
 
-        TipoAula[] tipos = TipoAula.values();
+            System.out.println("\nTipos de aula:");
 
-        System.out.println("\nTipos disponibles:");
+            for (int i = 0; i < tipos.length; i++) {
 
-        for (int i = 0; i < tipos.length; i++) {
+                System.out.println((i + 1) + ". " + tipos[i]);
 
-            System.out.println((i + 1) + ". " + tipos[i]);
+            }
 
-        }
+            int opcionTipo = leerEntero("Seleccione el tipo");
 
-        System.out.print("Seleccione tipo: ");
-        TipoAula tipo = tipos[Integer.parseInt(scanner.nextLine()) - 1];
+            TipoAula tipo = tipos[opcionTipo - 1];
 
-        List<Edificio> edificios = edificioController.listar();
+            List<Edificio> edificios = edificioController.listar();
 
-        if (edificios.isEmpty()) {
+            if (edificios.isEmpty()) {
 
-            System.out.println("Debe registrar un edificio primero.");
-            return;
+                mostrarError("Debe registrar un edificio primero.");
 
-        }
+                return;
 
-        System.out.println("\nEdificios:");
+            }
 
-        for (Edificio e : edificios) {
+            System.out.println("\nEdificios disponibles:");
 
-            System.out.println(e.getId() + ". " + e.getNombre());
+            for (Edificio e : edificios) {
 
-        }
+                System.out.println(e.getId() + ". " + e.getNombre());
 
-        System.out.print("Seleccione ID del edificio: ");
-        int idEdificio = Integer.parseInt(scanner.nextLine());
+            }
 
-        Edificio edificio = edificioController.buscarPorId(idEdificio);
+            int idEdificio = leerEntero("ID del edificio");
 
-        controller.registrar(
-                codigo,
-                capacidad,
-                tipo,
-                edificio);
+            Edificio edificio = edificioController.buscarPorId(idEdificio);
 
-        System.out.println("Aula registrada correctamente.");
+            controller.registrar(
+                    codigo,
+                    capacidad,
+                    tipo,
+                    edificio);
 
-    }
+            mostrarMensaje("Aula registrada correctamente.");
 
-    private void listar() throws Exception {
+        } catch (Exception e) {
 
-        System.out.println("\n===== LISTA DE AULAS =====");
-
-        List<Aula> aulas = controller.listar();
-
-        if (aulas.isEmpty()) {
-
-            System.out.println("No hay aulas registradas.");
-            return;
-
-        }
-
-        for (Aula aula : aulas) {
-
-            System.out.println("-----------------------------------");
-            System.out.println("ID: " + aula.getId());
-            System.out.println("Código: " + aula.getCodigo());
-            System.out.println("Capacidad: " + aula.getCapacidad());
-            System.out.println("Tipo: " + aula.getTipo());
-            System.out.println("Edificio: " + aula.getEdificio().getNombre());
+            mostrarError(e.getMessage());
 
         }
 
     }
 
-    private void actualizar() throws Exception {
+    private void listar() {
 
-        System.out.print("ID del aula: ");
-        int id = Integer.parseInt(scanner.nextLine());
+        try {
 
-        System.out.print("Nuevo código: ");
-        String codigo = scanner.nextLine();
+            List<Aula> aulas = controller.listar();
 
-        System.out.print("Nueva capacidad: ");
-        int capacidad = Integer.parseInt(scanner.nextLine());
+            if (aulas.isEmpty()) {
 
-        TipoAula[] tipos = TipoAula.values();
+                mostrarMensaje("No hay aulas registradas.");
 
-        for (int i = 0; i < tipos.length; i++) {
+                return;
 
-            System.out.println((i + 1) + ". " + tipos[i]);
+            }
+
+            System.out.println("\n===== AULAS REGISTRADAS =====");
+
+            for (Aula aula : aulas) {
+
+                System.out.println("-------------------------------------");
+                System.out.println("ID: " + aula.getId());
+                System.out.println("Código: " + aula.getCodigo());
+                System.out.println("Capacidad: " + aula.getCapacidad());
+                System.out.println("Tipo: " + aula.getTipo());
+                System.out.println("Edificio: " + aula.getEdificio().getNombre());
+
+            }
+
+        } catch (Exception e) {
+
+            mostrarError(e.getMessage());
 
         }
-
-        System.out.print("Seleccione tipo: ");
-        TipoAula tipo = tipos[Integer.parseInt(scanner.nextLine()) - 1];
-
-        List<Edificio> edificios = edificioController.listar();
-
-        for (Edificio e : edificios) {
-
-            System.out.println(e.getId() + ". " + e.getNombre());
-
-        }
-
-        System.out.print("ID edificio: ");
-        int idEdificio = Integer.parseInt(scanner.nextLine());
-
-        Edificio edificio = edificioController.buscarPorId(idEdificio);
-
-        controller.actualizar(
-                id,
-                codigo,
-                capacidad,
-                tipo,
-                edificio);
-
-        System.out.println("Aula actualizada correctamente.");
 
     }
 
-    private void eliminar() throws Exception {
+    private void actualizar() {
 
-        System.out.print("ID del aula: ");
-        int id = Integer.parseInt(scanner.nextLine());
+        try {
 
-        controller.eliminar(id);
+            int id = leerEntero("ID del aula");
 
-        System.out.println("Aula eliminada correctamente.");
+            String codigo = leerTexto("Nuevo código");
+
+            int capacidad = leerEntero("Nueva capacidad");
+
+            TipoAula[] tipos = TipoAula.values();
+
+            for (int i = 0; i < tipos.length; i++) {
+
+                System.out.println((i + 1) + ". " + tipos[i]);
+
+            }
+
+            int opcionTipo = leerEntero("Seleccione el tipo");
+
+            TipoAula tipo = tipos[opcionTipo - 1];
+
+            List<Edificio> edificios = edificioController.listar();
+
+            System.out.println();
+
+            for (Edificio e : edificios) {
+
+                System.out.println(e.getId() + ". " + e.getNombre());
+
+            }
+
+            int idEdificio = leerEntero("ID del edificio");
+
+            Edificio edificio = edificioController.buscarPorId(idEdificio);
+
+            controller.actualizar(
+                    id,
+                    codigo,
+                    capacidad,
+                    tipo,
+                    edificio);
+
+            mostrarMensaje("Aula actualizada correctamente.");
+
+        } catch (Exception e) {
+
+            mostrarError(e.getMessage());
+
+        }
+
+    }
+
+    private void eliminar() {
+
+        try {
+
+            int id = leerEntero("ID del aula");
+
+            controller.eliminar(id);
+
+            mostrarMensaje("Aula eliminada correctamente.");
+
+        } catch (Exception e) {
+
+            mostrarError(e.getMessage());
+
+        }
+
+    }
+
+    private int mostrarMenu() {
+
+        System.out.println("\n===== GESTIÓN DE AULAS =====");
+        System.out.println("1. Registrar aula");
+        System.out.println("2. Listar aulas");
+        System.out.println("3. Actualizar aula");
+        System.out.println("4. Eliminar aula");
+        System.out.println("0. Volver");
+
+        return leerEntero("Seleccione una opción");
 
     }
 
