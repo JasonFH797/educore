@@ -49,7 +49,7 @@ public class MenuPrincipalView extends VistaBase {
       switch (mostrarMenuPrincipal()) {
         case 1 -> estudianteView.iniciar();
         case 2 -> empleadoView.iniciar();
-        case 3 -> mostrarMensaje("Módulo académico — pendiente (mismo patrón que Estudiantes)");
+        case 3 -> menuAcademico();
         case 0 -> {
           mostrarMensaje("¡Hasta pronto!");
           corriendo = false;
@@ -75,4 +75,33 @@ public class MenuPrincipalView extends VistaBase {
     System.out.print("Seleccione una opción: ");
     return leerEntero();
   }
+  
+  private void menuAcademico() {
+
+    boolean volver = false;
+
+    while (!volver) {
+
+        System.out.println("\n--- GESTIÓN ACADÉMICA ---");
+        System.out.println("1. Gestión de Edificios");
+        System.out.println("2. Gestión de Aulas");
+        System.out.println("0. Volver");
+        System.out.print("Seleccione una opción: ");
+
+        switch (leerEntero()) {
+
+            case 1 ->
+                edificioView.iniciar();
+
+            case 2 ->
+                aulaView.iniciar();
+
+            case 0 ->
+                volver = true;
+
+            default ->
+                mostrarError("Opción inválida.");
+        }
+    }
+}
 }
