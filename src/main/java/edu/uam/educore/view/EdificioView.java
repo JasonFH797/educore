@@ -62,8 +62,25 @@ public class EdificioView extends VistaBase {
         try {
             int id = leerEntero("ID del edificio");
             Edificio e = controller.buscarPorId(id);
-            if (e == null) mostrarError("No existe un edificio con ese ID.");
-            else System.out.println("ID: " + e.getId() + " | Código: " + e.getCodigo() + " | Nombre: " + e.getNombre());
+
+            if (e == null) {
+                mostrarError("No existe un edificio con ese ID.");
+                return;
+            }
+
+            System.out.println("ID: " + e.getId() + " | Codigo: " + e.getCodigo() + " | Nombre: " + e.getNombre());
+            System.out.println("Aulas asociadas: " + e.cantidadAulas());
+
+            if (e.getAulas().isEmpty()) {
+                System.out.println("- No hay aulas registradas en este edificio.");
+            } else {
+                for (var aula : e.getAulas()) {
+                    System.out.println("- ID Aula: " + aula.getId()
+                            + " | Codigo: " + aula.getCodigo()
+                            + " | Capacidad: " + aula.getCapacidad()
+                            + " | Tipo: " + aula.getTipo());
+                }
+            }
         } catch (Exception e) {
             mostrarError(e.getMessage());
         }

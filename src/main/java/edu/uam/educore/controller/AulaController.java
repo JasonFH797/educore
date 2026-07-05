@@ -1,107 +1,138 @@
 package edu.uam.educore.controller;
 
 import edu.uam.educore.dao.Repositorio;
+import edu.uam.educore.enums.TipoAula;
 import edu.uam.educore.model.infraestructura.Aula;
 import edu.uam.educore.model.infraestructura.Edificio;
-import edu.uam.educore.enums.TipoAula;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Controlador de aulas.
+ *
+ * <p>Las aulas se administran por composicion dentro de Edificio. Por eso este controlador no usa
+ * un repositorio propio de aulas; localiza las aulas recorriendo los edificios registrados.
+ */
 public class AulaController {
 
-    private final Repositorio<Aula> repo;
-    private int proximoId = 1;
+  private final Repositorio<Edificio> edificioRepo;
+  private int proximoId = 1;
 
-    public AulaController(Repositorio<Aula> repo) {
-        this.repo = repo;
+  public AulaController(Repositorio<Edificio> edificioRepo) {
+    this.edificioRepo = edificioRepo;
+  }
+
+  public Aula registrar(String numero, int capacidad, TipoAula tipo, Edificio edificio)
+      throws Exception {
+
+    validar(numero, capacidad, tipo, edificio);
+
+    Aula aula = new Aula(proximoId, numero, capacidad, tipo, edificio);
+    edificio.agregarAula(aula);
+
+    // RNF-05: el edificio ya existe en el repositorio y se modifico su lista interna de aulas.
+    edificioRepo.actualizar(edificio);
+
+    proximoId++;
+
+    return aula;
+  }
+
+  public List<Aula> listarTodas() throws Exception {
+    List<Aula> aulas = new ArrayList<>();
+
+    for (Edificio edificio : edificioRepo.buscarTodos()) {
+      aulas.addAll(edificio.getAulas());
     }
 
-    public Aula registrar(
-            String codigo,
-            int capacidad,
-            TipoAula tipo,
-            Edificio edificio) throws Exception {
+    return aulas;
+  }
 
-        validar(codigo, capacidad, edificio);
+  public List<Aula> listarPorEdificio(int edificioId) throws Exception {
+    Edificio edificio = buscarEdificioObligatorio(edificioId);
+    return new ArrayList<>(edificio.getAulas());
+  }
 
-        Aula aula = new Aula(
-                proximoId,
-                codigo,
-                capacidad,
-                tipo,
-                edificio);
-
-        repo.guardar(aula);
-
-        edificio.agregarAula(aula);
-
-        proximoId++;
-
-        return aula;
-    }
-
-    public List<Aula> listar() throws Exception {
-        return repo.buscarTodos();
-    }
-
-    public Aula buscarPorId(int id) throws Exception {
-        Optional<Aula> resultado = repo.buscarPorId(id);
-        return resultado.orElse(null);
-    }
-
-    public Aula actualizar(
-            int id,
-            String codigo,
-            int capacidad,
-            TipoAula tipo,
-            Edificio edificio) throws Exception {
-
-        Aula aula = buscarPorId(id);
-
-        if (aula == null) {
-            throw new IllegalArgumentException("Aula no encontrada.");
+  public Aula buscarPorId(int id) throws Exception {
+    for (Edificio edificio : edificioRepo.buscarTodos()) {
+      for (Aula aula : edificio.getAulas()) {
+        if (aula.getId() == id) {
+          return aula;
         }
-
-        validar(codigo, capacidad, edificio);
-
-        aula.setCodigo(codigo);
-        aula.setCapacidad(capacidad);
-        aula.setTipo(tipo);
-
-        repo.actualizar(aula);
-
-        return aula;
+      }
     }
 
-    public void eliminar(int id) throws Exception {
+    return null;
+  }
 
-        Aula aula = buscarPorId(id);
+  public Aula actualizar(int id, String numero, int capacidad, TipoAula tipo, Edificio edificio)
+      throws Exception {
 
-        if (aula == null) {
-            throw new IllegalArgumentException("Aula no encontrada.");
-        }
+    Aula aula = buscarPorId(id);
 
-        aula.getEdificio().eliminarAula(aula);
-
-        repo.eliminar(id);
+    if (aula == null) {
+      throw new IllegalArgumentException("Aula no encontrada.");
     }
 
-    private void validar(
-            String codigo,
-            int capacidad,
-            Edificio edificio) {
+    validar(numero, capacidad, tipo, edificio);
 
-        if (codigo.isBlank()) {
-            throw new IllegalArgumentException("El código es obligatorio.");
-        }
-
-        if (capacidad <= 0) {
-            throw new IllegalArgumentException("La capacidad debe ser mayor que cero.");
-        }
-
-        if (edificio == null) {
-            throw new IllegalArgumentException("Debe seleccionar un edificio.");
-        }
+    Edificio edificioAnterior = aula.getEdificio();
+    if (edificioAnterior != null && edificioAnterior.getId() != edificio.getId()) {
+      edificioAnterior.eliminarAula(aula);
+      edificioRepo.actualizar(edificioAnterior);
+      edificio.agregarAula(aula);
     }
 
+    aula.setCodigo(numero);
+    aula.setCapacidad(capacidad);
+    aula.setTipo(tipo);
+    aula.setEdificio(edificio);
+
+    edificioRepo.actualizar(edificio);
+
+    return aula;
+  }
+
+  public void eliminar(int id) throws Exception {
+    Aula aula = buscarPorId(id);
+
+    if (aula == null) {
+      throw new IllegalArgumentException("Aula no encontrada.");
+    }
+
+    Edificio edificio = aula.getEdificio();
+    if (edificio != null) {
+      edificio.eliminarAula(aula);
+      edificioRepo.actualizar(edificio);
+    }
+  }
+
+  private Edificio buscarEdificioObligatorio(int id) throws Exception {
+    Optional<Edificio> resultado = edificioRepo.buscarPorId(id);
+
+    if (resultado.isEmpty()) {
+      throw new IllegalArgumentException("Edificio no encontrado.");
+    }
+
+    return resultado.get();
+  }
+
+  private void validar(String numero, int capacidad, TipoAula tipo, Edificio edificio) {
+    if (numero == null || numero.isBlank()) {
+      throw new IllegalArgumentException("El numero del aula es obligatorio.");
+    }
+
+    if (capacidad <= 0) {
+      throw new IllegalArgumentException("La capacidad debe ser mayor que cero.");
+    }
+
+    if (tipo == null) {
+      throw new IllegalArgumentException("Debe seleccionar un tipo de aula.");
+    }
+
+    if (edificio == null) {
+      throw new IllegalArgumentException("Debe seleccionar un edificio.");
+    }
+  }
 }

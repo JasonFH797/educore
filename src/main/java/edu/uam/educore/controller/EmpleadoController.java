@@ -8,105 +8,137 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Controlador del modulo de Empleados.
+ *
+ * <p>Se encarga de validar los datos del empleado, crear objetos Empleado y delegar el guardado,
+ * actualizacion, busqueda o eliminacion al repositorio. La vista no debe tener esta logica.
+ */
 public class EmpleadoController {
 
-    private final Repositorio<Empleado> repo;
-    private int proximoId = 1;
+  // Repositorio compartido donde se almacenan los empleados en memoria.
+  private final Repositorio<Empleado> repo;
 
-    public EmpleadoController(Repositorio<Empleado> repo) {
-        this.repo = repo;
+  // Contador para generar IDs tecnicos de empleados.
+  private int proximoId = 1;
+
+  public EmpleadoController(Repositorio<Empleado> repo) {
+    this.repo = repo;
+  }
+
+  /**
+   * Registra un empleado nuevo despues de validar sus datos.
+   */
+  public Empleado registrar(
+      String nombre,
+      String apellidos,
+      String email,
+      double salario,
+      LocalDate fechaIngreso,
+      TipoEmpleado tipo)
+      throws Exception {
+
+    validar(nombre, apellidos, email, salario, fechaIngreso, tipo);
+
+    Empleado empleado =
+        new Empleado(proximoId, nombre, apellidos, email, salario, fechaIngreso, tipo);
+
+    repo.guardar(empleado);
+    proximoId++;
+
+    return empleado;
+  }
+
+  /**
+   * Retorna todos los empleados registrados.
+   */
+  public List<Empleado> listar() throws Exception {
+    return repo.buscarTodos();
+  }
+
+  /**
+   * Busca un empleado por ID. Retorna null si no existe.
+   */
+  public Empleado buscarPorId(int id) throws Exception {
+    Optional<Empleado> resultado = repo.buscarPorId(id);
+    return resultado.orElse(null);
+  }
+
+  /**
+   * Actualiza un empleado existente.
+   */
+  public Empleado actualizar(
+      int id,
+      String nombre,
+      String apellidos,
+      String email,
+      double salario,
+      LocalDate fechaIngreso,
+      TipoEmpleado tipo)
+      throws Exception {
+
+    Empleado empleado = buscarPorId(id);
+
+    if (empleado == null) {
+      throw new IllegalArgumentException("Empleado no encontrado.");
     }
 
-    public Empleado registrar(
-            String nombre,
-            String apellidos,
-            String email,
-            double salario,
-            LocalDate fechaIngreso,
-            TipoEmpleado tipo) throws Exception {
+    validar(nombre, apellidos, email, salario, fechaIngreso, tipo);
 
-        validar(nombre, apellidos, email, fechaIngreso);
+    empleado.setNombre(nombre);
+    empleado.setApellidos(apellidos);
+    empleado.setEmail(email);
+    empleado.setSalario(salario);
+    empleado.setFechaIngreso(fechaIngreso);
+    empleado.setTipoEmpleado(tipo);
 
-        Empleado empleado = new Empleado(
-                proximoId,
-                nombre,
-                apellidos,
-                email,
-                salario,
-                fechaIngreso,
-                tipo);
+    repo.actualizar(empleado);
 
-        repo.guardar(empleado);
-        proximoId++;
+    return empleado;
+  }
 
-        return empleado;
+  /**
+   * Elimina un empleado existente.
+   */
+  public void eliminar(int id) throws Exception {
+    Empleado empleado = buscarPorId(id);
+
+    if (empleado == null) {
+      throw new IllegalArgumentException("Empleado no encontrado.");
     }
 
-    public List<Empleado> listar() throws Exception {
-        return repo.buscarTodos();
+    repo.eliminar(id);
+  }
+
+  /**
+   * Validacion centralizada de empleados.
+   */
+  private void validar(
+      String nombre,
+      String apellidos,
+      String email,
+      double salario,
+      LocalDate fechaIngreso,
+      TipoEmpleado tipo) {
+
+    if (nombre == null || apellidos == null || nombre.isBlank() || apellidos.isBlank()) {
+      throw new IllegalArgumentException("Nombre y apellidos son obligatorios.");
     }
 
-    public Empleado buscarPorId(int id) throws Exception {
-        Optional<Empleado> resultado = repo.buscarPorId(id);
-        return resultado.orElse(null);
+    if (!Validador.validarEmail(email)) {
+      throw new IllegalArgumentException("Correo electronico invalido.");
     }
 
-    public Empleado actualizar(
-            int id,
-            String nombre,
-            String apellidos,
-            String email,
-            double salario,
-            LocalDate fechaIngreso,
-            TipoEmpleado tipo) throws Exception {
-
-        Empleado empleado = buscarPorId(id);
-
-        if (empleado == null) {
-            throw new IllegalArgumentException("Empleado no encontrado.");
-        }
-
-        validar(nombre, apellidos, email, fechaIngreso);
-
-        empleado.setNombre(nombre);
-        empleado.setApellidos(apellidos);
-        empleado.setEmail(email);
-        empleado.setSalario(salario);
-        empleado.setFechaIngreso(fechaIngreso);
-        empleado.setTipoEmpleado(tipo);
-
-        repo.actualizar(empleado);
-
-        return empleado;
+    if (salario < 0) {
+      throw new IllegalArgumentException("El salario no puede ser negativo.");
     }
 
-    public void eliminar(int id) throws Exception {
-
-        Empleado empleado = buscarPorId(id);
-
-        if (empleado == null) {
-            throw new IllegalArgumentException("Empleado no encontrado.");
-        }
-
-        repo.eliminar(id);
+    if (!Validador.validarFechaIngreso(fechaIngreso)) {
+      throw new IllegalArgumentException("Fecha de ingreso invalida.");
     }
 
-    private void validar(
-            String nombre,
-            String apellidos,
-            String email,
-            LocalDate fechaIngreso) {
-
-        if (nombre.isBlank() || apellidos.isBlank()) {
-            throw new IllegalArgumentException("Nombre y apellidos son obligatorios.");
-        }
-
-        if (!Validador.validarEmail(email)) {
-            throw new IllegalArgumentException("Correo electrónico inválido.");
-        }
-
-        if (!Validador.validarFechaIngreso(fechaIngreso)) {
-            throw new IllegalArgumentException("Fecha de ingreso inválida.");
-        }
+    if (tipo == null) {
+      throw new IllegalArgumentException("Debe seleccionar un tipo de empleado.");
     }
+  }
 }
