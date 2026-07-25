@@ -131,6 +131,22 @@ public class SeccionController {
 
     seccionRepo.eliminar(id);
   }
+  
+  /**
+  * Indica si existe al menos una sección asociada a un aula.
+  */
+  public boolean aulaTieneSecciones(int aulaId) throws Exception {
+
+      for (Seccion seccion : seccionRepo.buscarTodos()) {
+
+          if (seccion.getAula().getId() == aulaId) {
+              return true;
+          }
+
+      }
+
+      return false;
+  }
 
   /**
    * Agrega un estudiante existente a una seccion existente.

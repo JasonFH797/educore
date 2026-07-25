@@ -34,7 +34,7 @@ public class MenuPrincipalView extends VistaBase {
     this.estudianteView = new EstudianteView(scanner, estudianteRepo);
     this.empleadoView = new EmpleadoView(scanner, empleadoRepo);
     this.edificioView = new EdificioView(scanner, edificioRepo);
-    this.aulaView = new AulaView(scanner, edificioRepo);
+    this.aulaView = new AulaView(scanner, edificioRepo, seccionRepo);
 
     // SeccionView recibe cuatro repositorios segun el enunciado:
     // secciones, empleados, estudiantes y edificios.
