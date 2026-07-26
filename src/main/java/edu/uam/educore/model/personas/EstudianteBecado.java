@@ -17,6 +17,10 @@ public class EstudianteBecado extends Estudiante {
     return porcentajeBeca;
   }
 
+  public void setPorcentajeBeca(double porcentajeBeca) {
+    this.porcentajeBeca = porcentajeBeca;
+  }
+
   @Override
   public double calcularMatricula() {
     return TARIFA_BASE * (1 - porcentajeBeca);

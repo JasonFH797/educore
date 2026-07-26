@@ -23,7 +23,7 @@ sistema lo diseñan ustedes.
 - Java 21
 - Apache Maven 3.8+
 - NetBeans (recomendado) o cualquier IDE compatible con Maven
-- MySQL 8 + Docker (solo para el Proyecto 2)
+- MariaDB + Docker (solo para el Proyecto 2)
 
 ## Cómo empezar
 
@@ -56,6 +56,13 @@ mvn exec:java -Dexec.mainClass=edu.uam.educore.Main
 
 (o ejecuten `Main` desde el IDE).
 
+> **Nota (Proyecto 2):** si ya crearon su `.env` para Docker, `DB_HOST=db` solo resuelve dentro
+> de la red de Docker Compose. Corriendo así, fuera de Docker (IDE o `mvn exec:java`), cualquier
+> endpoint que consulte la base de datos va a fallar con un error de conexión — es esperado, no
+> un bug. Para desarrollar así (más rápido que reconstruir la imagen en cada cambio), corran solo
+> `docker compose up db` y cambien `DB_HOST` a `localhost` y el puerto a `DB_HOST_PORT` en su
+> `.env` local (no el que usa Docker Compose).
+
 ### 5. Formatear antes de cada commit
 
 No hay hook automático: **antes de cada commit** formateen sus archivos a mano.
@@ -70,13 +77,14 @@ El tag de entrega debe pasar `mvn fmt:check` sin errores.
 
 ```
 src/main/java/edu/uam/educore/
-├── model/        ← entidades del dominio (personas, academico, infraestructura)
+├── model/        ← entidades del dominio (personas resuelto; academico e infraestructura los crean ustedes)
 ├── dao/          ← repositorios (contrato Repositorio<T> + implementaciones)
 ├── controller/   ← coordinan validación y persistencia
 ├── view/         ← interacción por consola (heredan de VistaBase)
-├── enums/        ← enumeraciones del dominio
+├── api/          ← servidor REST y SPA (Proyecto 2)
+├── socket/       ← servidores de socket: Matrícula y Reportes (Proyecto 2)
 ├── util/         ← utilidades (Validador)
-└── db/           ← fábrica de conexiones MySQL (Proyecto 2)
+└── db/           ← fábrica de conexiones a la base de datos (Proyecto 2)
 ```
 
 La rama `Estudiante` está completa **a propósito**: muestra cómo se conectan las
@@ -85,6 +93,7 @@ cuatro capas. Repliquen ese patrón en los módulos que diseñen.
 ## Flujo de Git y entregas
 
 Cada grupo trabaja sobre su fork, con una rama por módulo, y entrega marcando un
-tag anotado. El docente publica la base como `v0.0` y califica el código en el
-tag exacto de cada entrega. Los detalles (nombre del tag, ramas, entregables y
+tag anotado. El docente publica la base de cada proyecto como un tag (`v0.0`
+para el Proyecto 1, `v1.0` para el Proyecto 2) y califica el código en el tag
+exacto de cada entrega. Los detalles (nombre del tag, ramas, entregables y
 rúbrica) están en el enunciado de cada proyecto.

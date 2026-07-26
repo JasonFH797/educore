@@ -46,7 +46,7 @@ El Proyecto 1 extiende el sistema EduCore con dos módulos nuevos: **Empleados**
 | **Model** | Clases que representan entidades del dominio. No tienen referencia a la vista ni a la base de datos. |
 | **View** | Clases que interactúan con el usuario por consola. Extienden `VistaBase`. No contienen lógica de negocio. |
 | **Controller** | Coordina la vista con el repositorio. Valida datos, construye objetos y delega la persistencia al DAO. |
-| **DAO** | Implementa `Repositorio<T>`. En P1 usa una lista en memoria; en P2 se reemplaza por MySQL sin tocar el Controller. |
+| **DAO** | Implementa `Repositorio<T>`. En P1 usa una lista en memoria; en P2 se reemplaza por una base de datos relacional sin tocar el Controller. |
 
 ---
 
@@ -111,7 +111,7 @@ MenuPrincipalView
 |---|---|
 | `TipoPersonal` | Enum existente: `CONSERJE`, `GUARDA`, `TECNICO`, `MANTENIMIENTO`. Lo reemplaza `TipoEmpleado` (ver sección 3.1). |
 | `Validador` | Métodos estáticos: `validarEmail`, `validarFechaIngreso`, `validarPorcentajeBeca`, `validarCalificacion`. |
-| `Conexion` | Fábrica de conexiones MySQL. Se activa en P2. |
+| `Conexion` | Fábrica de conexiones a la base de datos. Se activa en P2. |
 | `Main` | Crea el `Scanner` y lanza `MenuPrincipalView`. |
 
 ### 2.6 Tests provistos por el docente
@@ -327,13 +327,13 @@ Antes de cada commit ejecutar `mvn fmt:format` sobre los archivos modificados. E
 `mvn test` debe pasar en verde en el tag de entrega, incluyendo los tests del docente y los del grupo.
 
 **RNF-03: Separación de capas**
-El Controller no debe tener referencia a clases de View. La View no debe contener lógica de negocio. Esta separación permite reemplazar el repositorio en memoria por uno MySQL en P2 sin modificar el Controller.
+El Controller no debe tener referencia a clases de View. La View no debe contener lógica de negocio. Esta separación permite reemplazar el repositorio en memoria por uno de base de datos en P2 sin modificar el Controller.
 
 **RNF-04: Estructuras de datos**
 Usar `ArrayList` para listas de entidades. No se requieren `HashMap`, `Comparator` ni colecciones avanzadas.
 
 **RNF-05: Persistencia de cambios**
-Cada vez que el controller modifique una entidad ya guardada (por ejemplo, al inscribir o remover un estudiante de una sección, o al agregar un aula a un edificio), debe llamar a `repo.actualizar(entidad)`. En P1 el repositorio en memoria guarda referencias, así que el cambio "se ve" aunque no se llame a `actualizar()`; pero en P2 el repositorio MySQL **no** persistirá el cambio sin esa llamada. Tomen el hábito ahora: el controller no debe asumir que mutar el objeto basta.
+Cada vez que el controller modifique una entidad ya guardada (por ejemplo, al inscribir o remover un estudiante de una sección, o al agregar un aula a un edificio), debe llamar a `repo.actualizar(entidad)`. En P1 el repositorio en memoria guarda referencias, así que el cambio "se ve" aunque no se llame a `actualizar()`; pero en P2 el repositorio de base de datos **no** persistirá el cambio sin esa llamada. Tomen el hábito ahora: el controller no debe asumir que mutar el objeto basta.
 
 ---
 

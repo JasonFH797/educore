@@ -1,0 +1,120 @@
+<mxfile host="Electron">
+  <diagram name="Page-1" id="aILtXvzEj0ytntxX68Ic">
+    <mxGraphModel dx="1768" dy="1063" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="2IeulULwyrIB7fol-9SM-32" parent="1" style="whiteSpace=wrap;strokeWidth=2;fillColor=light-dark(#eeeeee,#1f2020);strokeColor=light-dark(#999999,#cccccc);fontColor=light-dark(#333333,#cccccc);" value="contenedor: db (MariaDB)" vertex="1">
+          <mxGeometry height="148" width="1263" x="70" y="834" as="geometry" />
+        </mxCell>
+        <mxCell id="2IeulULwyrIB7fol-9SM-33" parent="1" style="whiteSpace=wrap;strokeWidth=2;fillColor=light-dark(#eeeeee,#1f2020);strokeColor=light-dark(#999999,#cccccc);fontColor=light-dark(#333333,#cccccc);" value="contenedor: reportes" vertex="1">
+          <mxGeometry height="152" width="368" x="1064" y="399" as="geometry" />
+        </mxCell>
+        <mxCell id="2IeulULwyrIB7fol-9SM-34" parent="1" style="whiteSpace=wrap;strokeWidth=2;fillColor=light-dark(#eeeeee,#1f2020);strokeColor=light-dark(#999999,#cccccc);fontColor=light-dark(#333333,#cccccc);" value="contenedor: matricula" vertex="1">
+          <mxGeometry height="152" width="396" x="648" y="399" as="geometry" />
+        </mxCell>
+        <mxCell id="2IeulULwyrIB7fol-9SM-35" parent="1" style="whiteSpace=wrap;strokeWidth=2;fillColor=light-dark(#eeeeee,#1f2020);strokeColor=light-dark(#999999,#cccccc);fontColor=light-dark(#333333,#cccccc);" value="contenedor: app" vertex="1">
+          <mxGeometry height="538" width="558" x="30" y="222" as="geometry" />
+        </mxCell>
+        <mxCell id="2IeulULwyrIB7fol-9SM-36" parent="1" style="whiteSpace=wrap;strokeWidth=2;fillColor=light-dark(#eeeeee,#1f2020);strokeColor=light-dark(#999999,#cccccc);fontColor=light-dark(#333333,#cccccc);" value="Cliente" vertex="1">
+          <mxGeometry height="128" width="246" x="152" y="20" as="geometry" />
+        </mxCell>
+        <mxCell id="2IeulULwyrIB7fol-9SM-37" parent="1" style="whiteSpace=wrap;strokeWidth=2;fillColor=light-dark(#eeeeee,#1f2020);strokeColor=light-dark(#999999,#cccccc);fontColor=light-dark(#333333,#cccccc);" value="UI&#xa;web/index.html" vertex="1">
+          <mxGeometry height="78" width="176" x="187" y="45" as="geometry" />
+        </mxCell>
+        <mxCell id="2IeulULwyrIB7fol-9SM-38" parent="1" style="whiteSpace=wrap;strokeWidth=2;fillColor=light-dark(#eeeeee,#1f2020);strokeColor=light-dark(#999999,#cccccc);fontColor=light-dark(#333333,#cccccc);" value="API" vertex="1">
+          <mxGeometry height="54" width="83" x="233" y="247" as="geometry" />
+        </mxCell>
+        <mxCell id="2IeulULwyrIB7fol-9SM-39" parent="1" style="whiteSpace=wrap;strokeWidth=2;fillColor=light-dark(#eeeeee,#1f2020);strokeColor=light-dark(#999999,#cccccc);fontColor=light-dark(#333333,#cccccc);" value="Controller" vertex="1">
+          <mxGeometry height="54" width="132" x="69" y="448" as="geometry" />
+        </mxCell>
+        <mxCell id="2IeulULwyrIB7fol-9SM-40" parent="1" style="whiteSpace=wrap;strokeWidth=2;fillColor=light-dark(#eeeeee,#1f2020);strokeColor=light-dark(#999999,#cccccc);fontColor=light-dark(#333333,#cccccc);" value="Repositorio" vertex="1">
+          <mxGeometry height="54" width="140" x="65" y="653" as="geometry" />
+        </mxCell>
+        <mxCell id="2IeulULwyrIB7fol-9SM-41" parent="1" style="whiteSpace=wrap;strokeWidth=2;fillColor=light-dark(#eeeeee,#1f2020);strokeColor=light-dark(#999999,#cccccc);fontColor=light-dark(#333333,#cccccc);" value="ServidorMatricula&#xa;ServerSocket · MATRICULA_PORT" vertex="1">
+          <mxGeometry height="102" width="260" x="702" y="424" as="geometry" />
+        </mxCell>
+        <mxCell id="2IeulULwyrIB7fol-9SM-42" parent="1" style="whiteSpace=wrap;strokeWidth=2;fillColor=light-dark(#eeeeee,#1f2020);strokeColor=light-dark(#999999,#cccccc);fontColor=light-dark(#333333,#cccccc);" value="ServidorReportes&#xa;ServerSocket · REPORTE_PORT" vertex="1">
+          <mxGeometry height="102" width="260" x="1138" y="424" as="geometry" />
+        </mxCell>
+        <mxCell id="2IeulULwyrIB7fol-9SM-43" parent="1" style="shape=cylinder3;boundedLbl=1;backgroundOutline=1;size=10;strokeWidth=2;whiteSpace=wrap;fillColor=light-dark(#eeeeee,#1f2020);strokeColor=light-dark(#999999,#cccccc);fontColor=light-dark(#333333,#cccccc);" value="mariadb:11.4&#xa;init.sql" vertex="1">
+          <mxGeometry height="98" width="111" x="1030" y="859" as="geometry" />
+        </mxCell>
+        <mxCell id="2IeulULwyrIB7fol-9SM-44" parent="1" style="shape=cylinder3;boundedLbl=1;backgroundOutline=1;size=10;strokeWidth=2;whiteSpace=wrap;fillColor=light-dark(#eeeeee,#1f2020);strokeColor=light-dark(#999999,#cccccc);fontColor=light-dark(#333333,#cccccc);" value="volumen: educore-data&#xa;ENTRADA_DIR / SALIDA_DIR" vertex="1">
+          <mxGeometry height="110" width="212" x="711" y="625" as="geometry" />
+        </mxCell>
+        <mxCell id="2IeulULwyrIB7fol-9SM-45" edge="1" parent="1" source="2IeulULwyrIB7fol-9SM-38" style="startArrow=none;endArrow=block;entryX=0.5;entryY=0;rounded=0;edgeStyle=orthogonalEdgeStyle;" target="2IeulULwyrIB7fol-9SM-39" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="2IeulULwyrIB7fol-9SM-46" edge="1" parent="1" source="2IeulULwyrIB7fol-9SM-39" style="startArrow=none;endArrow=block;exitX=0.5;exitY=1;entryX=0.5;entryY=0;rounded=0;edgeStyle=orthogonalEdgeStyle;" target="2IeulULwyrIB7fol-9SM-40" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="2IeulULwyrIB7fol-9SM-47" edge="1" parent="1" source="2IeulULwyrIB7fol-9SM-37" style="startArrow=none;endArrow=block;exitX=0.5;exitY=1;entryX=0.5;entryY=0;rounded=0;edgeStyle=orthogonalEdgeStyle;" target="2IeulULwyrIB7fol-9SM-38" value="HTTP">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="2IeulULwyrIB7fol-9SM-48" edge="1" parent="1" source="2IeulULwyrIB7fol-9SM-38" style="startArrow=none;endArrow=block;rounded=0;edgeStyle=orthogonalEdgeStyle;" target="2IeulULwyrIB7fol-9SM-41" value="socket TCP&#xa;MATRICULAR &amp;lt;archivo&amp;gt;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="274" y="320" />
+              <mxPoint x="832" y="320" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="2IeulULwyrIB7fol-9SM-49" edge="1" parent="1" source="2IeulULwyrIB7fol-9SM-38" style="startArrow=none;endArrow=block;rounded=0;edgeStyle=orthogonalEdgeStyle;" target="2IeulULwyrIB7fol-9SM-42" value="socket TCP&#xa;REPORTE">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1268" y="274" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="2IeulULwyrIB7fol-9SM-50" edge="1" parent="1" source="2IeulULwyrIB7fol-9SM-38" style="startArrow=none;endArrow=block;entryX=0;entryY=0.34;rounded=0;edgeStyle=orthogonalEdgeStyle;" target="2IeulULwyrIB7fol-9SM-44" value="escribe CSV">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="275" y="662" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="2IeulULwyrIB7fol-9SM-51" edge="1" parent="1" source="2IeulULwyrIB7fol-9SM-41" style="startArrow=none;endArrow=block;rounded=0;edgeStyle=orthogonalEdgeStyle;" target="2IeulULwyrIB7fol-9SM-44" value="lee CSV">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="832" y="575" />
+              <mxPoint x="830" y="575" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="2IeulULwyrIB7fol-9SM-52" edge="1" parent="1" source="2IeulULwyrIB7fol-9SM-42" style="startArrow=none;endArrow=block;exitX=0.24;exitY=1;rounded=0;edgeStyle=orthogonalEdgeStyle;" target="2IeulULwyrIB7fol-9SM-44" value="escribe TXT">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1200" y="670" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="2IeulULwyrIB7fol-9SM-53" edge="1" parent="1" source="2IeulULwyrIB7fol-9SM-40" style="startArrow=none;endArrow=block;entryX=0;entryY=0.46;rounded=0;edgeStyle=orthogonalEdgeStyle;" target="2IeulULwyrIB7fol-9SM-43" value="JDBC">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="135" y="800" />
+              <mxPoint x="960" y="800" />
+              <mxPoint x="960" y="904" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="2IeulULwyrIB7fol-9SM-54" edge="1" parent="1" source="2IeulULwyrIB7fol-9SM-41" style="dashed=1;dashPattern=2 3;startArrow=none;endArrow=block;rounded=0;edgeStyle=orthogonalEdgeStyle;" target="2IeulULwyrIB7fol-9SM-43" value="JDBC· lógica del estudiante">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1020" y="460" />
+              <mxPoint x="1020" y="770" />
+              <mxPoint x="1080" y="770" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="2IeulULwyrIB7fol-9SM-55" edge="1" parent="1" source="2IeulULwyrIB7fol-9SM-42" style="dashed=1;dashPattern=2 3;startArrow=none;endArrow=block;exitX=0.53;exitY=1;rounded=0;edgeStyle=orthogonalEdgeStyle;" target="2IeulULwyrIB7fol-9SM-43" value="JDBC· lógica del estudiante">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1276" y="908" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

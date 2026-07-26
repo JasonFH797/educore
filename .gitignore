@@ -1,6 +1,10 @@
 # Maven
 target/
 *.class
+dependency-reduced-pom.xml
+
+# EduCore P2 · configuración única (credenciales de BD y demás)
+.env
 
 # IDEs
 .idea/

@@ -114,7 +114,7 @@ public class EstudianteView extends VistaBase {
       String apellidos = leerTexto("Apellidos");
       String email = leerTexto("Email");
       String carnet = leerTexto("Carnet");
-      Estudiante actualizado = controller.actualizar(id, nombre, apellidos, email, carnet);
+      Estudiante actualizado = controller.actualizar(id, nombre, apellidos, email, carnet, null);
       mostrarMensaje("Actualizado — " + actualizado.getInfo());
     } catch (Exception e) {
       mostrarError(e.getMessage());

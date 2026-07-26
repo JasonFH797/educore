@@ -1,0 +1,842 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>EduCore</title>
+  <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+  <style>
+    :root {
+      --bg: #f3f4f6;
+      --bg-elevated: #ffffff;
+      --card: #ffffff;
+      --border: #e2e4e9;
+      --text: #1f2430;
+      --text-muted: #6b7280;
+      --acc: #3454d1;
+      --acc-hover: #2c46b3;
+      --acc-contrast: #ffffff;
+      --success: #1a7f4b;
+      --error: #b3261e;
+      --warning: #8a5a00;
+      --warning-bg: #fdf3dc;
+      --editar-btn: #d97706;
+      --editar-btn-hover: #b45309;
+      --eliminar-btn: #dc2626;
+      --eliminar-btn-hover: #b3261e;
+      --radius: 12px;
+      --radius-sm: 8px;
+      --shadow-card: 0 1px 3px rgba(16,24,40,.08);
+      --shadow-float: 0 8px 24px rgba(16,24,40,.18);
+      --space-1: 4px;
+      --space-2: 8px;
+      --space-3: 12px;
+      --space-4: 16px;
+      --space-5: 24px;
+      --space-6: 32px;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: system-ui, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+    .layout { display: flex; min-height: 100vh; }
+    .sidebar {
+      width: 220px;
+      flex-shrink: 0;
+      background: #1b2035;
+      color: #cbd0e0;
+      padding: var(--space-5) var(--space-3);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-1);
+    }
+    .sidebar h1 {
+      color: #fff;
+      font-size: 1.1rem;
+      margin: 0 var(--space-2) var(--space-5);
+    }
+    .sidebar button {
+      background: transparent;
+      color: inherit;
+      border: 0;
+      border-radius: var(--radius-sm);
+      padding: var(--space-3) var(--space-3);
+      text-align: left;
+      font-size: .95rem;
+      cursor: pointer;
+    }
+    .sidebar button:hover { background: rgba(255,255,255,.08); }
+    .sidebar button.activo { background: var(--acc); color: #fff; font-weight: 600; }
+    main { flex: 1; padding: var(--space-5); max-width: 1100px; }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: var(--space-5);
+      box-shadow: var(--shadow-card);
+      margin-bottom: var(--space-5);
+    }
+    .card h3 { margin-top: 0; font-size: 1.05rem; }
+    label {
+      display: block;
+      font-size: .8rem;
+      color: var(--text-muted);
+      margin: var(--space-3) var(--space-1) var(--space-1);
+    }
+    input, select {
+      width: 100%;
+      padding: var(--space-2) var(--space-3);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-size: .95rem;
+    }
+    .campo { display: inline-block; vertical-align: top; margin-right: var(--space-3); min-width: 180px; }
+    button {
+      background: var(--acc);
+      color: var(--acc-contrast);
+      border: 0;
+      border-radius: var(--radius-sm);
+      padding: var(--space-2) var(--space-4);
+      font-size: .9rem;
+      cursor: pointer;
+    }
+    button:hover { background: var(--acc-hover); }
+    button.ghost { background: var(--bg); color: var(--text); border: 1px solid var(--border); }
+    button.ghost:hover { background: #e9eaee; }
+    button.editar { background: var(--editar-btn); color: #fff; }
+    button.editar:hover { background: var(--editar-btn-hover); }
+    button.eliminar { background: var(--eliminar-btn); color: #fff; }
+    button.eliminar:hover { background: var(--eliminar-btn-hover); }
+    button:focus-visible, input:focus-visible, select:focus-visible {
+      outline: 2px solid var(--acc);
+      outline-offset: 2px;
+    }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { text-align: left; padding: var(--space-2) var(--space-3); border-bottom: 1px solid var(--border); }
+    .tabla-scroll { overflow-x: auto; }
+    .estado-msg { color: var(--text-muted); font-size: .9rem; padding: var(--space-3) 0; }
+    .estado-msg.estado-error { color: var(--error); }
+    .estado-msg.estado-no-implementado { color: var(--warning); background: var(--warning-bg); padding: var(--space-3); border-radius: var(--radius-sm); }
+    .estado-msg button.link { background: none; color: var(--acc); border: 0; padding: 0; text-decoration: underline; cursor: pointer; font-size: inherit; }
+    .aulas { margin: var(--space-2) 0 var(--space-4) var(--space-4); font-size: .9rem; color: var(--text-muted); }
+    .chip { display: inline-block; background: var(--bg); border-radius: 999px; padding: 2px 10px; margin: 2px; font-size: .85rem; }
+    .toast-container { position: fixed; top: var(--space-4); right: var(--space-4); display: flex; flex-direction: column; gap: var(--space-2); z-index: 100; }
+    .toast {
+      min-width: 220px;
+      max-width: 340px;
+      padding: var(--space-3) var(--space-4);
+      border-radius: var(--radius-sm);
+      box-shadow: var(--shadow-float);
+      color: #fff;
+      display: flex;
+      justify-content: space-between;
+      gap: var(--space-3);
+      align-items: center;
+      font-size: .9rem;
+    }
+    .toast.exito { background: var(--success); }
+    .toast.error { background: var(--error); }
+    .toast button { background: transparent; color: inherit; padding: 0 var(--space-1); font-size: 1rem; }
+    .modal-backdrop {
+      position: fixed; inset: 0; background: rgba(15,17,26,.45);
+      display: flex; align-items: center; justify-content: center; z-index: 200;
+    }
+    .modal {
+      background: var(--bg-elevated); border-radius: var(--radius);
+      padding: var(--space-5); box-shadow: var(--shadow-float);
+      max-width: 320px; width: 90%;
+    }
+    .modal p { margin-top: 0; }
+    .modal-actions { display: flex; justify-content: flex-end; gap: var(--space-2); margin-top: var(--space-4); }
+    @media (max-width: 768px) {
+      .layout { flex-direction: column; }
+      .sidebar { width: 100%; flex-direction: row; overflow-x: auto; padding: var(--space-2); }
+      .sidebar h1 { display: none; }
+      .sidebar button { white-space: nowrap; }
+      main { padding: var(--space-3); }
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <div class="toast-container">
+      <div class="toast" :class="t.tipo" v-for="t in toasts" :key="t.id">
+        <span>{{ t.mensaje }}</span>
+        <button @click="cerrarToast(t.id)">×</button>
+      </div>
+    </div>
+    <div class="modal-backdrop" v-if="confirmDialog.visible">
+      <div class="modal">
+        <p>{{ confirmDialog.mensaje }}</p>
+        <div class="modal-actions">
+          <button class="ghost" @click="cancelarConfirmacion">Cancelar</button>
+          <button @click="ejecutarConfirmacion">Confirmar</button>
+        </div>
+      </div>
+    </div>
+    <div class="layout">
+      <aside class="sidebar">
+        <h1>EduCore</h1>
+        <button :class="{activo: vista==='estudiantes'}" @click="vista='estudiantes'">Estudiantes</button>
+        <button :class="{activo: vista==='empleados'}" @click="vista='empleados'">Empleados</button>
+        <button :class="{activo: vista==='edificios'}" @click="vista='edificios'">Edificios y Aulas</button>
+        <button :class="{activo: vista==='secciones'}" @click="vista='secciones'">Secciones</button>
+        <button :class="{activo: vista==='matricula'}" @click="vista='matricula'">Matrícula</button>
+        <button :class="{activo: vista==='reporte'}" @click="vista='reporte'">Reporte</button>
+      </aside>
+      <main>
+      <!-- ESTUDIANTES -->
+      <template v-if="vista==='estudiantes'">
+        <div class="card">
+          <h3>{{ editando.estudiantes ? 'Editar estudiante' : 'Nuevo estudiante' }}</h3>
+          <form @submit.prevent="crear" @invalid.capture="mensajeValidacion" @input="limpiarValidacion">
+            <div class="campo">
+              <label for="est-tipo">Tipo</label>
+              <select id="est-tipo" v-model="form.tipo" :disabled="editando.estudiantes !== null">
+                <option value="REGULAR">Regular</option>
+                <option value="BECADO">Becado</option>
+              </select>
+            </div>
+            <div class="campo">
+              <label for="est-nombre">Nombre</label>
+              <input id="est-nombre" v-model="form.nombre" placeholder="Nombre" required />
+            </div>
+            <div class="campo">
+              <label for="est-apellidos">Apellidos</label>
+              <input id="est-apellidos" v-model="form.apellidos" placeholder="Apellidos" required />
+            </div>
+            <div class="campo">
+              <label for="est-email">Email</label>
+              <input id="est-email" v-model="form.email" type="email" placeholder="Email" required />
+            </div>
+            <div class="campo">
+              <label for="est-carnet">Carnet</label>
+              <input id="est-carnet" v-model="form.carnet" placeholder="Carnet" required />
+            </div>
+            <div class="campo" v-if="form.tipo==='BECADO'">
+              <label for="est-beca">Beca (0-1)</label>
+              <input id="est-beca" v-model.number="form.porcentajeBeca" type="number" min="0" max="1" step="0.01" placeholder="Beca (0-1)" />
+            </div>
+            <div class="campo">
+              <label style="visibility:hidden">Acción</label>
+              <button type="submit">{{ editando.estudiantes ? 'Guardar cambios' : 'Guardar' }}</button>
+              <button v-if="editando.estudiantes" type="button" class="ghost" @click="cancelarEdicion">Cancelar</button>
+            </div>
+          </form>
+        </div>
+        <div class="card">
+          <h3>Estudiantes</h3>
+          <template v-if="cargando.estudiantes">
+            <p class="estado-msg">Cargando…</p>
+          </template>
+          <template v-else-if="estado.estudiantes==='error'">
+            <p class="estado-msg estado-error">No se pudo cargar. <button class="link" @click="cargar">Reintentar</button></p>
+          </template>
+          <template v-else-if="estado.estudiantes==='vacio'">
+            <p class="estado-msg">No hay registros todavía.</p>
+          </template>
+          <template v-else>
+            <div class="tabla-scroll">
+              <table>
+                <thead><tr><th>ID</th><th>Tipo</th><th>Nombre</th><th>Carnet</th><th>Matrícula</th><th></th></tr></thead>
+                <tbody>
+                  <tr v-for="e in estudiantes" :key="e.id">
+                    <td>{{ e.id }}</td><td>{{ e.tipo }}</td>
+                    <td>{{ e.nombre }} {{ e.apellidos }}</td>
+                    <td>{{ e.carnet }}</td><td>₡{{ formatoMoneda(e.matricula) }}</td>
+                    <td>
+                      <button class="editar" @click="editar(e)">Editar</button>
+                      <button class="eliminar" @click="eliminar(e.id)">Eliminar</button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </template>
+        </div>
+      </template>
+
+      <!-- EMPLEADOS -->
+      <template v-if="vista==='empleados'">
+        <div class="card">
+          <h3>{{ editando.empleados ? 'Editar empleado' : 'Nuevo empleado' }}</h3>
+          <form @submit.prevent="crearEmpleado" @invalid.capture="mensajeValidacion" @input="limpiarValidacion">
+            <div class="campo">
+              <label for="emp-tipo">Tipo</label>
+              <select id="emp-tipo" v-model="empForm.tipo">
+                <option value="DOCENTE">Docente</option>
+                <option value="ADMINISTRATIVO">Administrativo</option>
+                <option value="GUARDA">Guarda</option>
+                <option value="MISCELANEO">Misceláneo</option>
+                <option value="MANTENIMIENTO">Mantenimiento</option>
+              </select>
+            </div>
+            <div class="campo">
+              <label for="emp-nombre">Nombre</label>
+              <input id="emp-nombre" v-model="empForm.nombre" placeholder="Nombre" required />
+            </div>
+            <div class="campo">
+              <label for="emp-apellidos">Apellidos</label>
+              <input id="emp-apellidos" v-model="empForm.apellidos" placeholder="Apellidos" required />
+            </div>
+            <div class="campo">
+              <label for="emp-email">Email</label>
+              <input id="emp-email" v-model="empForm.email" type="email" placeholder="Email" required />
+            </div>
+            <div class="campo">
+              <label for="emp-salario">Salario</label>
+              <input id="emp-salario" v-model.number="empForm.salario" type="number" min="0" placeholder="Salario" required />
+            </div>
+            <div class="campo">
+              <label for="emp-ingreso">Fecha de ingreso</label>
+              <input id="emp-ingreso" v-model="empForm.fechaIngreso" type="date" required />
+            </div>
+            <div class="campo">
+              <label style="visibility:hidden">Acción</label>
+              <button type="submit">{{ editando.empleados ? 'Guardar cambios' : 'Guardar' }}</button>
+              <button v-if="editando.empleados" type="button" class="ghost" @click="cancelarEdicionEmpleado">Cancelar</button>
+            </div>
+          </form>
+        </div>
+        <div class="card">
+          <h3>Empleados</h3>
+          <template v-if="cargando.empleados">
+            <p class="estado-msg">Cargando…</p>
+          </template>
+          <template v-else-if="estado.empleados==='no-implementado'">
+            <p class="estado-msg estado-no-implementado">Este módulo aún no está implementado.</p>
+          </template>
+          <template v-else-if="estado.empleados==='error'">
+            <p class="estado-msg estado-error">No se pudo cargar. <button class="link" @click="cargarEmpleados">Reintentar</button></p>
+          </template>
+          <template v-else-if="estado.empleados==='vacio'">
+            <p class="estado-msg">No hay registros todavía.</p>
+          </template>
+          <template v-else>
+            <div class="tabla-scroll">
+              <table>
+                <thead><tr><th>ID</th><th>Tipo</th><th>Nombre</th><th>Salario</th><th>Ingreso</th><th></th></tr></thead>
+                <tbody>
+                  <tr v-for="e in empleados" :key="e.id">
+                    <td>{{ e.id }}</td><td>{{ e.tipo }}</td>
+                    <td>{{ e.nombre }} {{ e.apellidos }}</td>
+                    <td>₡{{ formatoMoneda(e.salario) }}</td><td>{{ e.fechaIngreso }}</td>
+                    <td>
+                      <button class="editar" @click="editarEmpleado(e)">Editar</button>
+                      <button class="eliminar" @click="eliminarEmpleado(e.id)">Eliminar</button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </template>
+        </div>
+      </template>
+
+      <!-- EDIFICIOS Y AULAS -->
+      <template v-if="vista==='edificios'">
+        <div class="card">
+          <h3>{{ editando.edificios ? 'Editar edificio' : 'Nuevo edificio' }}</h3>
+          <form @submit.prevent="crearEdificio" @invalid.capture="mensajeValidacion" @input="limpiarValidacion">
+            <div class="campo">
+              <label for="edif-codigo">Código</label>
+              <input id="edif-codigo" v-model="edifForm.codigo" placeholder="Código" required />
+            </div>
+            <div class="campo">
+              <label for="edif-nombre">Nombre</label>
+              <input id="edif-nombre" v-model="edifForm.nombre" placeholder="Nombre" required />
+            </div>
+            <div class="campo">
+              <label style="visibility:hidden">Acción</label>
+              <button type="submit">{{ editando.edificios ? 'Guardar cambios' : 'Guardar' }}</button>
+              <button v-if="editando.edificios" type="button" class="ghost" @click="cancelarEdicionEdificio">Cancelar</button>
+            </div>
+          </form>
+        </div>
+        <div class="card">
+          <h3>Agregar aula</h3>
+          <form @submit.prevent="agregarAula" @invalid.capture="mensajeValidacion" @input="limpiarValidacion">
+            <div class="campo">
+              <label for="aula-edificio">Edificio</label>
+              <select id="aula-edificio" v-model.number="aulaForm.edificioId">
+                <option disabled value="">Edificio...</option>
+                <option v-for="ed in edificios" :key="ed.id" :value="ed.id">{{ ed.codigo }} · {{ ed.nombre }}</option>
+              </select>
+            </div>
+            <div class="campo">
+              <label for="aula-numero">Número</label>
+              <input id="aula-numero" v-model="aulaForm.numero" placeholder="Número" required />
+            </div>
+            <div class="campo">
+              <label for="aula-capacidad">Capacidad</label>
+              <input id="aula-capacidad" v-model.number="aulaForm.capacidad" type="number" min="1" placeholder="Capacidad" required />
+            </div>
+            <div class="campo">
+              <label for="aula-tipo">Tipo</label>
+              <select id="aula-tipo" v-model="aulaForm.tipo">
+                <option value="REGULAR">Regular</option>
+                <option value="LABORATORIO">Laboratorio</option>
+                <option value="AUDITORIO">Auditorio</option>
+              </select>
+            </div>
+            <div class="campo">
+              <label style="visibility:hidden">Acción</label>
+              <button type="submit">Agregar</button>
+            </div>
+          </form>
+        </div>
+        <div class="card">
+          <h3>Edificios</h3>
+          <template v-if="cargando.edificios">
+            <p class="estado-msg">Cargando…</p>
+          </template>
+          <template v-else-if="estado.edificios==='no-implementado'">
+            <p class="estado-msg estado-no-implementado">Este módulo aún no está implementado.</p>
+          </template>
+          <template v-else-if="estado.edificios==='error'">
+            <p class="estado-msg estado-error">No se pudo cargar. <button class="link" @click="cargarEdificios">Reintentar</button></p>
+          </template>
+          <template v-else-if="estado.edificios==='vacio'">
+            <p class="estado-msg">No hay registros todavía.</p>
+          </template>
+          <template v-else>
+            <div v-for="ed in edificios" :key="ed.id" style="margin-bottom:1rem">
+              <strong>{{ ed.codigo }}</strong> · {{ ed.nombre }} (ID {{ ed.id }})
+              <button class="editar" @click="editarEdificio(ed)">Editar</button>
+              <button class="eliminar" @click="eliminarEdificio(ed.id)">Eliminar</button>
+              <div class="aulas">
+                <span class="chip" v-for="a in ed.aulas" :key="a.id">
+                  Aula {{ a.numero }} (ID {{ a.id }}) · {{ a.tipo }} · cap. {{ a.capacidad }}
+                </span>
+                <span v-if="!ed.aulas.length">Sin aulas</span>
+              </div>
+            </div>
+          </template>
+        </div>
+      </template>
+
+      <!-- SECCIONES -->
+      <template v-if="vista==='secciones'">
+        <div class="card">
+          <h3>{{ editando.secciones ? 'Editar sección' : 'Nueva sección' }}</h3>
+          <form @submit.prevent="crearSeccion" @invalid.capture="mensajeValidacion" @input="limpiarValidacion">
+            <div class="campo">
+              <label for="sec-codigo">Código</label>
+              <input id="sec-codigo" v-model="secForm.codigo" placeholder="Código (ej: PROG3-01)" required />
+            </div>
+            <div class="campo">
+              <label for="sec-nombre">Nombre del curso</label>
+              <input id="sec-nombre" v-model="secForm.nombre" placeholder="Nombre del curso" required />
+            </div>
+            <div class="campo">
+              <label for="sec-aula">ID de aula</label>
+              <input id="sec-aula" v-model.number="secForm.aulaId" type="number" min="1" placeholder="ID de aula" required />
+            </div>
+            <div class="campo">
+              <label for="sec-docente">ID de docente</label>
+              <input id="sec-docente" v-model.number="secForm.docenteId" type="number" min="1" placeholder="ID de docente" required />
+            </div>
+            <div class="campo">
+              <label style="visibility:hidden">Acción</label>
+              <button type="submit">{{ editando.secciones ? 'Guardar cambios' : 'Guardar' }}</button>
+              <button v-if="editando.secciones" type="button" class="ghost" @click="cancelarEdicionSeccion">Cancelar</button>
+            </div>
+          </form>
+        </div>
+        <div class="card">
+          <h3>Secciones</h3>
+          <template v-if="cargando.secciones">
+            <p class="estado-msg">Cargando…</p>
+          </template>
+          <template v-else-if="estado.secciones==='no-implementado'">
+            <p class="estado-msg estado-no-implementado">Este módulo aún no está implementado.</p>
+          </template>
+          <template v-else-if="estado.secciones==='error'">
+            <p class="estado-msg estado-error">No se pudo cargar. <button class="link" @click="cargarSecciones">Reintentar</button></p>
+          </template>
+          <template v-else-if="estado.secciones==='vacio'">
+            <p class="estado-msg">No hay registros todavía.</p>
+          </template>
+          <template v-else>
+            <div v-for="s in secciones" :key="s.id" style="margin-bottom:1rem">
+              <strong>{{ s.codigo }}</strong> · {{ s.nombre }} · Docente: {{ s.docenteNombre }} · Aula: {{ s.aulaNumero }}
+              <button class="editar" @click="editarSeccion(s)">Editar</button>
+              <button class="eliminar" @click="eliminarSeccion(s.id)">Eliminar</button>
+              <div class="aulas">
+                <span class="chip" v-for="e in s.estudiantes" :key="e.id">
+                  {{ e.nombre }} ({{ e.carnet }})
+                  <button class="ghost" @click="removerEstudiante(s.id, e.id)">x</button>
+                </span>
+                <span v-if="!s.estudiantes.length">Sin inscritos</span>
+              </div>
+              <input v-model.number="inscribirIds[s.id]" type="number" placeholder="ID estudiante" :aria-label="'ID de estudiante a inscribir en ' + s.codigo" style="width:8rem" />
+              <button @click="inscribirEstudiante(s.id)">Inscribir</button>
+            </div>
+          </template>
+        </div>
+      </template>
+
+      <!-- MATRICULA -->
+      <template v-if="vista==='matricula'">
+        <div class="card">
+          <h3>Matrícula por lote</h3>
+          <div class="campo">
+            <label for="matricula-archivo">Archivo CSV</label>
+            <input id="matricula-archivo" type="file" @change="leerArchivo" accept=".csv" />
+          </div>
+          <div class="campo">
+            <label style="visibility:hidden">Acción</label>
+            <button @click="enviarMatricula" :disabled="!csv">Procesar</button>
+          </div>
+          <p v-if="matriculaMsg">{{ matriculaMsg }}</p>
+        </div>
+      </template>
+
+      <!-- REPORTE -->
+      <template v-if="vista==='reporte'">
+        <div class="card">
+          <h3>Reporte general</h3>
+          <button @click="descargarReporte">Descargar TXT</button>
+        </div>
+      </template>
+      </main>
+    </div>
+  </div>
+  <script>
+    const { createApp } = Vue;
+
+    // Estado global de feedback: toasts (éxito/error) y modal de confirmación,
+    // fuera del componente para que llamar() y los métodos puedan usarlos por closure.
+    const toasts = Vue.reactive([]);
+    function emitirToast(tipo, mensaje) {
+      const id = Date.now() + Math.random();
+      toasts.push({ id, tipo, mensaje });
+      setTimeout(() => quitarToast(id), 4000);
+    }
+    function quitarToast(id) {
+      const i = toasts.findIndex(t => t.id === id);
+      if (i !== -1) toasts.splice(i, 1);
+    }
+
+    const confirmDialog = Vue.reactive({ visible: false, mensaje: '', accion: null });
+    function pedirConfirmacion(mensaje, accion) {
+      confirmDialog.mensaje = mensaje;
+      confirmDialog.accion = accion;
+      confirmDialog.visible = true;
+    }
+    function cancelarConfirmacionGlobal() {
+      confirmDialog.visible = false;
+      confirmDialog.accion = null;
+    }
+    async function ejecutarConfirmacionGlobal() {
+      const accion = confirmDialog.accion;
+      confirmDialog.visible = false;
+      confirmDialog.accion = null;
+      if (accion) await accion();
+    }
+
+    // Envuelve fetch: si la respuesta no es 2xx, muestra el error del backend y no continúa.
+    async function llamar(url, opciones) {
+      const res = await fetch(url, opciones);
+      if (!res.ok) {
+        let mensaje = res.statusText;
+        try { mensaje = (await res.json()).error || mensaje; } catch (e) { /* cuerpo no era JSON */ }
+        emitirToast('error', mensaje);
+        throw new Error(mensaje);
+      }
+      return res;
+    }
+
+    // Carga de listas: distingue módulo no implementado (501), error real, vacío y éxito.
+    async function cargarModulo(url) {
+      let res;
+      try {
+        res = await fetch(url);
+      } catch (e) {
+        return { estado: 'error', datos: [] };
+      }
+      if (res.status === 501) return { estado: 'no-implementado', datos: [] };
+      if (!res.ok) return { estado: 'error', datos: [] };
+      let datos;
+      try {
+        datos = await res.json();
+      } catch (e) {
+        return { estado: 'error', datos: [] };
+      }
+      if (!Array.isArray(datos)) datos = [];
+      return { estado: datos.length ? 'ok' : 'vacio', datos };
+    }
+
+    createApp({
+      data() {
+        return {
+          vista: 'estudiantes',
+          toasts,
+          confirmDialog,
+          cargando: { estudiantes:false, empleados:false, edificios:false, secciones:false },
+          estado: { estudiantes:'ok', empleados:'ok', edificios:'ok', secciones:'ok' },
+          editando: { estudiantes:null, empleados:null, edificios:null, secciones:null },
+          estudiantes: [],
+          form: { tipo:'REGULAR', nombre:'', apellidos:'', email:'', carnet:'', porcentajeBeca:0 },
+          empleados: [],
+          empForm: { tipo:'DOCENTE', nombre:'', apellidos:'', email:'', salario:0, fechaIngreso:'' },
+          edificios: [],
+          edifForm: { codigo:'', nombre:'' },
+          aulaForm: { edificioId:'', numero:'', capacidad:0, tipo:'REGULAR' },
+          secciones: [],
+          secForm: { codigo:'', nombre:'', aulaId:0, docenteId:0 },
+          inscribirIds: {},
+          csv: '', csvNombre: '', matriculaMsg: ''
+        };
+      },
+      methods: {
+        cerrarToast(id) { quitarToast(id); },
+        cancelarConfirmacion() { cancelarConfirmacionGlobal(); },
+        ejecutarConfirmacion() { ejecutarConfirmacionGlobal(); },
+        formatoMoneda(valor) {
+          return Math.ceil(Number(valor) || 0).toLocaleString('es');
+        },
+        mensajeValidacion(ev) {
+          const el = ev.target;
+          const v = el.validity;
+          if (v.valueMissing) el.setCustomValidity('Complete este campo.');
+          else if (v.typeMismatch) el.setCustomValidity('Ingrese un valor con el formato correcto.');
+          else if (v.rangeUnderflow) el.setCustomValidity('El valor debe ser mayor o igual a ' + el.min + '.');
+          else if (v.rangeOverflow) el.setCustomValidity('El valor debe ser menor o igual a ' + el.max + '.');
+          else if (v.stepMismatch) el.setCustomValidity('El valor no es válido para este campo.');
+          else if (v.patternMismatch) el.setCustomValidity('El formato ingresado no es válido.');
+          else el.setCustomValidity('');
+        },
+        limpiarValidacion(ev) { ev.target.setCustomValidity(''); },
+
+        // Estudiantes
+        async cargar() {
+          this.cargando.estudiantes = true;
+          const r = await cargarModulo('/api/estudiantes');
+          this.estudiantes = r.datos;
+          this.estado.estudiantes = r.estado;
+          this.cargando.estudiantes = false;
+        },
+        editar(e) {
+          this.editando.estudiantes = e.id;
+          // e.tipo es la etiqueta legible ("Estudiante Becado"/"Estudiante Regular"), no el
+          // valor del <select> — se deriva de porcentajeBeca, que es null solo para REGULAR.
+          this.form = { tipo: e.porcentajeBeca != null ? 'BECADO' : 'REGULAR', nombre:e.nombre, apellidos:e.apellidos, email:e.email, carnet:e.carnet, porcentajeBeca: e.porcentajeBeca ?? 0 };
+        },
+        cancelarEdicion() {
+          this.editando.estudiantes = null;
+          this.form = { tipo:'REGULAR', nombre:'', apellidos:'', email:'', carnet:'', porcentajeBeca:0 };
+        },
+        async crear() {
+          try {
+            if (this.editando.estudiantes) {
+              await llamar('/api/estudiantes/'+this.editando.estudiantes, { method:'PUT', headers:{'Content-Type':'application/json'}, body: JSON.stringify(this.form) });
+            } else {
+              await llamar('/api/estudiantes', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(this.form) });
+            }
+          } catch (e) { return; }
+          const editando = this.editando.estudiantes;
+          this.editando.estudiantes = null;
+          this.form = { tipo:'REGULAR', nombre:'', apellidos:'', email:'', carnet:'', porcentajeBeca:0 };
+          emitirToast('exito', editando ? 'Estudiante actualizado.' : 'Estudiante creado.');
+          this.cargar();
+        },
+        eliminar(id) {
+          pedirConfirmacion('¿Eliminar este estudiante?', async () => {
+            try { await llamar('/api/estudiantes/'+id, { method:'DELETE' }); } catch (e) { return; }
+            emitirToast('exito', 'Estudiante eliminado.');
+            this.cargar();
+          });
+        },
+
+        // Empleados
+        async cargarEmpleados() {
+          this.cargando.empleados = true;
+          const r = await cargarModulo('/api/empleados');
+          this.empleados = r.datos;
+          this.estado.empleados = r.estado;
+          this.cargando.empleados = false;
+        },
+        editarEmpleado(e) {
+          this.editando.empleados = e.id;
+          this.empForm = { tipo:e.tipo, nombre:e.nombre, apellidos:e.apellidos, email:e.email, salario:e.salario, fechaIngreso:e.fechaIngreso };
+        },
+        cancelarEdicionEmpleado() {
+          this.editando.empleados = null;
+          this.empForm = { tipo:'DOCENTE', nombre:'', apellidos:'', email:'', salario:0, fechaIngreso:'' };
+        },
+        async crearEmpleado() {
+          try {
+            if (this.editando.empleados) {
+              await llamar('/api/empleados/'+this.editando.empleados, { method:'PUT', headers:{'Content-Type':'application/json'}, body: JSON.stringify(this.empForm) });
+            } else {
+              await llamar('/api/empleados', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(this.empForm) });
+            }
+          } catch (e) { return; }
+          const editando = this.editando.empleados;
+          this.editando.empleados = null;
+          this.empForm = { tipo:'DOCENTE', nombre:'', apellidos:'', email:'', salario:0, fechaIngreso:'' };
+          emitirToast('exito', editando ? 'Empleado actualizado.' : 'Empleado creado.');
+          this.cargarEmpleados();
+        },
+        eliminarEmpleado(id) {
+          pedirConfirmacion('¿Eliminar este empleado?', async () => {
+            try { await llamar('/api/empleados/'+id, { method:'DELETE' }); } catch (e) { return; }
+            emitirToast('exito', 'Empleado eliminado.');
+            this.cargarEmpleados();
+          });
+        },
+
+        // Edificios y aulas
+        async cargarEdificios() {
+          this.cargando.edificios = true;
+          const r = await cargarModulo('/api/edificios');
+          this.edificios = r.datos;
+          this.estado.edificios = r.estado;
+          this.cargando.edificios = false;
+        },
+        editarEdificio(ed) {
+          this.editando.edificios = ed.id;
+          this.edifForm = { codigo:ed.codigo, nombre:ed.nombre };
+        },
+        cancelarEdicionEdificio() {
+          this.editando.edificios = null;
+          this.edifForm = { codigo:'', nombre:'' };
+        },
+        async crearEdificio() {
+          try {
+            if (this.editando.edificios) {
+              await llamar('/api/edificios/'+this.editando.edificios, { method:'PUT', headers:{'Content-Type':'application/json'}, body: JSON.stringify(this.edifForm) });
+            } else {
+              await llamar('/api/edificios', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(this.edifForm) });
+            }
+          } catch (e) { return; }
+          const editando = this.editando.edificios;
+          this.editando.edificios = null;
+          this.edifForm = { codigo:'', nombre:'' };
+          emitirToast('exito', editando ? 'Edificio actualizado.' : 'Edificio creado.');
+          this.cargarEdificios();
+        },
+        eliminarEdificio(id) {
+          pedirConfirmacion('¿Eliminar este edificio?', async () => {
+            try { await llamar('/api/edificios/'+id, { method:'DELETE' }); } catch (e) { return; }
+            emitirToast('exito', 'Edificio eliminado.');
+            this.cargarEdificios();
+          });
+        },
+        async agregarAula() {
+          if (!this.aulaForm.edificioId) { emitirToast('error', 'Seleccione un edificio.'); return; }
+          try {
+            await llamar('/api/edificios/'+this.aulaForm.edificioId+'/aulas', {
+              method:'POST', headers:{'Content-Type':'application/json'},
+              body: JSON.stringify({ numero:this.aulaForm.numero, capacidad:this.aulaForm.capacidad, tipo:this.aulaForm.tipo })
+            });
+          } catch (e) { return; }
+          this.aulaForm = { edificioId:'', numero:'', capacidad:0, tipo:'REGULAR' };
+          emitirToast('exito', 'Aula agregada.');
+          this.cargarEdificios();
+        },
+
+        // Secciones
+        async cargarSecciones() {
+          this.cargando.secciones = true;
+          const r = await cargarModulo('/api/secciones');
+          this.secciones = r.datos;
+          this.estado.secciones = r.estado;
+          this.cargando.secciones = false;
+        },
+        editarSeccion(s) {
+          this.editando.secciones = s.id;
+          this.secForm = { codigo:s.codigo, nombre:s.nombre, aulaId:s.aulaId, docenteId:s.docenteId };
+        },
+        cancelarEdicionSeccion() {
+          this.editando.secciones = null;
+          this.secForm = { codigo:'', nombre:'', aulaId:0, docenteId:0 };
+        },
+        async crearSeccion() {
+          try {
+            if (this.editando.secciones) {
+              await llamar('/api/secciones/'+this.editando.secciones, { method:'PUT', headers:{'Content-Type':'application/json'}, body: JSON.stringify(this.secForm) });
+            } else {
+              await llamar('/api/secciones', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(this.secForm) });
+            }
+          } catch (e) { return; }
+          const editando = this.editando.secciones;
+          this.editando.secciones = null;
+          this.secForm = { codigo:'', nombre:'', aulaId:0, docenteId:0 };
+          emitirToast('exito', editando ? 'Sección actualizada.' : 'Sección creada.');
+          this.cargarSecciones();
+        },
+        eliminarSeccion(id) {
+          pedirConfirmacion('¿Eliminar esta sección?', async () => {
+            try { await llamar('/api/secciones/'+id, { method:'DELETE' }); } catch (e) { return; }
+            emitirToast('exito', 'Sección eliminada.');
+            this.cargarSecciones();
+          });
+        },
+        async inscribirEstudiante(seccionId) {
+          const estudianteId = this.inscribirIds[seccionId];
+          if (!estudianteId) return;
+          try {
+            await llamar('/api/secciones/'+seccionId+'/estudiantes', {
+              method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ estudianteId })
+            });
+          } catch (e) { return; }
+          this.inscribirIds[seccionId] = null;
+          emitirToast('exito', 'Estudiante inscrito.');
+          this.cargarSecciones();
+        },
+        removerEstudiante(seccionId, estudianteId) {
+          pedirConfirmacion('¿Remover este estudiante de la sección?', async () => {
+            try {
+              await llamar('/api/secciones/'+seccionId+'/estudiantes/'+estudianteId, { method:'DELETE' });
+            } catch (e) { return; }
+            emitirToast('exito', 'Estudiante removido de la sección.');
+            this.cargarSecciones();
+          });
+        },
+
+        // Matrícula y reporte
+        leerArchivo(ev) {
+          const f = ev.target.files[0];
+          if (!f) return;
+          this.csvNombre = f.name;
+          const r = new FileReader();
+          r.onload = () => { this.csv = r.result; };
+          r.readAsText(f);
+        },
+        async enviarMatricula() {
+          let res;
+          try {
+            res = await llamar('/api/matricula', {
+              method:'POST', headers:{'Content-Type':'application/json'},
+              body: JSON.stringify({ archivo: this.csvNombre, contenido: this.csv })
+            });
+          } catch (e) { return; }
+          this.matriculaMsg = (await res.json()).respuesta;
+        },
+        async descargarReporte() {
+          let res;
+          try {
+            res = await llamar('/api/reporte', { method:'POST' });
+          } catch (e) { return; }
+          const blob = await res.blob();
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url; a.download = 'reporte.txt'; a.click();
+          URL.revokeObjectURL(url);
+        }
+      },
+      mounted() {
+        this.cargar();
+        this.cargarEmpleados();
+        this.cargarEdificios();
+        this.cargarSecciones();
+      }
+    }).mount('#app');
+  </script>
+</body>
+</html>

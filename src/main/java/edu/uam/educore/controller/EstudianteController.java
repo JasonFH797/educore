@@ -50,7 +50,8 @@ public class EstudianteController {
     return null;
   }
 
-  public Estudiante actualizar(int id, String nombre, String apellidos, String email, String carnet)
+  public Estudiante actualizar(
+      int id, String nombre, String apellidos, String email, String carnet, Double porcentajeBeca)
       throws Exception {
     Estudiante e = buscarPorId(id);
     if (e == null) {
@@ -61,6 +62,13 @@ public class EstudianteController {
     e.setApellidos(apellidos);
     e.setEmail(email);
     e.setCarnet(carnet);
+    if (e instanceof EstudianteBecado becado && porcentajeBeca != null) {
+      if (!Validador.validarPorcentajeBeca(porcentajeBeca)) {
+        throw new IllegalArgumentException(
+            "Porcentaje de beca inválido (debe ser entre 0.0 y 1.0).");
+      }
+      becado.setPorcentajeBeca(porcentajeBeca);
+    }
     repo.actualizar(e);
     return e;
   }
@@ -76,7 +84,12 @@ public class EstudianteController {
   // ── Helpers internos ──────────────────────────────────────────────────────
 
   private void validarBase(String nombre, String apellidos, String email, String carnet) {
-    if (nombre.isEmpty() || apellidos.isEmpty() || carnet.isEmpty()) {
+    if (nombre == null
+        || nombre.isEmpty()
+        || apellidos == null
+        || apellidos.isEmpty()
+        || carnet == null
+        || carnet.isEmpty()) {
       throw new IllegalArgumentException("Nombre, apellidos y carnet son obligatorios.");
     }
     if (!Validador.validarEmail(email)) {
