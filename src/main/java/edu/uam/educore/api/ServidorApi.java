@@ -1,6 +1,8 @@
 package edu.uam.educore.api;
 
 import edu.uam.educore.api.Dtos.EstudianteDto;
+import edu.uam.educore.api.Dtos.EdificioDto;
+import edu.uam.educore.api.Dtos.EdificioRequest;
 import edu.uam.educore.api.Dtos.EstudianteRequest;
 import edu.uam.educore.api.Dtos.MatriculaRequest;
 import edu.uam.educore.controller.EstudianteController;
@@ -22,6 +24,13 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
 
+
+import edu.uam.educore.controller.EdificioController;
+
+import edu.uam.educore.dao.EdificioRepoSql;
+
+import edu.uam.educore.model.infraestructura.Edificio;
+
 /**
  * Arma EduCore como app web. Estudiante corre sobre base de datos (referencia) con su controlador
  * real. Empleado, Edificio/Aula y Sección son de cada grupo (P1) — estas rutas no llaman a ningún
@@ -39,6 +48,19 @@ public class ServidorApi {
     }
 
     EstudianteController estudianteController = new EstudianteController(estudianteRepo);
+    
+    Repositorio<Edificio> edificioRepo;
+
+    try {
+        edificioRepo = new EdificioRepoSql(
+                ConfiguracionBD.desdeArchivo(".env"));
+    } catch (IOException e) {
+        throw new RuntimeException(
+                "No fue posible inicializar EdificioRepoSql", e);
+    }
+
+    EdificioController edificioController =
+            new EdificioController(edificioRepo);
 
     Javalin app =
         Javalin.create(
@@ -55,7 +77,7 @@ public class ServidorApi {
 
               registrarEstudiantes(cfg, estudianteController);
               registrarEmpleados(cfg);
-              registrarEdificios(cfg);
+              registrarEdificios(cfg, edificioController);
               registrarSecciones(cfg);
               registrarMatricula(cfg);
               registrarReporte(cfg);
@@ -160,46 +182,64 @@ public class ServidorApi {
 
   // ── Edificios / Aulas (P1 de cada grupo — sin controlador de nombre fijo) ──
 
-  private static void registrarEdificios(JavalinConfig cfg) {
+  private static void registrarEdificios(JavalinConfig cfg, EdificioController controller) {
+    
     cfg.routes.get(
-        "/api/edificios",
-        ctx -> {
-          // TODO(estudiante · P1): reemplacen este bloque por su código. Ej.:
-          //   List<Edificio> edificios = MiControladorEdificio.listar();
-          //   ctx.json(EdificioDto.listaDesde(edificios));
-          ctx.status(501).json(Map.of("error", "edificios: pendiente de implementar"));
-        });
+    "/api/edificios",
+    ctx -> {
+        List<EdificioDto> lista =
+                EdificioDto.listaDesde(controller.listar());
 
+        ctx.json(lista);
+    });
+    
+    
     cfg.routes.post(
-        "/api/edificios",
-        ctx -> {
-          // TODO(estudiante · P1): parseen el body y llamen a su método de registro. Ej.:
-          //   EdificioRequest r = ctx.bodyAsClass(EdificioRequest.class);
-          //   Edificio creado = MiControladorEdificio.registrar(r.codigo(), r.nombre());
-          //   ctx.status(201).json(EdificioDto.desde(creado));
-          ctx.status(501).json(Map.of("error", "edificios: pendiente de implementar"));
-        });
+    "/api/edificios",
+    ctx -> {
 
+        EdificioRequest r =
+                ctx.bodyAsClass(EdificioRequest.class);
+
+        Edificio creado =
+                controller.registrar(
+                        r.codigo(),
+                        r.nombre());
+
+        ctx.status(201)
+           .json(EdificioDto.desde(creado));
+    });
+    
     cfg.routes.put(
-        "/api/edificios/{id}",
-        ctx -> {
-          // TODO(estudiante · P1): parseen el id y el body, y llamen a su método de
-          // actualización. Ej.:
-          //   int id = Integer.parseInt(ctx.pathParam("id"));
-          //   EdificioRequest r = ctx.bodyAsClass(EdificioRequest.class);
-          //   Edificio actualizado = MiControladorEdificio.actualizar(id, r.codigo(), r.nombre());
-          //   ctx.json(EdificioDto.desde(actualizado));
-          ctx.status(501).json(Map.of("error", "edificios: pendiente de implementar"));
-        });
+    "/api/edificios/{id}",
+    ctx -> {
 
+        int id = Integer.parseInt(ctx.pathParam("id"));
+
+        EdificioRequest r =
+                ctx.bodyAsClass(EdificioRequest.class);
+
+        Edificio actualizado =
+                controller.actualizar(
+                        id,
+                        r.codigo(),
+                        r.nombre());
+
+        ctx.json(
+                EdificioDto.desde(actualizado));
+    });
+    
     cfg.routes.delete(
-        "/api/edificios/{id}",
-        ctx -> {
-          // TODO(estudiante · P1): llamen a su método de eliminación. Ej.:
-          //   MiControladorEdificio.eliminar(Integer.parseInt(ctx.pathParam("id")));
-          //   ctx.status(204);
-          ctx.status(501).json(Map.of("error", "edificios: pendiente de implementar"));
-        });
+    "/api/edificios/{id}",
+    ctx -> {
+
+        int id =
+                Integer.parseInt(ctx.pathParam("id"));
+
+        controller.eliminar(id);
+
+        ctx.status(204);
+    });
 
     cfg.routes.post(
         "/api/edificios/{id}/aulas",

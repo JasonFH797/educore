@@ -23,3 +23,31 @@ INSERT INTO estudiante (tipo, nombre, apellidos, email, carnet, porcentaje_beca)
   ('REGULAR', 'Ana',   'Rojas Mora',   'ana.rojas@uam.edu',   '202410000001', NULL),
   ('REGULAR', 'Luis',  'Castro Vega',  'luis.castro@uam.edu', '202410000002', NULL),
   ('BECADO',  'Marta', 'Solis Pena',   'marta.solis@uam.edu', '202410000003', 0.50);
+
+-- =====================================================
+-- TABLA EDIFICIO
+-- =====================================================
+
+CREATE TABLE edificio (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    codigo VARCHAR(20) NOT NULL UNIQUE,
+    nombre VARCHAR(100) NOT NULL
+);
+
+-- =====================================================
+-- TABLA AULA
+-- =====================================================
+
+CREATE TABLE aula (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    codigo VARCHAR(20) NOT NULL UNIQUE,
+    capacidad INT NOT NULL,
+    tipo VARCHAR(30) NOT NULL,
+    edificio_id INT NOT NULL,
+
+    CONSTRAINT fk_aula_edificio
+        FOREIGN KEY (edificio_id)
+        REFERENCES edificio(id)
+        ON DELETE RESTRICT
+        ON UPDATE CASCADE
+);
