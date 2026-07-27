@@ -377,8 +377,10 @@
             <div class="campo">
               <label for="aula-tipo">Tipo</label>
               <select id="aula-tipo" v-model="aulaForm.tipo">
-                <option value="REGULAR">Regular</option>
+                <option value="TEORICA">Teórica</option>
                 <option value="LABORATORIO">Laboratorio</option>
+                <option value="COMPUTO">Cómputo</option>
+                <option value="TALLER">Taller</option>
                 <option value="AUDITORIO">Auditorio</option>
               </select>
             </div>
@@ -409,7 +411,7 @@
               <button class="eliminar" @click="eliminarEdificio(ed.id)">Eliminar</button>
               <div class="aulas">
                 <span class="chip" v-for="a in ed.aulas" :key="a.id">
-                  Aula {{ a.numero }} (ID {{ a.id }}) · {{ a.tipo }} · cap. {{ a.capacidad }}
+                  Aula {{ a.codigo }} (ID {{ a.id }}) · {{ a.tipo }} · cap. {{ a.capacidad }}
                 </span>
                 <span v-if="!ed.aulas.length">Sin aulas</span>
               </div>
@@ -585,7 +587,7 @@
           empForm: { tipo:'DOCENTE', nombre:'', apellidos:'', email:'', salario:0, fechaIngreso:'' },
           edificios: [],
           edifForm: { codigo:'', nombre:'' },
-          aulaForm: { edificioId:'', numero:'', capacidad:0, tipo:'REGULAR' },
+          aulaForm: { edificioId:'', numero:'', capacidad:0, tipo:'TEORICA' },
           secciones: [],
           secForm: { codigo:'', nombre:'', aulaId:0, docenteId:0 },
           inscribirIds: {},
@@ -732,10 +734,10 @@
           try {
             await llamar('/api/edificios/'+this.aulaForm.edificioId+'/aulas', {
               method:'POST', headers:{'Content-Type':'application/json'},
-              body: JSON.stringify({ numero:this.aulaForm.numero, capacidad:this.aulaForm.capacidad, tipo:this.aulaForm.tipo })
+              body: JSON.stringify({ codigo:this.aulaForm.numero, capacidad:this.aulaForm.capacidad, tipo:this.aulaForm.tipo })
             });
           } catch (e) { return; }
-          this.aulaForm = { edificioId:'', numero:'', capacidad:0, tipo:'REGULAR' };
+          this.aulaForm = { edificioId:'', numero:'', capacidad:0, tipo:'TEORICA' };
           emitirToast('exito', 'Aula agregada.');
           this.cargarEdificios();
         },

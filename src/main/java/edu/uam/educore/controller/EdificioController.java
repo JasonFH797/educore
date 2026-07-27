@@ -5,6 +5,8 @@ import edu.uam.educore.dao.Repositorio;
 import edu.uam.educore.model.infraestructura.Edificio;
 import java.util.List;
 import java.util.Optional;
+import edu.uam.educore.enums.TipoAula;
+import edu.uam.educore.model.infraestructura.Aula;
 
 public class EdificioController {
 
@@ -62,7 +64,8 @@ public class EdificioController {
         return edificio;
     }
 
-    public void eliminar(int id) throws Exception {
+    public void eliminar(int id) throws Exception 
+    {
 
         Edificio edificio = buscarPorId(id);
 
@@ -77,6 +80,29 @@ public class EdificioController {
 
         repo.eliminar(id);
 
+    }
+    
+    public Aula agregarAula(int edificioId, String codigo, int capacidad, TipoAula tipo) throws Exception 
+    {
+
+        Edificio edificio = buscarPorId(edificioId);
+
+        if (edificio == null) {
+            throw new IllegalArgumentException("Edificio no encontrado.");
+        }
+
+        Aula aula = new Aula(
+                0,
+                codigo,
+                capacidad,
+                tipo, 
+                edificio);
+
+        edificio.agregarAula(aula);
+
+        repo.actualizar(edificio);
+
+        return aula;
     }
 
     private void validar(

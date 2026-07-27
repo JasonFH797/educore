@@ -5,12 +5,15 @@ import edu.uam.educore.api.Dtos.EdificioDto;
 import edu.uam.educore.api.Dtos.EdificioRequest;
 import edu.uam.educore.api.Dtos.EstudianteRequest;
 import edu.uam.educore.api.Dtos.MatriculaRequest;
+import edu.uam.educore.api.Dtos.AulaDto;
+import edu.uam.educore.api.Dtos.AulaRequest;
 import edu.uam.educore.controller.EstudianteController;
 import edu.uam.educore.dao.EstudianteRepoSql;
 import edu.uam.educore.dao.ListaEstudianteRepo;
 import edu.uam.educore.dao.Repositorio;
 import edu.uam.educore.db.ConfiguracionBD;
 import edu.uam.educore.model.personas.Estudiante;
+import edu.uam.educore.model.infraestructura.Aula;
 import io.javalin.Javalin;
 import io.javalin.config.JavalinConfig;
 import java.io.BufferedReader;
@@ -23,6 +26,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
+import edu.uam.educore.enums.TipoAula;
 
 
 import edu.uam.educore.controller.EdificioController;
@@ -241,18 +245,23 @@ public class ServidorApi {
         ctx.status(204);
     });
 
+    
     cfg.routes.post(
         "/api/edificios/{id}/aulas",
         ctx -> {
-          // TODO(estudiante · P1): parseen el id, el body y llamen a su método para agregar
-          // un aula. Ej.:
-          //   int edificioId = Integer.parseInt(ctx.pathParam("id"));
-          //   AulaRequest r = ctx.bodyAsClass(AulaRequest.class);
-          //   Aula aula = MiControladorEdificio.agregarAula(edificioId, r.numero(),
-          //       r.capacidad(), r.tipo() != null ? r.tipo() : TipoAula.REGULAR);
-          //   ctx.status(201).json(AulaDto.desde(aula));
-          ctx.status(501).json(Map.of("error", "edificios: pendiente de implementar"));
-        });
+
+            int edificioId = Integer.parseInt(ctx.pathParam("id"));
+
+            AulaRequest r = ctx.bodyAsClass(AulaRequest.class);
+
+            Aula aula = controller.agregarAula(
+                    edificioId,
+                    r.codigo(),
+                    r.capacidad(),
+                    r.tipo() != null ? r.tipo() : TipoAula.TEORICA);
+
+            ctx.status(201).json(AulaDto.desde(aula));
+        });    
   }
 
   // ── Secciones (P1 de cada grupo — sin controlador de nombre fijo) ──
