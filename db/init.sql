@@ -51,3 +51,21 @@ CREATE TABLE aula (
         ON DELETE RESTRICT
         ON UPDATE CASCADE
 );
+-- =====================================================
+-- TABLA EMPLEADO
+-- =====================================================
+
+CREATE TABLE empleado (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    apellidos VARCHAR(100) NOT NULL,
+    email VARCHAR(150) NOT NULL,
+    salario DECIMAL(10,2) NOT NULL,
+    fecha_ingreso DATE NOT NULL,
+    tipo VARCHAR(30) NOT NULL
+);
+INSERT INTO empleado
+(nombre, apellidos, email, salario, fecha_ingreso, tipo)
+VALUES
+('Carlos','Ramirez','carlos@uam.edu',850000,'2023-01-10','DOCENTE'),
+('Maria','Lopez','maria@uam.edu',720000,'2022-06-15','ADMINISTRATIVO');

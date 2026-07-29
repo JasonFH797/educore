@@ -7,11 +7,11 @@ package edu.uam.educore.api;
 import java.util.ArrayList;
 import java.util.List;
 import edu.uam.educore.enums.TipoAula;
-// import edu.uam.educore.enums.TipoEmpleado;
+import edu.uam.educore.enums.TipoEmpleado;
 // import edu.uam.educore.model.academico.Seccion;
 import edu.uam.educore.model.infraestructura.Aula;
 import edu.uam.educore.model.infraestructura.Edificio;
-// import edu.uam.educore.model.personas.Empleado;
+import edu.uam.educore.model.personas.Empleado;
 import edu.uam.educore.model.personas.Estudiante;
 import edu.uam.educore.model.personas.EstudianteBecado;
 
@@ -63,41 +63,41 @@ public final class Dtos {
   // TipoEmpleado arriba) cuando ya tengan su propia clase Empleado. La forma de EmpleadoDto/
   // EmpleadoRequest es el contrato fijo con el frontend — no la cambien.
   //
-  // public record EmpleadoRequest(
-  //     String nombre,
-  //     String apellidos,
-  //     String email,
-  //     double salario,
-  //     String fechaIngreso,
-  //     TipoEmpleado tipo) {}
-  //
-  // public record EmpleadoDto(
-  //     int id,
-  //     String tipo,
-  //     String nombre,
-  //     String apellidos,
-  //     String email,
-  //     double salario,
-  //     String fechaIngreso) {
-  //   public static EmpleadoDto desde(Empleado e) {
-  //     return new EmpleadoDto(
-  //         e.getId(),
-  //         e.getTipoEmpleado().name(),
-  //         e.getNombre(),
-  //         e.getApellidos(),
-  //         e.getEmail(),
-  //         e.getSalario(),
-  //         e.getFechaIngreso().toString());
-  //   }
-  //
-  //   public static List<EmpleadoDto> listaDesde(List<Empleado> empleados) {
-  //     List<EmpleadoDto> resultado = new ArrayList<>();
-  //     for (Empleado e : empleados) {
-  //       resultado.add(EmpleadoDto.desde(e));
-  //     }
-  //     return resultado;
-  //   }
-  // }
+  public record EmpleadoRequest(
+       String nombre,
+       String apellidos,
+       String email,
+      double salario,
+       String fechaIngreso,
+       TipoEmpleado tipo) {}
+  
+   public record EmpleadoDto(
+       int id,
+       String tipo,
+       String nombre,
+       String apellidos,
+       String email,
+       double salario,
+       String fechaIngreso) {
+     public static EmpleadoDto desde(Empleado e) {
+       return new EmpleadoDto(
+           e.getId(),
+          e.getTipoEmpleado().name(),
+           e.getNombre(),
+           e.getApellidos(),
+           e.getEmail(),
+           e.getSalario(),
+           e.getFechaIngreso().toString());
+     }
+  
+     public static List<EmpleadoDto> listaDesde(List<Empleado> empleados) {
+       List<EmpleadoDto> resultado = new ArrayList<>();
+       for (Empleado e : empleados) {
+         resultado.add(EmpleadoDto.desde(e));
+       }
+       return resultado;
+    }
+   }
 
   //── Edificio / Aula (P1 de cada grupo) ──
   // TODO(estudiante · P1): descomenten este bloque completo (y los imports de Edificio/Aula/
