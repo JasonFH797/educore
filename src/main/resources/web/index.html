@@ -357,11 +357,11 @@
           </form>
         </div>
         <div class="card">
-          <h3>Agregar aula</h3>
+          <h3>{{ editando.aulas ? 'Editar aula' : 'Agregar aula' }}</h3>
           <form @submit.prevent="agregarAula" @invalid.capture="mensajeValidacion" @input="limpiarValidacion">
             <div class="campo">
               <label for="aula-edificio">Edificio</label>
-              <select id="aula-edificio" v-model.number="aulaForm.edificioId">
+              <select id="aula-edificio" v-model.number="aulaForm.edificioId" :disabled="!!editando.aulas">
                 <option disabled value="">Edificio...</option>
                 <option v-for="ed in edificios" :key="ed.id" :value="ed.id">{{ ed.codigo }} · {{ ed.nombre }}</option>
               </select>
@@ -384,7 +384,8 @@
             </div>
             <div class="campo">
               <label style="visibility:hidden">Acción</label>
-              <button type="submit">Agregar</button>
+              <button type="submit">{{ editando.aulas ? 'Guardar cambios' : 'Agregar' }}</button>
+              <button v-if="editando.aulas" type="button" class="ghost" @click="cancelarEdicionAula">Cancelar</button>
             </div>
           </form>
         </div>
@@ -410,6 +411,8 @@
               <div class="aulas">
                 <span class="chip" v-for="a in ed.aulas" :key="a.id">
                   Aula {{ a.numero }} (ID {{ a.id }}) · {{ a.tipo }} · cap. {{ a.capacidad }}
+                  <button class="editar" @click="editarAula(ed.id, a)">Editar</button>
+                  <button class="eliminar" @click="eliminarAula(ed.id, a.id)">Eliminar</button>
                 </span>
                 <span v-if="!ed.aulas.length">Sin aulas</span>
               </div>
@@ -578,7 +581,7 @@
           confirmDialog,
           cargando: { estudiantes:false, empleados:false, edificios:false, secciones:false },
           estado: { estudiantes:'ok', empleados:'ok', edificios:'ok', secciones:'ok' },
-          editando: { estudiantes:null, empleados:null, edificios:null, secciones:null },
+          editando: { estudiantes:null, empleados:null, edificios:null, secciones:null, aulas:null },
           estudiantes: [],
           form: { tipo:'REGULAR', nombre:'', apellidos:'', email:'', carnet:'', porcentajeBeca:0 },
           empleados: [],
@@ -727,17 +730,41 @@
             this.cargarEdificios();
           });
         },
+        editarAula(edificioId, aula) {
+          this.editando.aulas = aula.id;
+          this.aulaForm = { edificioId: edificioId, numero: aula.numero, capacidad: aula.capacidad, tipo: aula.tipo };
+        },
+        cancelarEdicionAula() {
+          this.editando.aulas = null;
+          this.aulaForm = { edificioId:'', numero:'', capacidad:0, tipo:'REGULAR' };
+        },
         async agregarAula() {
           if (!this.aulaForm.edificioId) { emitirToast('error', 'Seleccione un edificio.'); return; }
           try {
-            await llamar('/api/edificios/'+this.aulaForm.edificioId+'/aulas', {
-              method:'POST', headers:{'Content-Type':'application/json'},
-              body: JSON.stringify({ numero:this.aulaForm.numero, capacidad:this.aulaForm.capacidad, tipo:this.aulaForm.tipo })
-            });
+            if (this.editando.aulas) {
+              await llamar('/api/edificios/'+this.aulaForm.edificioId+'/aulas/'+this.editando.aulas, {
+                method:'PUT', headers:{'Content-Type':'application/json'},
+                body: JSON.stringify({ numero:this.aulaForm.numero, capacidad:this.aulaForm.capacidad, tipo:this.aulaForm.tipo })
+              });
+            } else {
+              await llamar('/api/edificios/'+this.aulaForm.edificioId+'/aulas', {
+                method:'POST', headers:{'Content-Type':'application/json'},
+                body: JSON.stringify({ numero:this.aulaForm.numero, capacidad:this.aulaForm.capacidad, tipo:this.aulaForm.tipo })
+              });
+            }
           } catch (e) { return; }
+          const editando = this.editando.aulas;
+          this.editando.aulas = null;
           this.aulaForm = { edificioId:'', numero:'', capacidad:0, tipo:'REGULAR' };
-          emitirToast('exito', 'Aula agregada.');
+          emitirToast('exito', editando ? 'Aula actualizada.' : 'Aula agregada.');
           this.cargarEdificios();
+        },
+        eliminarAula(edificioId, aulaId) {
+          pedirConfirmacion('¿Eliminar esta aula?', async () => {
+            try { await llamar('/api/edificios/'+edificioId+'/aulas/'+aulaId, { method:'DELETE' }); } catch (e) { return; }
+            emitirToast('exito', 'Aula eliminada.');
+            this.cargarEdificios();
+          });
         },
 
         // Secciones

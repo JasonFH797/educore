@@ -19,6 +19,7 @@ import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 import java.util.Map;
 
@@ -49,6 +50,14 @@ public class ServidorApi {
               cfg.routes.exception(
                   IllegalArgumentException.class,
                   (e, ctx) -> ctx.status(400).json(Map.of("error", e.getMessage())));
+              cfg.routes.exception(
+                  SQLIntegrityConstraintViolationException.class,
+                  (e, ctx) ->
+                      ctx.status(409)
+                          .json(
+                              Map.of(
+                                  "error",
+                                  "No se puede eliminar: el registro tiene datos asociados.")));
               cfg.routes.exception(
                   Exception.class,
                   (e, ctx) -> ctx.status(500).json(Map.of("error", e.getMessage())));
@@ -211,6 +220,32 @@ public class ServidorApi {
           //   Aula aula = MiControladorEdificio.agregarAula(edificioId, r.numero(),
           //       r.capacidad(), r.tipo() != null ? r.tipo() : TipoAula.REGULAR);
           //   ctx.status(201).json(AulaDto.desde(aula));
+          ctx.status(501).json(Map.of("error", "edificios: pendiente de implementar"));
+        });
+
+    cfg.routes.put(
+        "/api/edificios/{id}/aulas/{aulaId}",
+        ctx -> {
+          // TODO(estudiante · P1): parseen el id del edificio, el id del aula y el body, y
+          // llamen a su método para actualizar un aula. Ej.:
+          //   int edificioId = Integer.parseInt(ctx.pathParam("id"));
+          //   int aulaId = Integer.parseInt(ctx.pathParam("aulaId"));
+          //   AulaRequest r = ctx.bodyAsClass(AulaRequest.class);
+          //   Aula aula = MiControladorEdificio.actualizarAula(edificioId, aulaId, r.numero(),
+          //       r.capacidad(), r.tipo() != null ? r.tipo() : TipoAula.REGULAR);
+          //   ctx.json(AulaDto.desde(aula));
+          ctx.status(501).json(Map.of("error", "edificios: pendiente de implementar"));
+        });
+
+    cfg.routes.delete(
+        "/api/edificios/{id}/aulas/{aulaId}",
+        ctx -> {
+          // TODO(estudiante · P1): parseen el id del edificio y el id del aula, y llamen a su
+          // método para eliminar un aula. Ej.:
+          //   int edificioId = Integer.parseInt(ctx.pathParam("id"));
+          //   int aulaId = Integer.parseInt(ctx.pathParam("aulaId"));
+          //   MiControladorEdificio.eliminarAula(edificioId, aulaId);
+          //   ctx.status(204);
           ctx.status(501).json(Map.of("error", "edificios: pendiente de implementar"));
         });
   }
