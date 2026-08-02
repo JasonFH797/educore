@@ -38,9 +38,7 @@
       --space-6: 32px;
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
       margin: 0;
@@ -82,9 +80,7 @@
       cursor: pointer;
     }
 
-    .sidebar button:hover {
-      background: rgba(255, 255, 255, .08);
-    }
+    .sidebar button:hover { background: rgba(255, 255, 255, .08); }
 
     .sidebar button.activo {
       background: var(--acc);
@@ -119,8 +115,7 @@
       margin: var(--space-3) var(--space-1) var(--space-1);
     }
 
-    input,
-    select {
+    input, select {
       width: 100%;
       padding: var(--space-2) var(--space-3);
       border: 1px solid var(--border);
@@ -146,9 +141,7 @@
       cursor: pointer;
     }
 
-    button:hover {
-      background: var(--acc-hover);
-    }
+    button:hover { background: var(--acc-hover); }
 
     button.ghost {
       background: var(--bg);
@@ -156,27 +149,21 @@
       border: 1px solid var(--border);
     }
 
-    button.ghost:hover {
-      background: #e9eaee;
-    }
+    button.ghost:hover { background: #e9eaee; }
 
     button.editar {
       background: var(--editar-btn);
       color: #fff;
     }
 
-    button.editar:hover {
-      background: var(--editar-btn-hover);
-    }
+    button.editar:hover { background: var(--editar-btn-hover); }
 
     button.eliminar {
       background: var(--eliminar-btn);
       color: #fff;
     }
 
-    button.eliminar:hover {
-      background: var(--eliminar-btn-hover);
-    }
+    button.eliminar:hover { background: var(--eliminar-btn-hover); }
 
     button:disabled {
       opacity: .55;
@@ -195,16 +182,13 @@
       border-collapse: collapse;
     }
 
-    th,
-    td {
+    th, td {
       text-align: left;
       padding: var(--space-2) var(--space-3);
       border-bottom: 1px solid var(--border);
     }
 
-    .tabla-scroll {
-      overflow-x: auto;
-    }
+    .tabla-scroll { overflow-x: auto; }
 
     .estado-msg {
       color: var(--text-muted);
@@ -212,9 +196,7 @@
       padding: var(--space-3) 0;
     }
 
-    .estado-msg.estado-error {
-      color: var(--error);
-    }
+    .estado-msg.estado-error { color: var(--error); }
 
     .estado-msg.estado-no-implementado {
       color: var(--warning);
@@ -272,13 +254,8 @@
       font-size: .9rem;
     }
 
-    .toast.exito {
-      background: var(--success);
-    }
-
-    .toast.error {
-      background: var(--error);
-    }
+    .toast.exito { background: var(--success); }
+    .toast.error { background: var(--error); }
 
     .toast button {
       background: transparent;
@@ -306,9 +283,7 @@
       width: 90%;
     }
 
-    .modal p {
-      margin-top: 0;
-    }
+    .modal p { margin-top: 0; }
 
     .modal-actions {
       display: flex;
@@ -363,10 +338,80 @@
       background: var(--bg);
     }
 
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: var(--space-4);
+      margin-bottom: var(--space-5);
+    }
+
+    .dashboard-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: var(--space-5);
+      box-shadow: var(--shadow-card);
+      display: flex;
+      align-items: center;
+      gap: var(--space-4);
+      transition: transform .15s ease, box-shadow .15s ease;
+    }
+
+    .dashboard-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(16, 24, 40, .10);
+    }
+
+    .dashboard-icono {
+      width: 54px;
+      height: 54px;
+      border-radius: 14px;
+      background: #eef2ff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+    }
+
+    .dashboard-numero {
+      font-size: 1.8rem;
+      line-height: 1;
+      font-weight: 700;
+      color: var(--acc);
+      margin-bottom: var(--space-1);
+    }
+
+    .dashboard-texto {
+      color: var(--text-muted);
+      font-size: .9rem;
+    }
+
+    .estado-sistema {
+      display: grid;
+      gap: var(--space-3);
+    }
+
+    .estado-item {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      padding: var(--space-3);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      background: var(--bg);
+    }
+
+    .estado-indicador {
+      width: 12px;
+      height: 12px;
+      flex-shrink: 0;
+      border-radius: 50%;
+      background: var(--success);
+      box-shadow: 0 0 0 4px rgba(26, 127, 75, .12);
+    }
+
     @media (max-width: 768px) {
-      .layout {
-        flex-direction: column;
-      }
+      .layout { flex-direction: column; }
 
       .sidebar {
         width: 100%;
@@ -375,17 +420,11 @@
         padding: var(--space-2);
       }
 
-      .sidebar h1 {
-        display: none;
-      }
+      .sidebar h1 { display: none; }
 
-      .sidebar button {
-        white-space: nowrap;
-      }
+      .sidebar button { white-space: nowrap; }
 
-      main {
-        padding: var(--space-3);
-      }
+      main { padding: var(--space-3); }
 
       .campo {
         display: block;
@@ -393,9 +432,7 @@
         margin-right: 0;
       }
 
-      .seccion-encabezado {
-        flex-direction: column;
-      }
+      .seccion-encabezado { flex-direction: column; }
     }
   </style>
 </head>
@@ -404,103 +441,134 @@
 <div id="app">
 
   <div class="toast-container">
-    <div
-        class="toast"
-        :class="t.tipo"
-        v-for="t in toasts"
-        :key="t.id">
-
+    <div class="toast" :class="t.tipo" v-for="t in toasts" :key="t.id">
       <span>{{ t.mensaje }}</span>
       <button @click="cerrarToast(t.id)">×</button>
     </div>
   </div>
 
-  <div
-      class="modal-backdrop"
-      v-if="confirmDialog.visible">
-
+  <div class="modal-backdrop" v-if="confirmDialog.visible">
     <div class="modal">
       <p>{{ confirmDialog.mensaje }}</p>
-
       <div class="modal-actions">
-        <button
-            class="ghost"
-            @click="cancelarConfirmacion">
-          Cancelar
-        </button>
-
-        <button @click="ejecutarConfirmacion">
-          Confirmar
-        </button>
+        <button class="ghost" @click="cancelarConfirmacion">Cancelar</button>
+        <button @click="ejecutarConfirmacion">Confirmar</button>
       </div>
     </div>
   </div>
 
   <div class="layout">
-
     <aside class="sidebar">
       <h1>EduCore</h1>
 
-      <button
-          :class="{activo: vista==='estudiantes'}"
-          @click="vista='estudiantes'">
-        Estudiantes
-      </button>
-
-      <button
-          :class="{activo: vista==='empleados'}"
-          @click="vista='empleados'">
-        Empleados
-      </button>
-
-      <button
-          :class="{activo: vista==='edificios'}"
-          @click="vista='edificios'">
-        Edificios y Aulas
-      </button>
-
-      <button
-          :class="{activo: vista==='secciones'}"
-          @click="vista='secciones'">
-        Secciones
-      </button>
-
-      <button
-          :class="{activo: vista==='matricula'}"
-          @click="vista='matricula'">
-        Matrícula
-      </button>
-
-      <button
-          :class="{activo: vista==='reporte'}"
-          @click="vista='reporte'">
-        Reporte
-      </button>
+      <button :class="{activo: vista==='inicio'}" @click="vista='inicio'">Inicio</button>
+      <button :class="{activo: vista==='estudiantes'}" @click="vista='estudiantes'">Estudiantes</button>
+      <button :class="{activo: vista==='empleados'}" @click="vista='empleados'">Empleados</button>
+      <button :class="{activo: vista==='edificios'}" @click="vista='edificios'">Edificios y Aulas</button>
+      <button :class="{activo: vista==='secciones'}" @click="vista='secciones'">Secciones</button>
+      <button :class="{activo: vista==='matricula'}" @click="vista='matricula'">Matrícula</button>
+      <button :class="{activo: vista==='reporte'}" @click="vista='reporte'">Reporte</button>
     </aside>
 
     <main>
+      <!-- INICIO -->
+      <template v-if="vista==='inicio'">
+        <div class="card">
+          <h3>Resumen general de EduCore</h3>
+          <p class="estado-msg">Información actual del sistema de administración universitaria.</p>
+        </div>
+
+        <div class="dashboard-grid">
+          <div class="dashboard-card">
+            <div class="dashboard-icono">🎓</div>
+            <div>
+              <div class="dashboard-numero">{{ estudiantes.length }}</div>
+              <div class="dashboard-texto">Estudiantes</div>
+            </div>
+          </div>
+
+          <div class="dashboard-card">
+            <div class="dashboard-icono">👨‍🏫</div>
+            <div>
+              <div class="dashboard-numero">{{ empleados.length }}</div>
+              <div class="dashboard-texto">Empleados</div>
+            </div>
+          </div>
+
+          <div class="dashboard-card">
+            <div class="dashboard-icono">🏫</div>
+            <div>
+              <div class="dashboard-numero">{{ edificios.length }}</div>
+              <div class="dashboard-texto">Edificios</div>
+            </div>
+          </div>
+
+          <div class="dashboard-card">
+            <div class="dashboard-icono">🚪</div>
+            <div>
+              <div class="dashboard-numero">{{ totalAulas }}</div>
+              <div class="dashboard-texto">Aulas</div>
+            </div>
+          </div>
+
+          <div class="dashboard-card">
+            <div class="dashboard-icono">📚</div>
+            <div>
+              <div class="dashboard-numero">{{ secciones.length }}</div>
+              <div class="dashboard-texto">Secciones</div>
+            </div>
+          </div>
+
+          <div class="dashboard-card">
+            <div class="dashboard-icono">📝</div>
+            <div>
+              <div class="dashboard-numero">{{ totalMatriculas }}</div>
+              <div class="dashboard-texto">Matrículas</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Estado del sistema</h3>
+          <div class="estado-sistema">
+            <div class="estado-item">
+              <span class="estado-indicador"></span>
+              <div>
+                <strong>Base de datos</strong>
+                <div class="dashboard-texto">Conectada y disponible</div>
+              </div>
+            </div>
+
+            <div class="estado-item">
+              <span class="estado-indicador"></span>
+              <div>
+                <strong>API EduCore</strong>
+                <div class="dashboard-texto">Funcionando correctamente</div>
+              </div>
+            </div>
+
+            <div class="estado-item">
+              <span class="estado-indicador"></span>
+              <div>
+                <strong>Módulos</strong>
+                <div class="dashboard-texto">
+                  Estudiantes, empleados, edificios, aulas, secciones, matrícula y reportes.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </template>
 
       <!-- ESTUDIANTES -->
       <template v-if="vista==='estudiantes'">
-
         <div class="card">
-          <h3>
-            {{ editando.estudiantes ? 'Editar estudiante' : 'Nuevo estudiante' }}
-          </h3>
+          <h3>{{ editando.estudiantes ? 'Editar estudiante' : 'Nuevo estudiante' }}</h3>
 
-          <form
-              @submit.prevent="crear"
-              @invalid.capture="mensajeValidacion"
-              @input="limpiarValidacion">
-
+          <form @submit.prevent="crear" @invalid.capture="mensajeValidacion" @input="limpiarValidacion">
             <div class="campo">
               <label for="est-tipo">Tipo</label>
-
-              <select
-                  id="est-tipo"
-                  v-model="form.tipo"
-                  :disabled="editando.estudiantes !== null">
-
+              <select id="est-tipo" v-model="form.tipo" :disabled="editando.estudiantes !== null">
                 <option value="REGULAR">Regular</option>
                 <option value="BECADO">Becado</option>
               </select>
@@ -508,76 +576,33 @@
 
             <div class="campo">
               <label for="est-nombre">Nombre</label>
-
-              <input
-                  id="est-nombre"
-                  v-model="form.nombre"
-                  placeholder="Nombre"
-                  required />
+              <input id="est-nombre" v-model="form.nombre" placeholder="Nombre" required />
             </div>
 
             <div class="campo">
               <label for="est-apellidos">Apellidos</label>
-
-              <input
-                  id="est-apellidos"
-                  v-model="form.apellidos"
-                  placeholder="Apellidos"
-                  required />
+              <input id="est-apellidos" v-model="form.apellidos" placeholder="Apellidos" required />
             </div>
 
             <div class="campo">
               <label for="est-email">Email</label>
-
-              <input
-                  id="est-email"
-                  v-model="form.email"
-                  type="email"
-                  placeholder="Email"
-                  required />
+              <input id="est-email" v-model="form.email" type="email" placeholder="Email" required />
             </div>
 
             <div class="campo">
               <label for="est-carnet">Carnet</label>
-
-              <input
-                  id="est-carnet"
-                  v-model="form.carnet"
-                  placeholder="Carnet"
-                  required />
+              <input id="est-carnet" v-model="form.carnet" placeholder="Carnet" required />
             </div>
 
-            <div
-                class="campo"
-                v-if="form.tipo==='BECADO'">
-
+            <div class="campo" v-if="form.tipo==='BECADO'">
               <label for="est-beca">Beca (0-1)</label>
-
-              <input
-                  id="est-beca"
-                  v-model.number="form.porcentajeBeca"
-                  type="number"
-                  min="0"
-                  max="1"
-                  step="0.01"
-                  placeholder="Beca (0-1)" />
+              <input id="est-beca" v-model.number="form.porcentajeBeca" type="number" min="0" max="1" step="0.01" placeholder="Beca (0-1)" />
             </div>
 
             <div class="campo">
               <label style="visibility:hidden">Acción</label>
-
-              <button type="submit">
-                {{ editando.estudiantes ? 'Guardar cambios' : 'Guardar' }}
-              </button>
-
-              <button
-                  v-if="editando.estudiantes"
-                  type="button"
-                  class="ghost"
-                  @click="cancelarEdicion">
-
-                Cancelar
-              </button>
+              <button type="submit">{{ editando.estudiantes ? 'Guardar cambios' : 'Guardar' }}</button>
+              <button v-if="editando.estudiantes" type="button" class="ghost" @click="cancelarEdicion">Cancelar</button>
             </div>
           </form>
         </div>
@@ -592,11 +617,7 @@
           <template v-else-if="estado.estudiantes==='error'">
             <p class="estado-msg estado-error">
               No se pudo cargar.
-              <button
-                  class="link"
-                  @click="cargar">
-                Reintentar
-              </button>
+              <button class="link" @click="cargar">Reintentar</button>
             </p>
           </template>
 
@@ -608,41 +629,27 @@
             <div class="tabla-scroll">
               <table>
                 <thead>
-                <tr>
-                  <th>ID</th>
-                  <th>Tipo</th>
-                  <th>Nombre</th>
-                  <th>Carnet</th>
-                  <th>Matrícula</th>
-                  <th></th>
-                </tr>
+                  <tr>
+                    <th>ID</th>
+                    <th>Tipo</th>
+                    <th>Nombre</th>
+                    <th>Carnet</th>
+                    <th>Matrícula</th>
+                    <th></th>
+                  </tr>
                 </thead>
-
                 <tbody>
-                <tr
-                    v-for="e in estudiantes"
-                    :key="e.id">
-
-                  <td>{{ e.id }}</td>
-                  <td>{{ e.tipo }}</td>
-                  <td>{{ e.nombre }} {{ e.apellidos }}</td>
-                  <td>{{ e.carnet }}</td>
-                  <td>₡{{ formatoMoneda(e.matricula) }}</td>
-
-                  <td>
-                    <button
-                        class="editar"
-                        @click="editar(e)">
-                      Editar
-                    </button>
-
-                    <button
-                        class="eliminar"
-                        @click="eliminar(e.id)">
-                      Eliminar
-                    </button>
-                  </td>
-                </tr>
+                  <tr v-for="e in estudiantes" :key="e.id">
+                    <td>{{ e.id }}</td>
+                    <td>{{ e.tipo }}</td>
+                    <td>{{ e.nombre }} {{ e.apellidos }}</td>
+                    <td>{{ e.carnet }}</td>
+                    <td>₡{{ formatoMoneda(e.matricula) }}</td>
+                    <td>
+                      <button class="editar" @click="editar(e)">Editar</button>
+                      <button class="eliminar" @click="eliminar(e.id)">Eliminar</button>
+                    </td>
+                  </tr>
                 </tbody>
               </table>
             </div>
@@ -652,24 +659,13 @@
 
       <!-- EMPLEADOS -->
       <template v-if="vista==='empleados'">
-
         <div class="card">
-          <h3>
-            {{ editando.empleados ? 'Editar empleado' : 'Nuevo empleado' }}
-          </h3>
+          <h3>{{ editando.empleados ? 'Editar empleado' : 'Nuevo empleado' }}</h3>
 
-          <form
-              @submit.prevent="crearEmpleado"
-              @invalid.capture="mensajeValidacion"
-              @input="limpiarValidacion">
-
+          <form @submit.prevent="crearEmpleado" @invalid.capture="mensajeValidacion" @input="limpiarValidacion">
             <div class="campo">
               <label for="emp-tipo">Tipo</label>
-
-              <select
-                  id="emp-tipo"
-                  v-model="empForm.tipo">
-
+              <select id="emp-tipo" v-model="empForm.tipo">
                 <option value="DOCENTE">Docente</option>
                 <option value="ADMINISTRATIVO">Administrativo</option>
                 <option value="GUARDA">Guarda</option>
@@ -680,72 +676,33 @@
 
             <div class="campo">
               <label for="emp-nombre">Nombre</label>
-
-              <input
-                  id="emp-nombre"
-                  v-model="empForm.nombre"
-                  placeholder="Nombre"
-                  required />
+              <input id="emp-nombre" v-model="empForm.nombre" placeholder="Nombre" required />
             </div>
 
             <div class="campo">
               <label for="emp-apellidos">Apellidos</label>
-
-              <input
-                  id="emp-apellidos"
-                  v-model="empForm.apellidos"
-                  placeholder="Apellidos"
-                  required />
+              <input id="emp-apellidos" v-model="empForm.apellidos" placeholder="Apellidos" required />
             </div>
 
             <div class="campo">
               <label for="emp-email">Email</label>
-
-              <input
-                  id="emp-email"
-                  v-model="empForm.email"
-                  type="email"
-                  placeholder="Email"
-                  required />
+              <input id="emp-email" v-model="empForm.email" type="email" placeholder="Email" required />
             </div>
 
             <div class="campo">
               <label for="emp-salario">Salario</label>
-
-              <input
-                  id="emp-salario"
-                  v-model.number="empForm.salario"
-                  type="number"
-                  min="0"
-                  placeholder="Salario"
-                  required />
+              <input id="emp-salario" v-model.number="empForm.salario" type="number" min="0" placeholder="Salario" required />
             </div>
 
             <div class="campo">
               <label for="emp-ingreso">Fecha de ingreso</label>
-
-              <input
-                  id="emp-ingreso"
-                  v-model="empForm.fechaIngreso"
-                  type="date"
-                  required />
+              <input id="emp-ingreso" v-model="empForm.fechaIngreso" type="date" required />
             </div>
 
             <div class="campo">
               <label style="visibility:hidden">Acción</label>
-
-              <button type="submit">
-                {{ editando.empleados ? 'Guardar cambios' : 'Guardar' }}
-              </button>
-
-              <button
-                  v-if="editando.empleados"
-                  type="button"
-                  class="ghost"
-                  @click="cancelarEdicionEmpleado">
-
-                Cancelar
-              </button>
+              <button type="submit">{{ editando.empleados ? 'Guardar cambios' : 'Guardar' }}</button>
+              <button v-if="editando.empleados" type="button" class="ghost" @click="cancelarEdicionEmpleado">Cancelar</button>
             </div>
           </form>
         </div>
@@ -760,11 +717,7 @@
           <template v-else-if="estado.empleados==='error'">
             <p class="estado-msg estado-error">
               No se pudo cargar.
-              <button
-                  class="link"
-                  @click="cargarEmpleados">
-                Reintentar
-              </button>
+              <button class="link" @click="cargarEmpleados">Reintentar</button>
             </p>
           </template>
 
@@ -776,41 +729,27 @@
             <div class="tabla-scroll">
               <table>
                 <thead>
-                <tr>
-                  <th>ID</th>
-                  <th>Tipo</th>
-                  <th>Nombre</th>
-                  <th>Salario</th>
-                  <th>Ingreso</th>
-                  <th></th>
-                </tr>
+                  <tr>
+                    <th>ID</th>
+                    <th>Tipo</th>
+                    <th>Nombre</th>
+                    <th>Salario</th>
+                    <th>Ingreso</th>
+                    <th></th>
+                  </tr>
                 </thead>
-
                 <tbody>
-                <tr
-                    v-for="e in empleados"
-                    :key="e.id">
-
-                  <td>{{ e.id }}</td>
-                  <td>{{ e.tipo }}</td>
-                  <td>{{ e.nombre }} {{ e.apellidos }}</td>
-                  <td>₡{{ formatoMoneda(e.salario) }}</td>
-                  <td>{{ e.fechaIngreso }}</td>
-
-                  <td>
-                    <button
-                        class="editar"
-                        @click="editarEmpleado(e)">
-                      Editar
-                    </button>
-
-                    <button
-                        class="eliminar"
-                        @click="eliminarEmpleado(e.id)">
-                      Eliminar
-                    </button>
-                  </td>
-                </tr>
+                  <tr v-for="e in empleados" :key="e.id">
+                    <td>{{ e.id }}</td>
+                    <td>{{ e.tipo }}</td>
+                    <td>{{ e.nombre }} {{ e.apellidos }}</td>
+                    <td>₡{{ formatoMoneda(e.salario) }}</td>
+                    <td>{{ e.fechaIngreso }}</td>
+                    <td>
+                      <button class="editar" @click="editarEmpleado(e)">Editar</button>
+                      <button class="eliminar" @click="eliminarEmpleado(e.id)">Eliminar</button>
+                    </td>
+                  </tr>
                 </tbody>
               </table>
             </div>
@@ -820,86 +759,37 @@
 
       <!-- EDIFICIOS Y AULAS -->
       <template v-if="vista==='edificios'">
-
         <div class="card">
-          <h3>
-            {{ editando.edificios ? 'Editar edificio' : 'Nuevo edificio' }}
-          </h3>
+          <h3>{{ editando.edificios ? 'Editar edificio' : 'Nuevo edificio' }}</h3>
 
-          <form
-              @submit.prevent="crearEdificio"
-              @invalid.capture="mensajeValidacion"
-              @input="limpiarValidacion">
-
+          <form @submit.prevent="crearEdificio" @invalid.capture="mensajeValidacion" @input="limpiarValidacion">
             <div class="campo">
               <label for="edif-codigo">Código</label>
-
-              <input
-                  id="edif-codigo"
-                  v-model="edifForm.codigo"
-                  placeholder="Código"
-                  required />
+              <input id="edif-codigo" v-model="edifForm.codigo" placeholder="Código" required />
             </div>
 
             <div class="campo">
               <label for="edif-nombre">Nombre</label>
-
-              <input
-                  id="edif-nombre"
-                  v-model="edifForm.nombre"
-                  placeholder="Nombre"
-                  required />
+              <input id="edif-nombre" v-model="edifForm.nombre" placeholder="Nombre" required />
             </div>
 
             <div class="campo">
               <label style="visibility:hidden">Acción</label>
-
-              <button type="submit">
-                {{ editando.edificios ? 'Guardar cambios' : 'Guardar' }}
-              </button>
-
-              <button
-                  v-if="editando.edificios"
-                  type="button"
-                  class="ghost"
-                  @click="cancelarEdicionEdificio">
-
-                Cancelar
-              </button>
+              <button type="submit">{{ editando.edificios ? 'Guardar cambios' : 'Guardar' }}</button>
+              <button v-if="editando.edificios" type="button" class="ghost" @click="cancelarEdicionEdificio">Cancelar</button>
             </div>
           </form>
         </div>
 
         <div class="card">
-          <h3>
-            {{ editando.aulas ? 'Editar aula' : 'Agregar aula' }}
-          </h3>
+          <h3>{{ editando.aulas ? 'Editar aula' : 'Agregar aula' }}</h3>
 
-          <form
-              @submit.prevent="agregarAula"
-              @invalid.capture="mensajeValidacion"
-              @input="limpiarValidacion">
-
+          <form @submit.prevent="agregarAula" @invalid.capture="mensajeValidacion" @input="limpiarValidacion">
             <div class="campo">
               <label for="aula-edificio">Edificio</label>
-
-              <select
-                  id="aula-edificio"
-                  v-model.number="aulaForm.edificioId"
-                  :disabled="!!editando.aulas"
-                  required>
-
-                <option
-                    disabled
-                    value="">
-                  Edificio...
-                </option>
-
-                <option
-                    v-for="ed in edificios"
-                    :key="ed.id"
-                    :value="ed.id">
-
+              <select id="aula-edificio" v-model.number="aulaForm.edificioId" :disabled="!!editando.aulas" required>
+                <option disabled value="">Edificio...</option>
+                <option v-for="ed in edificios" :key="ed.id" :value="ed.id">
                   {{ ed.codigo }} · {{ ed.nombre }}
                 </option>
               </select>
@@ -907,33 +797,17 @@
 
             <div class="campo">
               <label for="aula-codigo">Código</label>
-
-              <input
-                  id="aula-codigo"
-                  v-model="aulaForm.numero"
-                  placeholder="Código"
-                  required />
+              <input id="aula-codigo" v-model="aulaForm.numero" placeholder="Código" required />
             </div>
 
             <div class="campo">
               <label for="aula-capacidad">Capacidad</label>
-
-              <input
-                  id="aula-capacidad"
-                  v-model.number="aulaForm.capacidad"
-                  type="number"
-                  min="1"
-                  placeholder="Capacidad"
-                  required />
+              <input id="aula-capacidad" v-model.number="aulaForm.capacidad" type="number" min="1" placeholder="Capacidad" required />
             </div>
 
             <div class="campo">
               <label for="aula-tipo">Tipo</label>
-
-              <select
-                  id="aula-tipo"
-                  v-model="aulaForm.tipo">
-
+              <select id="aula-tipo" v-model="aulaForm.tipo">
                 <option value="TEORICA">Teórica</option>
                 <option value="LABORATORIO">Laboratorio</option>
                 <option value="COMPUTO">Cómputo</option>
@@ -944,19 +818,8 @@
 
             <div class="campo">
               <label style="visibility:hidden">Acción</label>
-
-              <button type="submit">
-                {{ editando.aulas ? 'Guardar cambios' : 'Agregar' }}
-              </button>
-
-              <button
-                  v-if="editando.aulas"
-                  type="button"
-                  class="ghost"
-                  @click="cancelarEdicionAula">
-
-                Cancelar
-              </button>
+              <button type="submit">{{ editando.aulas ? 'Guardar cambios' : 'Agregar' }}</button>
+              <button v-if="editando.aulas" type="button" class="ghost" @click="cancelarEdicionAula">Cancelar</button>
             </div>
           </form>
         </div>
@@ -971,11 +834,7 @@
           <template v-else-if="estado.edificios==='error'">
             <p class="estado-msg estado-error">
               No se pudo cargar.
-              <button
-                  class="link"
-                  @click="cargarEdificios">
-                Reintentar
-              </button>
+              <button class="link" @click="cargarEdificios">Reintentar</button>
             </p>
           </template>
 
@@ -984,55 +843,21 @@
           </template>
 
           <template v-else>
-            <div
-                v-for="ed in edificios"
-                :key="ed.id"
-                style="margin-bottom:1rem">
+            <div v-for="ed in edificios" :key="ed.id" style="margin-bottom:1rem">
+              <strong>{{ ed.codigo }}</strong> · {{ ed.nombre }} (ID {{ ed.id }})
 
-              <strong>{{ ed.codigo }}</strong>
-              · {{ ed.nombre }}
-              (ID {{ ed.id }})
-
-              <button
-                  class="editar"
-                  @click="editarEdificio(ed)">
-                Editar
-              </button>
-
-              <button
-                  class="eliminar"
-                  @click="eliminarEdificio(ed.id)">
-                Eliminar
-              </button>
+              <button class="editar" @click="editarEdificio(ed)">Editar</button>
+              <button class="eliminar" @click="eliminarEdificio(ed.id)">Eliminar</button>
 
               <div class="aulas">
+                <span class="chip" v-for="a in ed.aulas" :key="a.id">
+                  Aula {{ a.codigo }} (ID {{ a.id }}) · {{ a.tipo }} · cap. {{ a.capacidad }}
 
-                <span
-                    class="chip"
-                    v-for="a in ed.aulas"
-                    :key="a.id">
-
-                  Aula {{ a.codigo }}
-                  (ID {{ a.id }})
-                  · {{ a.tipo }}
-                  · cap. {{ a.capacidad }}
-
-                  <button
-                      class="editar"
-                      @click="editarAula(ed.id, a)">
-                    Editar
-                  </button>
-
-                  <button
-                      class="eliminar"
-                      @click="eliminarAula(ed.id, a.id)">
-                    Eliminar
-                  </button>
+                  <button class="editar" @click="editarAula(ed.id, a)">Editar</button>
+                  <button class="eliminar" @click="eliminarAula(ed.id, a.id)">Eliminar</button>
                 </span>
 
-                <span v-if="!ed.aulas.length">
-                  Sin aulas
-                </span>
+                <span v-if="!ed.aulas.length">Sin aulas</span>
               </div>
             </div>
           </template>
@@ -1041,64 +866,32 @@
 
       <!-- SECCIONES -->
       <template v-if="vista==='secciones'">
-
         <div class="card">
-          <h3>
-            {{ editando.secciones ? 'Editar sección' : 'Nueva sección' }}
-          </h3>
+          <h3>{{ editando.secciones ? 'Editar sección' : 'Nueva sección' }}</h3>
 
-          <form
-              @submit.prevent="crearSeccion"
-              @invalid.capture="mensajeValidacion"
-              @input="limpiarValidacion">
-
+          <form @submit.prevent="crearSeccion" @invalid.capture="mensajeValidacion" @input="limpiarValidacion">
             <div class="campo">
               <label for="sec-codigo">Código</label>
-
-              <input
-                  id="sec-codigo"
-                  v-model="secForm.codigo"
-                  placeholder="Código (ej: PROG3-01)"
-                  required />
+              <input id="sec-codigo" v-model="secForm.codigo" placeholder="Código (ej: PROG3-01)" required />
             </div>
 
             <div class="campo">
               <label for="sec-nombre">Nombre del curso</label>
-
-              <input
-                  id="sec-nombre"
-                  v-model="secForm.nombre"
-                  placeholder="Nombre del curso"
-                  required />
+              <input id="sec-nombre" v-model="secForm.nombre" placeholder="Nombre del curso" required />
             </div>
 
             <div class="campo">
               <label for="sec-aula">Aula</label>
-
-              <select
-                  id="sec-aula"
-                  v-model.number="secForm.aulaId"
-                  required>
-
-                <option
-                    disabled
-                    value="0">
-                  Seleccione un aula
-                </option>
+              <select id="sec-aula" v-model.number="secForm.aulaId" required>
+                <option disabled value="0">Seleccione un aula</option>
 
                 <optgroup
-                    v-for="edificio in edificios"
-                    :key="edificio.id"
-                    :label="edificio.codigo + ' · ' + edificio.nombre">
+                  v-for="edificio in edificios"
+                  :key="edificio.id"
+                  :label="edificio.codigo + ' · ' + edificio.nombre">
 
-                  <option
-                      v-for="aula in edificio.aulas"
-                      :key="aula.id"
-                      :value="aula.id">
-
-                    {{ aula.codigo }}
-                    · {{ aula.tipo }}
-                    · capacidad {{ aula.capacidad }}
+                  <option v-for="aula in edificio.aulas" :key="aula.id" :value="aula.id">
+                    {{ aula.codigo }} · {{ aula.tipo }} · capacidad {{ aula.capacidad }}
                   </option>
                 </optgroup>
               </select>
@@ -1106,44 +899,19 @@
 
             <div class="campo">
               <label for="sec-docente">Docente</label>
+              <select id="sec-docente" v-model.number="secForm.docenteId" required>
+                <option disabled value="0">Seleccione un docente</option>
 
-              <select
-                  id="sec-docente"
-                  v-model.number="secForm.docenteId"
-                  required>
-
-                <option
-                    disabled
-                    value="0">
-                  Seleccione un docente
-                </option>
-
-                <option
-                    v-for="empleado in docentes"
-                    :key="empleado.id"
-                    :value="empleado.id">
-
-                  {{ empleado.nombre }}
-                  {{ empleado.apellidos }}
+                <option v-for="empleado in docentes" :key="empleado.id" :value="empleado.id">
+                  {{ empleado.nombre }} {{ empleado.apellidos }}
                 </option>
               </select>
             </div>
 
             <div class="campo">
               <label style="visibility:hidden">Acción</label>
-
-              <button type="submit">
-                {{ editando.secciones ? 'Guardar cambios' : 'Guardar' }}
-              </button>
-
-              <button
-                  v-if="editando.secciones"
-                  type="button"
-                  class="ghost"
-                  @click="cancelarEdicionSeccion">
-
-                Cancelar
-              </button>
+              <button type="submit">{{ editando.secciones ? 'Guardar cambios' : 'Guardar' }}</button>
+              <button v-if="editando.secciones" type="button" class="ghost" @click="cancelarEdicionSeccion">Cancelar</button>
             </div>
           </form>
         </div>
@@ -1158,11 +926,7 @@
           <template v-else-if="estado.secciones==='error'">
             <p class="estado-msg estado-error">
               No se pudo cargar.
-              <button
-                  class="link"
-                  @click="cargarSecciones">
-                Reintentar
-              </button>
+              <button class="link" @click="cargarSecciones">Reintentar</button>
             </p>
           </template>
 
@@ -1171,36 +935,19 @@
           </template>
 
           <template v-else>
-
-            <div
-                v-for="s in secciones"
-                :key="s.id"
-                class="seccion-card">
-
+            <div v-for="s in secciones" :key="s.id" class="seccion-card">
               <div class="seccion-encabezado">
-
                 <div>
-                  <strong>{{ s.codigo }}</strong>
-                  · {{ s.nombre }}
+                  <strong>{{ s.codigo }}</strong> · {{ s.nombre }}
 
                   <div class="seccion-detalle">
-                    Docente: {{ s.docenteNombre }}
-                    · Aula: {{ s.aulaCodigo }}
+                    Docente: {{ s.docenteNombre }} · Aula: {{ s.aulaCodigo }}
                   </div>
                 </div>
 
                 <div>
-                  <button
-                      class="editar"
-                      @click="editarSeccion(s)">
-                    Editar
-                  </button>
-
-                  <button
-                      class="eliminar"
-                      @click="eliminarSeccion(s.id)">
-                    Eliminar
-                  </button>
+                  <button class="editar" @click="editarSeccion(s)">Editar</button>
+                  <button class="eliminar" @click="eliminarSeccion(s.id)">Eliminar</button>
                 </div>
               </div>
 
@@ -1208,80 +955,44 @@
                 <h4>Inscribir estudiante</h4>
 
                 <div class="campo">
-                  <label :for="'estudiante-seccion-' + s.id">
-                    Estudiante disponible
-                  </label>
+                  <label :for="'estudiante-seccion-' + s.id">Estudiante disponible</label>
 
-                  <select
-                      :id="'estudiante-seccion-' + s.id"
-                      v-model.number="inscribirIds[s.id]">
+                  <select :id="'estudiante-seccion-' + s.id" v-model.number="inscribirIds[s.id]">
+                    <option disabled value="">Seleccione un estudiante</option>
 
                     <option
-                        disabled
-                        value="">
-                      Seleccione un estudiante
-                    </option>
+                      v-for="estudiante in estudiantesDisponibles(s)"
+                      :key="estudiante.id"
+                      :value="estudiante.id">
 
-                    <option
-                        v-for="estudiante in estudiantesDisponibles(s)"
-                        :key="estudiante.id"
-                        :value="estudiante.id">
-
-                      {{ estudiante.nombre }}
-                      {{ estudiante.apellidos }}
-                      · {{ estudiante.carnet }}
+                      {{ estudiante.nombre }} {{ estudiante.apellidos }} · {{ estudiante.carnet }}
                     </option>
                   </select>
                 </div>
 
                 <div class="campo">
                   <label style="visibility:hidden">Acción</label>
-
-                  <button
-                      @click="inscribirEstudiante(s.id)"
-                      :disabled="!inscribirIds[s.id]">
-
-                    Inscribir
-                  </button>
+                  <button @click="inscribirEstudiante(s.id)" :disabled="!inscribirIds[s.id]">Inscribir</button>
                 </div>
 
-                <p
-                    v-if="estudiantesDisponibles(s).length === 0"
-                    class="estado-msg">
-
+                <p v-if="estudiantesDisponibles(s).length === 0" class="estado-msg">
                   No hay estudiantes disponibles para inscribir.
                 </p>
               </div>
 
               <div class="inscritos-panel">
-                <h4>
-                  Estudiantes inscritos
-                  ({{ s.estudiantes.length }})
-                </h4>
+                <h4>Estudiantes inscritos ({{ s.estudiantes.length }})</h4>
 
-                <p
-                    v-if="!s.estudiantes.length"
-                    class="estado-msg">
-
-                  Sin estudiantes inscritos.
-                </p>
+                <p v-if="!s.estudiantes.length" class="estado-msg">Sin estudiantes inscritos.</p>
 
                 <div
-                    v-for="estudiante in s.estudiantes"
-                    :key="estudiante.id"
-                    class="estudiante-inscrito">
+                  v-for="estudiante in s.estudiantes"
+                  :key="estudiante.id"
+                  class="estudiante-inscrito">
 
-                  <span>
-                    {{ estudiante.nombre }}
-                    · {{ estudiante.carnet }}
-                  </span>
+                  <span>{{ estudiante.nombre }} · {{ estudiante.carnet }}</span>
 
-                  <button
-                      class="eliminar"
-                      @click="removerEstudiante(
-                          s.id,
-                          estudiante.id)">
-
+                  <button class="eliminar" @click="removerEstudiante(s.id, estudiante.id)">
                     Quitar
                   </button>
                 </div>
@@ -1293,49 +1004,30 @@
 
       <!-- MATRÍCULA -->
       <template v-if="vista==='matricula'">
-
         <div class="card">
           <h3>Matrícula por lote</h3>
 
           <div class="campo">
             <label for="matricula-archivo">Archivo CSV</label>
-
-            <input
-                id="matricula-archivo"
-                type="file"
-                @change="leerArchivo"
-                accept=".csv" />
+            <input id="matricula-archivo" type="file" @change="leerArchivo" accept=".csv" />
           </div>
 
           <div class="campo">
             <label style="visibility:hidden">Acción</label>
-
-            <button
-                @click="enviarMatricula"
-                :disabled="!csv">
-
-              Procesar
-            </button>
+            <button @click="enviarMatricula" :disabled="!csv">Procesar</button>
           </div>
 
-          <p v-if="matriculaMsg">
-            {{ matriculaMsg }}
-          </p>
+          <p v-if="matriculaMsg">{{ matriculaMsg }}</p>
         </div>
       </template>
 
       <!-- REPORTE -->
       <template v-if="vista==='reporte'">
-
         <div class="card">
           <h3>Reporte general</h3>
-
-          <button @click="descargarReporte">
-            Descargar TXT
-          </button>
+          <button @click="descargarReporte">Descargar TXT</button>
         </div>
       </template>
-
     </main>
   </div>
 </div>
@@ -1347,25 +1039,12 @@
 
   function emitirToast(tipo, mensaje) {
     const id = Date.now() + Math.random();
-
-    toasts.push({
-      id,
-      tipo,
-      mensaje
-    });
-
-    setTimeout(
-      () => quitarToast(id),
-      4000
-    );
+    toasts.push({ id, tipo, mensaje });
+    setTimeout(() => quitarToast(id), 4000);
   }
 
   function quitarToast(id) {
-    const indice =
-      toasts.findIndex(
-        toast => toast.id === id
-      );
-
+    const indice = toasts.findIndex(toast => toast.id === id);
     if (indice !== -1) {
       toasts.splice(indice, 1);
     }
@@ -1377,10 +1056,7 @@
     accion: null
   });
 
-  function pedirConfirmacion(
-    mensaje,
-    accion
-  ) {
+  function pedirConfirmacion(mensaje, accion) {
     confirmDialog.mensaje = mensaje;
     confirmDialog.accion = accion;
     confirmDialog.visible = true;
@@ -1393,7 +1069,6 @@
 
   async function ejecutarConfirmacionGlobal() {
     const accion = confirmDialog.accion;
-
     confirmDialog.visible = false;
     confirmDialog.accion = null;
 
@@ -1402,32 +1077,19 @@
     }
   }
 
-  async function llamar(
-    url,
-    opciones
-  ) {
-    const respuesta =
-      await fetch(url, opciones);
+  async function llamar(url, opciones) {
+    const respuesta = await fetch(url, opciones);
 
     if (!respuesta.ok) {
-      let mensaje =
-        respuesta.statusText;
+      let mensaje = respuesta.statusText;
 
       try {
-        const cuerpo =
-          await respuesta.json();
-
-        mensaje =
-          cuerpo.error || mensaje;
-
+        const cuerpo = await respuesta.json();
+        mensaje = cuerpo.error || mensaje;
       } catch (error) {
       }
 
-      emitirToast(
-        "error",
-        mensaje
-      );
-
+      emitirToast("error", mensaje);
       throw new Error(mensaje);
     }
 
@@ -1438,41 +1100,25 @@
     let respuesta;
 
     try {
-      respuesta =
-        await fetch(url);
-
+      respuesta = await fetch(url);
     } catch (error) {
-      return {
-        estado: "error",
-        datos: []
-      };
+      return { estado: "error", datos: [] };
     }
 
     if (respuesta.status === 501) {
-      return {
-        estado: "no-implementado",
-        datos: []
-      };
+      return { estado: "no-implementado", datos: [] };
     }
 
     if (!respuesta.ok) {
-      return {
-        estado: "error",
-        datos: []
-      };
+      return { estado: "error", datos: [] };
     }
 
     let datos;
 
     try {
-      datos =
-        await respuesta.json();
-
+      datos = await respuesta.json();
     } catch (error) {
-      return {
-        estado: "error",
-        datos: []
-      };
+      return { estado: "error", datos: [] };
     }
 
     if (!Array.isArray(datos)) {
@@ -1480,19 +1126,15 @@
     }
 
     return {
-      estado:
-        datos.length
-          ? "ok"
-          : "vacio",
+      estado: datos.length ? "ok" : "vacio",
       datos
     };
   }
 
   createApp({
-
     data() {
       return {
-        vista: "estudiantes",
+        vista: "inicio",
 
         toasts,
         confirmDialog,
@@ -1574,15 +1216,27 @@
 
     computed: {
       docentes() {
-        return this.empleados.filter(
-          empleado =>
-            empleado.tipo === "DOCENTE"
+        return this.empleados.filter(empleado => empleado.tipo === "DOCENTE");
+      },
+
+      totalAulas() {
+        return this.edificios.reduce(
+          (total, edificio) =>
+            total + (Array.isArray(edificio.aulas) ? edificio.aulas.length : 0),
+          0
+        );
+      },
+
+      totalMatriculas() {
+        return this.secciones.reduce(
+          (total, seccion) =>
+            total + (Array.isArray(seccion.estudiantes) ? seccion.estudiantes.length : 0),
+          0
         );
       }
     },
 
     methods: {
-
       cerrarToast(id) {
         quitarToast(id);
       },
@@ -1596,42 +1250,21 @@
       },
 
       formatoMoneda(valor) {
-        return Math.ceil(
-          Number(valor) || 0
-        ).toLocaleString("es");
+        return Math.ceil(Number(valor) || 0).toLocaleString("es");
       },
 
       mensajeValidacion(evento) {
-        const elemento =
-          evento.target;
-
-        const validacion =
-          elemento.validity;
+        const elemento = evento.target;
+        const validacion = elemento.validity;
 
         if (validacion.valueMissing) {
-          elemento.setCustomValidity(
-            "Complete este campo."
-          );
-
+          elemento.setCustomValidity("Complete este campo.");
         } else if (validacion.typeMismatch) {
-          elemento.setCustomValidity(
-            "Ingrese un valor con el formato correcto."
-          );
-
+          elemento.setCustomValidity("Ingrese un valor con el formato correcto.");
         } else if (validacion.rangeUnderflow) {
-          elemento.setCustomValidity(
-            "El valor debe ser mayor o igual a "
-            + elemento.min
-            + "."
-          );
-
+          elemento.setCustomValidity("El valor debe ser mayor o igual a " + elemento.min + ".");
         } else if (validacion.rangeOverflow) {
-          elemento.setCustomValidity(
-            "El valor debe ser menor o igual a "
-            + elemento.max
-            + "."
-          );
-
+          elemento.setCustomValidity("El valor debe ser menor o igual a " + elemento.max + ".");
         } else {
           elemento.setCustomValidity("");
         }
@@ -1641,51 +1274,24 @@
         evento.target.setCustomValidity("");
       },
 
-      // =====================================================
-      // ESTUDIANTES
-      // =====================================================
-
       async cargar() {
         this.cargando.estudiantes = true;
-
-        const resultado =
-          await cargarModulo(
-            "/api/estudiantes"
-          );
-
-        this.estudiantes =
-          resultado.datos;
-
-        this.estado.estudiantes =
-          resultado.estado;
-
+        const resultado = await cargarModulo("/api/estudiantes");
+        this.estudiantes = resultado.datos;
+        this.estado.estudiantes = resultado.estado;
         this.cargando.estudiantes = false;
       },
 
       editar(estudiante) {
-        this.editando.estudiantes =
-          estudiante.id;
+        this.editando.estudiantes = estudiante.id;
 
         this.form = {
-          tipo:
-            estudiante.porcentajeBeca != null
-              ? "BECADO"
-              : "REGULAR",
-
-          nombre:
-            estudiante.nombre,
-
-          apellidos:
-            estudiante.apellidos,
-
-          email:
-            estudiante.email,
-
-          carnet:
-            estudiante.carnet,
-
-          porcentajeBeca:
-            estudiante.porcentajeBeca ?? 0
+          tipo: estudiante.porcentajeBeca != null ? "BECADO" : "REGULAR",
+          nombre: estudiante.nombre,
+          apellidos: estudiante.apellidos,
+          email: estudiante.email,
+          carnet: estudiante.carnet,
+          porcentajeBeca: estudiante.porcentajeBeca ?? 0
         };
       },
 
@@ -1705,109 +1311,56 @@
       async crear() {
         try {
           if (this.editando.estudiantes) {
-            await llamar(
-              "/api/estudiantes/"
-              + this.editando.estudiantes,
-              {
-                method: "PUT",
-                headers: {
-                  "Content-Type":
-                    "application/json"
-                },
-                body:
-                  JSON.stringify(
-                    this.form
-                  )
-              }
-            );
-
+            await llamar("/api/estudiantes/" + this.editando.estudiantes, {
+              method: "PUT",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(this.form)
+            });
           } else {
-            await llamar(
-              "/api/estudiantes",
-              {
-                method: "POST",
-                headers: {
-                  "Content-Type":
-                    "application/json"
-                },
-                body:
-                  JSON.stringify(
-                    this.form
-                  )
-              }
-            );
+            await llamar("/api/estudiantes", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(this.form)
+            });
           }
-
         } catch (error) {
           return;
         }
 
-        const estabaEditando =
-          this.editando.estudiantes;
-
+        const estabaEditando = this.editando.estudiantes;
         this.cancelarEdicion();
 
         emitirToast(
           "exito",
-          estabaEditando
-            ? "Estudiante actualizado."
-            : "Estudiante creado."
+          estabaEditando ? "Estudiante actualizado." : "Estudiante creado."
         );
 
         await this.cargar();
       },
 
       eliminar(id) {
-        pedirConfirmacion(
-          "¿Eliminar este estudiante?",
-          async () => {
-
-            try {
-              await llamar(
-                "/api/estudiantes/" + id,
-                {
-                  method: "DELETE"
-                }
-              );
-
-            } catch (error) {
-              return;
-            }
-
-            emitirToast(
-              "exito",
-              "Estudiante eliminado."
-            );
-
-            await this.cargar();
+        pedirConfirmacion("¿Eliminar este estudiante?", async () => {
+          try {
+            await llamar("/api/estudiantes/" + id, { method: "DELETE" });
+          } catch (error) {
+            return;
           }
-        );
-      },
 
-      // =====================================================
-      // EMPLEADOS
-      // =====================================================
+          emitirToast("exito", "Estudiante eliminado.");
+          await this.cargar();
+        });
+      },
 
       async cargarEmpleados() {
         this.cargando.empleados = true;
-
-        const resultado =
-          await cargarModulo(
-            "/api/empleados"
-          );
-
-        this.empleados =
-          resultado.datos;
-
-        this.estado.empleados =
-          resultado.estado;
-
+        const resultado = await cargarModulo("/api/empleados");
+        this.empleados = resultado.datos;
+        this.estado.empleados = resultado.estado;
         this.cargando.empleados = false;
       },
 
       editarEmpleado(empleado) {
-        this.editando.empleados =
-          empleado.id;
+        this.editando.empleados = empleado.id;
 
         this.empForm = {
           tipo: empleado.tipo,
@@ -1815,8 +1368,7 @@
           apellidos: empleado.apellidos,
           email: empleado.email,
           salario: empleado.salario,
-          fechaIngreso:
-            empleado.fechaIngreso
+          fechaIngreso: empleado.fechaIngreso
         };
       },
 
@@ -1836,116 +1388,60 @@
       async crearEmpleado() {
         try {
           if (this.editando.empleados) {
-            await llamar(
-              "/api/empleados/"
-              + this.editando.empleados,
-              {
-                method: "PUT",
-                headers: {
-                  "Content-Type":
-                    "application/json"
-                },
-                body:
-                  JSON.stringify(
-                    this.empForm
-                  )
-              }
-            );
-
+            await llamar("/api/empleados/" + this.editando.empleados, {
+              method: "PUT",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(this.empForm)
+            });
           } else {
-            await llamar(
-              "/api/empleados",
-              {
-                method: "POST",
-                headers: {
-                  "Content-Type":
-                    "application/json"
-                },
-                body:
-                  JSON.stringify(
-                    this.empForm
-                  )
-              }
-            );
+            await llamar("/api/empleados", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(this.empForm)
+            });
           }
-
         } catch (error) {
           return;
         }
 
-        const estabaEditando =
-          this.editando.empleados;
-
+        const estabaEditando = this.editando.empleados;
         this.cancelarEdicionEmpleado();
 
         emitirToast(
           "exito",
-          estabaEditando
-            ? "Empleado actualizado."
-            : "Empleado creado."
+          estabaEditando ? "Empleado actualizado." : "Empleado creado."
         );
 
         await this.cargarEmpleados();
       },
 
       eliminarEmpleado(id) {
-        pedirConfirmacion(
-          "¿Eliminar este empleado?",
-          async () => {
-
-            try {
-              await llamar(
-                "/api/empleados/" + id,
-                {
-                  method: "DELETE"
-                }
-              );
-
-            } catch (error) {
-              return;
-            }
-
-            emitirToast(
-              "exito",
-              "Empleado eliminado."
-            );
-
-            await this.cargarEmpleados();
+        pedirConfirmacion("¿Eliminar este empleado?", async () => {
+          try {
+            await llamar("/api/empleados/" + id, { method: "DELETE" });
+          } catch (error) {
+            return;
           }
-        );
-      },
 
-      // =====================================================
-      // EDIFICIOS Y AULAS
-      // =====================================================
+          emitirToast("exito", "Empleado eliminado.");
+          await this.cargarEmpleados();
+        });
+      },
 
       async cargarEdificios() {
         this.cargando.edificios = true;
-
-        const resultado =
-          await cargarModulo(
-            "/api/edificios"
-          );
-
-        this.edificios =
-          resultado.datos;
-
-        this.estado.edificios =
-          resultado.estado;
-
+        const resultado = await cargarModulo("/api/edificios");
+        this.edificios = resultado.datos;
+        this.estado.edificios = resultado.estado;
         this.cargando.edificios = false;
       },
 
       editarEdificio(edificio) {
-        this.editando.edificios =
-          edificio.id;
+        this.editando.edificios = edificio.id;
 
         this.edifForm = {
-          codigo:
-            edificio.codigo,
-
-          nombre:
-            edificio.nombre
+          codigo: edificio.codigo,
+          nombre: edificio.nombre
         };
       },
 
@@ -1961,100 +1457,54 @@
       async crearEdificio() {
         try {
           if (this.editando.edificios) {
-            await llamar(
-              "/api/edificios/"
-              + this.editando.edificios,
-              {
-                method: "PUT",
-                headers: {
-                  "Content-Type":
-                    "application/json"
-                },
-                body:
-                  JSON.stringify(
-                    this.edifForm
-                  )
-              }
-            );
-
+            await llamar("/api/edificios/" + this.editando.edificios, {
+              method: "PUT",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(this.edifForm)
+            });
           } else {
-            await llamar(
-              "/api/edificios",
-              {
-                method: "POST",
-                headers: {
-                  "Content-Type":
-                    "application/json"
-                },
-                body:
-                  JSON.stringify(
-                    this.edifForm
-                  )
-              }
-            );
+            await llamar("/api/edificios", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(this.edifForm)
+            });
           }
-
         } catch (error) {
           return;
         }
 
-        const estabaEditando =
-          this.editando.edificios;
-
+        const estabaEditando = this.editando.edificios;
         this.cancelarEdicionEdificio();
 
         emitirToast(
           "exito",
-          estabaEditando
-            ? "Edificio actualizado."
-            : "Edificio creado."
+          estabaEditando ? "Edificio actualizado." : "Edificio creado."
         );
 
         await this.cargarEdificios();
       },
 
       eliminarEdificio(id) {
-        pedirConfirmacion(
-          "¿Eliminar este edificio?",
-          async () => {
-
-            try {
-              await llamar(
-                "/api/edificios/" + id,
-                {
-                  method: "DELETE"
-                }
-              );
-
-            } catch (error) {
-              return;
-            }
-
-            emitirToast(
-              "exito",
-              "Edificio eliminado."
-            );
-
-            await this.cargarEdificios();
+        pedirConfirmacion("¿Eliminar este edificio?", async () => {
+          try {
+            await llamar("/api/edificios/" + id, { method: "DELETE" });
+          } catch (error) {
+            return;
           }
-        );
+
+          emitirToast("exito", "Edificio eliminado.");
+          await this.cargarEdificios();
+        });
       },
 
-      editarAula(
-        edificioId,
-        aula
-      ) {
-        this.editando.aulas =
-          aula.id;
+      editarAula(edificioId, aula) {
+        this.editando.aulas = aula.id;
 
         this.aulaForm = {
           edificioId,
-          numero:
-            aula.codigo,
-          capacidad:
-            aula.capacidad,
-          tipo:
-            aula.tipo
+          numero: aula.codigo,
+          capacidad: aula.capacidad,
+          tipo: aula.tipo
         };
       },
 
@@ -2071,26 +1521,17 @@
 
       async agregarAula() {
         if (!this.aulaForm.edificioId) {
-          emitirToast(
-            "error",
-            "Seleccione un edificio."
-          );
-
+          emitirToast("error", "Seleccione un edificio.");
           return;
         }
 
+        const cuerpo = {
+          codigo: this.aulaForm.numero,
+          capacidad: this.aulaForm.capacidad,
+          tipo: this.aulaForm.tipo
+        };
+
         try {
-          const cuerpo = {
-            codigo:
-              this.aulaForm.numero,
-
-            capacidad:
-              this.aulaForm.capacidad,
-
-            tipo:
-              this.aulaForm.tipo
-          };
-
           if (this.editando.aulas) {
             await llamar(
               "/api/edificios/"
@@ -2099,15 +1540,10 @@
               + this.editando.aulas,
               {
                 method: "PUT",
-                headers: {
-                  "Content-Type":
-                    "application/json"
-                },
-                body:
-                  JSON.stringify(cuerpo)
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(cuerpo)
               }
             );
-
           } else {
             await llamar(
               "/api/edificios/"
@@ -2115,105 +1551,58 @@
               + "/aulas",
               {
                 method: "POST",
-                headers: {
-                  "Content-Type":
-                    "application/json"
-                },
-                body:
-                  JSON.stringify(cuerpo)
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(cuerpo)
               }
             );
           }
-
         } catch (error) {
           return;
         }
 
-        const estabaEditando =
-          this.editando.aulas;
-
+        const estabaEditando = this.editando.aulas;
         this.cancelarEdicionAula();
 
         emitirToast(
           "exito",
-          estabaEditando
-            ? "Aula actualizada."
-            : "Aula agregada."
+          estabaEditando ? "Aula actualizada." : "Aula agregada."
         );
 
         await this.cargarEdificios();
       },
 
-      eliminarAula(
-        edificioId,
-        aulaId
-      ) {
-        pedirConfirmacion(
-          "¿Eliminar esta aula?",
-          async () => {
-
-            try {
-              await llamar(
-                "/api/edificios/"
-                + edificioId
-                + "/aulas/"
-                + aulaId,
-                {
-                  method: "DELETE"
-                }
-              );
-
-            } catch (error) {
-              return;
-            }
-
-            emitirToast(
-              "exito",
-              "Aula eliminada."
+      eliminarAula(edificioId, aulaId) {
+        pedirConfirmacion("¿Eliminar esta aula?", async () => {
+          try {
+            await llamar(
+              "/api/edificios/" + edificioId + "/aulas/" + aulaId,
+              { method: "DELETE" }
             );
-
-            await this.cargarEdificios();
+          } catch (error) {
+            return;
           }
-        );
-      },
 
-      // =====================================================
-      // SECCIONES
-      // =====================================================
+          emitirToast("exito", "Aula eliminada.");
+          await this.cargarEdificios();
+        });
+      },
 
       async cargarSecciones() {
         this.cargando.secciones = true;
-
-        const resultado =
-          await cargarModulo(
-            "/api/secciones"
-          );
-
-        this.secciones =
-          resultado.datos;
-
-        this.estado.secciones =
-          resultado.estado;
-
+        const resultado = await cargarModulo("/api/secciones");
+        this.secciones = resultado.datos;
+        this.estado.secciones = resultado.estado;
         this.cargando.secciones = false;
       },
 
       editarSeccion(seccion) {
-        this.editando.secciones =
-          seccion.id;
+        this.editando.secciones = seccion.id;
 
         this.secForm = {
-          codigo:
-            seccion.codigo,
-
-          nombre:
-            seccion.nombre,
-
-          aulaId:
-            seccion.aulaId,
-
-          docenteId:
-            seccion.docenteId
+          codigo: seccion.codigo,
+          nombre: seccion.nombre,
+          aulaId: seccion.aulaId,
+          docenteId: seccion.docenteId
         };
       },
 
@@ -2230,228 +1619,123 @@
 
       async crearSeccion() {
         if (!this.secForm.aulaId) {
-          emitirToast(
-            "error",
-            "Seleccione un aula."
-          );
-
+          emitirToast("error", "Seleccione un aula.");
           return;
         }
 
         if (!this.secForm.docenteId) {
-          emitirToast(
-            "error",
-            "Seleccione un docente."
-          );
-
+          emitirToast("error", "Seleccione un docente.");
           return;
         }
 
         try {
           if (this.editando.secciones) {
-            await llamar(
-              "/api/secciones/"
-              + this.editando.secciones,
-              {
-                method: "PUT",
-                headers: {
-                  "Content-Type":
-                    "application/json"
-                },
-                body:
-                  JSON.stringify(
-                    this.secForm
-                  )
-              }
-            );
-
+            await llamar("/api/secciones/" + this.editando.secciones, {
+              method: "PUT",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(this.secForm)
+            });
           } else {
-            await llamar(
-              "/api/secciones",
-              {
-                method: "POST",
-                headers: {
-                  "Content-Type":
-                    "application/json"
-                },
-                body:
-                  JSON.stringify(
-                    this.secForm
-                  )
-              }
-            );
+            await llamar("/api/secciones", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(this.secForm)
+            });
           }
-
         } catch (error) {
           return;
         }
 
-        const estabaEditando =
-          this.editando.secciones;
-
+        const estabaEditando = this.editando.secciones;
         this.cancelarEdicionSeccion();
 
         emitirToast(
           "exito",
-          estabaEditando
-            ? "Sección actualizada."
-            : "Sección creada."
+          estabaEditando ? "Sección actualizada." : "Sección creada."
         );
 
         await this.cargarSecciones();
       },
 
       eliminarSeccion(id) {
-        pedirConfirmacion(
-          "¿Eliminar esta sección?",
-          async () => {
-
-            try {
-              await llamar(
-                "/api/secciones/" + id,
-                {
-                  method: "DELETE"
-                }
-              );
-
-            } catch (error) {
-              return;
-            }
-
-            emitirToast(
-              "exito",
-              "Sección eliminada."
-            );
-
-            await this.cargarSecciones();
+        pedirConfirmacion("¿Eliminar esta sección?", async () => {
+          try {
+            await llamar("/api/secciones/" + id, { method: "DELETE" });
+          } catch (error) {
+            return;
           }
-        );
+
+          emitirToast("exito", "Sección eliminada.");
+          await this.cargarSecciones();
+        });
       },
 
-      estudiantesDisponibles(
-        seccion
-      ) {
-        const idsInscritos =
-          new Set(
-            seccion.estudiantes.map(
-              estudiante =>
-                estudiante.id
-            )
-          );
+      estudiantesDisponibles(seccion) {
+        const idsInscritos = new Set(
+          seccion.estudiantes.map(estudiante => estudiante.id)
+        );
 
         return this.estudiantes.filter(
-          estudiante =>
-            !idsInscritos.has(
-              estudiante.id
-            )
+          estudiante => !idsInscritos.has(estudiante.id)
         );
       },
 
-      async inscribirEstudiante(
-        seccionId
-      ) {
-        const estudianteId =
-          Number(
-            this.inscribirIds[seccionId]
-          );
+      async inscribirEstudiante(seccionId) {
+        const estudianteId = Number(this.inscribirIds[seccionId]);
 
         if (!estudianteId) {
-          emitirToast(
-            "error",
-            "Seleccione un estudiante."
-          );
-
+          emitirToast("error", "Seleccione un estudiante.");
           return;
         }
 
         try {
-          await llamar(
-            "/api/secciones/"
-            + seccionId
-            + "/estudiantes",
-            {
-              method: "POST",
-              headers: {
-                "Content-Type":
-                  "application/json"
-              },
-              body:
-                JSON.stringify({
-                  estudianteId
-                })
-            }
-          );
-
+          await llamar("/api/secciones/" + seccionId + "/estudiantes", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ estudianteId })
+          });
         } catch (error) {
           return;
         }
 
         this.inscribirIds[seccionId] = "";
-
-        emitirToast(
-          "exito",
-          "Estudiante inscrito correctamente."
-        );
-
+        emitirToast("exito", "Estudiante inscrito correctamente.");
         await this.cargarSecciones();
       },
 
-      removerEstudiante(
-        seccionId,
-        estudianteId
-      ) {
-        pedirConfirmacion(
-          "¿Remover este estudiante de la sección?",
-          async () => {
-
-            try {
-              await llamar(
-                "/api/secciones/"
-                + seccionId
-                + "/estudiantes/"
-                + estudianteId,
-                {
-                  method: "DELETE"
-                }
-              );
-
-            } catch (error) {
-              return;
-            }
-
-            emitirToast(
-              "exito",
-              "Estudiante removido de la sección."
+      removerEstudiante(seccionId, estudianteId) {
+        pedirConfirmacion("¿Remover este estudiante de la sección?", async () => {
+          try {
+            await llamar(
+              "/api/secciones/"
+              + seccionId
+              + "/estudiantes/"
+              + estudianteId,
+              { method: "DELETE" }
             );
-
-            await this.cargarSecciones();
+          } catch (error) {
+            return;
           }
-        );
+
+          emitirToast("exito", "Estudiante removido de la sección.");
+          await this.cargarSecciones();
+        });
       },
 
-      // =====================================================
-      // MATRÍCULA Y REPORTE
-      // =====================================================
-
       leerArchivo(evento) {
-        const archivo =
-          evento.target.files[0];
+        const archivo = evento.target.files[0];
 
         if (!archivo) {
           return;
         }
 
-        this.csvNombre =
-          archivo.name;
+        this.csvNombre = archivo.name;
 
-        const lector =
-          new FileReader();
+        const lector = new FileReader();
 
-        lector.onload =
-          () => {
-            this.csv =
-              lector.result;
-          };
+        lector.onload = () => {
+          this.csv = lector.result;
+        };
 
         lector.readAsText(archivo);
       },
@@ -2460,61 +1744,34 @@
         let respuesta;
 
         try {
-          respuesta =
-            await llamar(
-              "/api/matricula",
-              {
-                method: "POST",
-                headers: {
-                  "Content-Type":
-                    "application/json"
-                },
-                body:
-                  JSON.stringify({
-                    archivo:
-                      this.csvNombre,
-
-                    contenido:
-                      this.csv
-                  })
-              }
-            );
-
+          respuesta = await llamar("/api/matricula", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              archivo: this.csvNombre,
+              contenido: this.csv
+            })
+          });
         } catch (error) {
           return;
         }
 
-        const resultado =
-          await respuesta.json();
-
-        this.matriculaMsg =
-          resultado.respuesta;
+        const resultado = await respuesta.json();
+        this.matriculaMsg = resultado.respuesta;
       },
 
       async descargarReporte() {
         let respuesta;
 
         try {
-          respuesta =
-            await llamar(
-              "/api/reporte",
-              {
-                method: "POST"
-              }
-            );
-
+          respuesta = await llamar("/api/reporte", { method: "POST" });
         } catch (error) {
           return;
         }
 
-        const archivo =
-          await respuesta.blob();
-
-        const url =
-          URL.createObjectURL(archivo);
-
-        const enlace =
-          document.createElement("a");
+        const archivo = await respuesta.blob();
+        const url = URL.createObjectURL(archivo);
+        const enlace = document.createElement("a");
 
         enlace.href = url;
         enlace.download = "reporte.txt";
@@ -2530,7 +1787,6 @@
       this.cargarEdificios();
       this.cargarSecciones();
     }
-
   }).mount("#app");
 </script>
 
