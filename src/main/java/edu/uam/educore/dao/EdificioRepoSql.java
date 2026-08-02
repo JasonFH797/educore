@@ -121,10 +121,10 @@ public class EdificioRepoSql extends Repositorio<Edificio>
     @Override
     public void actualizar(Edificio edificio) throws Exception
     {
-        String sql =
-                "UPDATE edificio " +
-                "SET codigo = ?, nombre = ? " +
-                "WHERE id = ?";
+        String sqlEdificio =
+                "UPDATE edificio "
+                        + "SET codigo = ?, nombre = ? "
+                        + "WHERE id = ?";
 
         try (Connection con = abrir())
         {
@@ -132,23 +132,35 @@ public class EdificioRepoSql extends Repositorio<Edificio>
 
             try
             {
-                try (PreparedStatement ps = con.prepareStatement(sql))
+                // Actualizar los datos generales del edificio
+                try (PreparedStatement ps =
+                             con.prepareStatement(sqlEdificio))
                 {
                     ps.setString(1, edificio.getCodigo());
                     ps.setString(2, edificio.getNombre());
                     ps.setInt(3, edificio.getId());
 
-                    ps.executeUpdate();
+                    int filas = ps.executeUpdate();
+
+                    if (filas == 0)
+                    {
+                        throw new IllegalArgumentException(
+                                "No existe el edificio que se desea actualizar.");
+                    }
                 }
 
-                try (PreparedStatement ps = con.prepareStatement(
-                        "DELETE FROM aula WHERE edificio_id = ?"))
+                // Guardar aulas nuevas o actualizar aulas existentes
+                for (Aula aula : edificio.getAulas())
                 {
-                    ps.setInt(1, edificio.getId());
-                    ps.executeUpdate();
+                    if (aula.getId() <= 0)
+                    {
+                        insertarAula(con, edificio, aula);
+                    }
+                    else
+                    {
+                        actualizarAula(con, edificio, aula);
+                    }
                 }
-
-                guardarAulas(con, edificio);
 
                 con.commit();
             }
@@ -159,36 +171,78 @@ public class EdificioRepoSql extends Repositorio<Edificio>
             }
         }
     }
-    
+    private void insertarAula(
+            Connection con,
+            Edificio edificio,
+            Aula aula) throws Exception
+    {
+        String sql =
+                "INSERT INTO aula "
+                        + "(codigo, capacidad, tipo, edificio_id) "
+                        + "VALUES (?, ?, ?, ?)";
+
+        try (PreparedStatement ps = con.prepareStatement(
+                sql,
+                Statement.RETURN_GENERATED_KEYS))
+        {
+            ps.setString(1, aula.getCodigo());
+            ps.setInt(2, aula.getCapacidad());
+            ps.setString(3, aula.getTipo().name());
+            ps.setInt(4, edificio.getId());
+
+            ps.executeUpdate();
+
+            try (ResultSet claves = ps.getGeneratedKeys())
+            {
+                if (claves.next())
+                {
+                    aula.setId(claves.getInt(1));
+                }
+            }
+        }
+    }
+
+    private void actualizarAula(
+            Connection con,
+            Edificio edificio,
+            Aula aula) throws Exception
+    {
+        String sql =
+                "UPDATE aula "
+                        + "SET codigo = ?, capacidad = ?, tipo = ?, edificio_id = ? "
+                        + "WHERE id = ?";
+
+        try (PreparedStatement ps = con.prepareStatement(sql))
+        {
+            ps.setString(1, aula.getCodigo());
+            ps.setInt(2, aula.getCapacidad());
+            ps.setString(3, aula.getTipo().name());
+            ps.setInt(4, edificio.getId());
+            ps.setInt(5, aula.getId());
+
+            int filas = ps.executeUpdate();
+
+            if (filas == 0)
+            {
+                throw new IllegalArgumentException(
+                        "No existe el aula que se desea actualizar.");
+            }
+        }
+    }
+
     @Override
     public void eliminar(int id) throws Exception
     {
-        try (Connection con = abrir())
+        String sql = "DELETE FROM edificio WHERE id = ?";
+        try (Connection con = abrir();
+             PreparedStatement ps = con.prepareStatement(sql))
         {
-            con.setAutoCommit(false);
-
-            try
+            ps.setInt(1, id);
+            int filasAfectadas = ps.executeUpdate();
+            if (filasAfectadas == 0)
             {
-                try (PreparedStatement ps = con.prepareStatement(
-                        "DELETE FROM aula WHERE edificio_id = ?"))
-                {
-                    ps.setInt(1, id);
-                    ps.executeUpdate();
-                }
-
-                try (PreparedStatement ps = con.prepareStatement(
-                        "DELETE FROM edificio WHERE id = ?"))
-                {
-                    ps.setInt(1, id);
-                    ps.executeUpdate();
-                }
-
-                con.commit();
-            }
-            catch (Exception ex)
-            {
-                con.rollback();
-                throw ex;
+                throw new IllegalArgumentException(
+                        "No existe un edificio con el ID indicado.");
             }
         }
     }
@@ -292,4 +346,26 @@ public class EdificioRepoSql extends Repositorio<Edificio>
         }
     }
 
+public void eliminarAula(
+        int edificioId,
+        int aulaId) throws Exception {
+
+    String sql =
+            "DELETE FROM aula "
+            + "WHERE id = ? AND edificio_id = ?";
+
+    try (Connection con = abrir();
+         PreparedStatement ps = con.prepareStatement(sql)) {
+
+        ps.setInt(1, aulaId);
+        ps.setInt(2, edificioId);
+
+        int filas = ps.executeUpdate();
+
+        if (filas == 0) {
+            throw new IllegalArgumentException(
+                    "El aula no existe o no pertenece al edificio indicado.");
+        }
+    }
+}
 }
