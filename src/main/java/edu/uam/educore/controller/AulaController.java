@@ -1,8 +1,8 @@
 package edu.uam.educore.controller;
 
-import edu.uam.educore.model.academico.Seccion;
 import edu.uam.educore.dao.Repositorio;
 import edu.uam.educore.enums.TipoAula;
+import edu.uam.educore.model.academico.Seccion;
 import edu.uam.educore.model.infraestructura.Aula;
 import edu.uam.educore.model.infraestructura.Edificio;
 import java.util.ArrayList;
@@ -16,18 +16,16 @@ import java.util.Optional;
  * un repositorio propio de aulas; localiza las aulas recorriendo los edificios registrados.
  */
 public class AulaController {
-  
-private final Repositorio<Edificio> edificioRepo;
-private final Repositorio<Seccion> seccionRepo;
 
-private int proximoId = 1;
-      
-public AulaController(
-    Repositorio<Edificio> edificioRepo,
-    Repositorio<Seccion> seccionRepo) {
+  private final Repositorio<Edificio> edificioRepo;
+  private final Repositorio<Seccion> seccionRepo;
+
+  private int proximoId = 1;
+
+  public AulaController(Repositorio<Edificio> edificioRepo, Repositorio<Seccion> seccionRepo) {
     this.edificioRepo = edificioRepo;
     this.seccionRepo = seccionRepo;
-}
+  }
 
   public Aula registrar(String numero, int capacidad, TipoAula tipo, Edificio edificio)
       throws Exception {
@@ -100,31 +98,29 @@ public AulaController(
     return aula;
   }
 
-  
-    public void eliminar(int id) throws Exception {
+  public void eliminar(int id) throws Exception {
 
-      Aula aula = buscarPorId(id);
+    Aula aula = buscarPorId(id);
 
-      if (aula == null) {
-          throw new IllegalArgumentException("Aula no encontrada.");
-      }
+    if (aula == null) {
+      throw new IllegalArgumentException("Aula no encontrada.");
+    }
 
-      // Verificar si el aula tiene secciones asociadas
-      for (Seccion seccion : seccionRepo.buscarTodos()) {
-          if (seccion.getAula().getId() == aula.getId()) {
-              throw new IllegalArgumentException(
-                  "No se puede eliminar el aula porque tiene secciones asignadas."
-              );
-          }
-      }
-
-      Edificio edificio = aula.getEdificio();
-
-      if (edificio != null) {
-          edificio.eliminarAula(aula);
-          edificioRepo.actualizar(edificio);
+    // Verificar si el aula tiene secciones asociadas
+    for (Seccion seccion : seccionRepo.buscarTodos()) {
+      if (seccion.getAula().getId() == aula.getId()) {
+        throw new IllegalArgumentException(
+            "No se puede eliminar el aula porque tiene secciones asignadas.");
       }
     }
+
+    Edificio edificio = aula.getEdificio();
+
+    if (edificio != null) {
+      edificio.eliminarAula(aula);
+      edificioRepo.actualizar(edificio);
+    }
+  }
 
   private Edificio buscarEdificioObligatorio(int id) throws Exception {
     Optional<Edificio> resultado = edificioRepo.buscarPorId(id);

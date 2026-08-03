@@ -23,9 +23,7 @@ public class EmpleadoView extends VistaBase {
     this.controller = new EmpleadoController(repo);
   }
 
-  /**
-   * Menu principal del modulo de empleados.
-   */
+  /** Menu principal del modulo de empleados. */
   public void iniciar() {
     boolean activo = true;
 
@@ -44,9 +42,7 @@ public class EmpleadoView extends VistaBase {
     }
   }
 
-  /**
-   * Registra un empleado nuevo.
-   */
+  /** Registra un empleado nuevo. */
   private void registrar() {
     try {
       String nombre = leerTexto("Nombre");
@@ -56,7 +52,8 @@ public class EmpleadoView extends VistaBase {
       LocalDate fechaIngreso = leerFecha("Fecha de ingreso (AAAA-MM-DD)");
       TipoEmpleado tipo = mostrarTipoEmpleado();
 
-      Empleado empleado = controller.registrar(nombre, apellidos, email, salario, fechaIngreso, tipo);
+      Empleado empleado =
+          controller.registrar(nombre, apellidos, email, salario, fechaIngreso, tipo);
 
       mostrarMensaje("Empleado registrado. ID: " + empleado.getId());
       System.out.println(empleado.getInfo());
@@ -65,9 +62,7 @@ public class EmpleadoView extends VistaBase {
     }
   }
 
-  /**
-   * Lista todos los empleados.
-   */
+  /** Lista todos los empleados. */
   private void listar() {
     try {
       List<Empleado> lista = controller.listar();
@@ -87,9 +82,7 @@ public class EmpleadoView extends VistaBase {
     }
   }
 
-  /**
-   * Busca un empleado por ID.
-   */
+  /** Busca un empleado por ID. */
   private void buscar() {
     try {
       int id = leerEntero("ID del empleado");
@@ -106,9 +99,7 @@ public class EmpleadoView extends VistaBase {
     }
   }
 
-  /**
-   * Actualiza un empleado existente.
-   */
+  /** Actualiza un empleado existente. */
   private void actualizar() {
     try {
       int id = leerEntero("ID del empleado a actualizar");
@@ -140,9 +131,7 @@ public class EmpleadoView extends VistaBase {
     }
   }
 
-  /**
-   * Elimina un empleado con confirmacion previa.
-   */
+  /** Elimina un empleado con confirmacion previa. */
   private void eliminar() {
     try {
       int id = leerEntero("ID del empleado a eliminar");
@@ -169,9 +158,7 @@ public class EmpleadoView extends VistaBase {
     }
   }
 
-  /**
-   * Muestra menu del modulo.
-   */
+  /** Muestra menu del modulo. */
   private int mostrarMenu() {
     System.out.println("\n--- GESTION DE EMPLEADOS ---");
     System.out.println("1. Registrar empleado");
@@ -184,9 +171,7 @@ public class EmpleadoView extends VistaBase {
     return leerEntero("Opcion");
   }
 
-  /**
-   * Permite seleccionar cualquiera de los tipos definidos en TipoEmpleado.
-   */
+  /** Permite seleccionar cualquiera de los tipos definidos en TipoEmpleado. */
   private TipoEmpleado mostrarTipoEmpleado() {
     TipoEmpleado[] tipos = TipoEmpleado.values();
 

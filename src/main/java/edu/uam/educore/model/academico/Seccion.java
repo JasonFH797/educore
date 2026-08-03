@@ -9,11 +9,11 @@ import java.util.List;
 /**
  * Modelo que representa una seccion academica.
  *
- * Una seccion es un curso o grupo en ejecucion. Tiene codigo, nombre, un docente asignado,
- * un aula fisica y una lista de estudiantes inscritos.
+ * <p>Una seccion es un curso o grupo en ejecucion. Tiene codigo, nombre, un docente asignado, un
+ * aula fisica y una lista de estudiantes inscritos.
  *
- * Esta clase pertenece a la capa Model, por eso no imprime mensajes, no lee datos por
- * consola y no conoce los repositorios. Solo guarda estado y ofrece metodos propios del dominio.
+ * <p>Esta clase pertenece a la capa Model, por eso no imprime mensajes, no lee datos por consola y
+ * no conoce los repositorios. Solo guarda estado y ofrece metodos propios del dominio.
  */
 public class Seccion {
 
@@ -96,8 +96,8 @@ public class Seccion {
   /**
    * Agrega un estudiante a la seccion.
    *
-   * <p>No permite duplicados por ID, para evitar que el mismo estudiante quede inscrito dos
-   * veces en el mismo grupo.
+   * <p>No permite duplicados por ID, para evitar que el mismo estudiante quede inscrito dos veces
+   * en el mismo grupo.
    *
    * @param estudiante estudiante a inscribir
    */
@@ -135,15 +135,13 @@ public class Seccion {
   /**
    * Retorna una copia de los estudiantes inscritos.
    *
-   * Se retorna copia para proteger la lista interna y mantener encapsulamiento.
+   * <p>Se retorna copia para proteger la lista interna y mantener encapsulamiento.
    */
   public List<Estudiante> getEstudiantes() {
     return new ArrayList<>(estudiantes);
   }
 
-  /**
-   * Cantidad de estudiantes inscritos en la seccion.
-   */
+  /** Cantidad de estudiantes inscritos en la seccion. */
   public int cantidadEstudiantes() {
     return estudiantes.size();
   }
@@ -151,18 +149,17 @@ public class Seccion {
   /**
    * Indica si la seccion tiene estudiantes inscritos.
    *
-   * Se usa para impedir eliminar una seccion con estudiantes, como pide el enunciado.
+   * <p>Se usa para impedir eliminar una seccion con estudiantes, como pide el enunciado.
    */
   public boolean tieneEstudiantes() {
     return !estudiantes.isEmpty();
   }
 
-  /**
-   * Texto resumido para mostrar en consola desde la vista.
-   */
+  /** Texto resumido para mostrar en consola desde la vista. */
   public String getInfo() {
     String aulaTexto = (aula != null) ? aula.getCodigo() : "Sin aula";
-    String docenteTexto = (docente != null) ? docente.getNombre() + " " + docente.getApellidos() : "Sin docente";
+    String docenteTexto =
+        (docente != null) ? docente.getNombre() + " " + docente.getApellidos() : "Sin docente";
 
     return String.format(
         "[%s] %s | Aula: %s | Docente: %s | Estudiantes: %d",

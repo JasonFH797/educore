@@ -26,9 +26,7 @@ public class EmpleadoController {
     this.repo = repo;
   }
 
-  /**
-   * Registra un empleado nuevo despues de validar sus datos.
-   */
+  /** Registra un empleado nuevo despues de validar sus datos. */
   public Empleado registrar(
       String nombre,
       String apellidos,
@@ -49,24 +47,18 @@ public class EmpleadoController {
     return empleado;
   }
 
-  /**
-   * Retorna todos los empleados registrados.
-   */
+  /** Retorna todos los empleados registrados. */
   public List<Empleado> listar() throws Exception {
     return repo.buscarTodos();
   }
 
-  /**
-   * Busca un empleado por ID. Retorna null si no existe.
-   */
+  /** Busca un empleado por ID. Retorna null si no existe. */
   public Empleado buscarPorId(int id) throws Exception {
     Optional<Empleado> resultado = repo.buscarPorId(id);
     return resultado.orElse(null);
   }
 
-  /**
-   * Actualiza un empleado existente.
-   */
+  /** Actualiza un empleado existente. */
   public Empleado actualizar(
       int id,
       String nombre,
@@ -97,9 +89,7 @@ public class EmpleadoController {
     return empleado;
   }
 
-  /**
-   * Elimina un empleado existente.
-   */
+  /** Elimina un empleado existente. */
   public void eliminar(int id) throws Exception {
     Empleado empleado = buscarPorId(id);
 
@@ -110,9 +100,7 @@ public class EmpleadoController {
     repo.eliminar(id);
   }
 
-  /**
-   * Validacion centralizada de empleados.
-   */
+  /** Validacion centralizada de empleados. */
   private void validar(
       String nombre,
       String apellidos,

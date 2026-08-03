@@ -2,352 +2,230 @@ package edu.uam.educore.socket;
 
 import edu.uam.educore.db.Conexion;
 import edu.uam.educore.db.ConfiguracionBD;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-
 import java.net.ServerSocket;
 import java.net.Socket;
-
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 /**
  * Servidor de Reportes.
  *
- * Ante la orden REPORTE:
+ * <p>Ante la orden REPORTE:
  *
- * 1. Consulta la cantidad de registros en la base de datos.
- * 2. Genera un resumen en formato TXT.
- * 3. Guarda el archivo en el directorio de salida.
- * 4. Devuelve el contenido mediante el socket.
+ * <p>1. Consulta la cantidad de registros en la base de datos. 2. Genera un resumen en formato TXT.
+ * 3. Guarda el archivo en el directorio de salida. 4. Devuelve el contenido mediante el socket.
  */
 public class ServidorReportes {
 
-    private final ConfiguracionBD config;
-    private final Path salidaDir;
+  private final ConfiguracionBD config;
+  private final Path salidaDir;
 
-    public ServidorReportes(
-            ConfiguracionBD config,
-            String salidaDir) {
+  public ServidorReportes(ConfiguracionBD config, String salidaDir) {
 
-        if (salidaDir == null
-                || salidaDir.isBlank()) {
+    if (salidaDir == null || salidaDir.isBlank()) {
 
-            throw new IllegalArgumentException(
-                    "SALIDA_DIR no está configurado.");
-        }
-
-        this.config = config;
-        this.salidaDir = Path.of(salidaDir);
+      throw new IllegalArgumentException("SALIDA_DIR no está configurado.");
     }
 
-    public static void main(
-            String[] args) throws Exception {
+    this.config = config;
+    this.salidaDir = Path.of(salidaDir);
+  }
 
-        ConfiguracionBD config =
-                ConfiguracionBD.desdeArchivo(".env");
+  public static void main(String[] args) throws Exception {
 
-        String salida =
-                System.getenv("SALIDA_DIR");
+    ConfiguracionBD config = ConfiguracionBD.desdeArchivo(".env");
 
-        String puertoVariable =
-                System.getenv("REPORTE_PORT");
+    String salida = System.getenv("SALIDA_DIR");
 
-        if (puertoVariable == null
-                || puertoVariable.isBlank()) {
+    String puertoVariable = System.getenv("REPORTE_PORT");
 
-            throw new IllegalStateException(
-                    "REPORTE_PORT no está configurado.");
-        }
+    if (puertoVariable == null || puertoVariable.isBlank()) {
 
-        int puerto =
-                Integer.parseInt(
-                        puertoVariable);
-
-        new ServidorReportes(
-                config,
-                salida)
-                .escuchar(puerto);
+      throw new IllegalStateException("REPORTE_PORT no está configurado.");
     }
 
-    public void escuchar(
-            int puerto) throws IOException {
+    int puerto = Integer.parseInt(puertoVariable);
 
-        try (ServerSocket servidor =
-                     new ServerSocket(puerto)) {
+    new ServidorReportes(config, salida).escuchar(puerto);
+  }
 
-            System.out.println(
-                    "Reportes escuchando en "
-                            + puerto);
+  public void escuchar(int puerto) throws IOException {
 
-            while (true) {
+    try (ServerSocket servidor = new ServerSocket(puerto)) {
 
-                try (
-                        Socket cliente =
-                                servidor.accept();
+      System.out.println("Reportes escuchando en " + puerto);
 
-                        BufferedReader in =
-                                new BufferedReader(
-                                        new InputStreamReader(
-                                                cliente.getInputStream(),
-                                                StandardCharsets.UTF_8));
+      while (true) {
 
-                        PrintWriter out =
-                                new PrintWriter(
-                                        cliente.getOutputStream(),
-                                        true,
-                                        StandardCharsets.UTF_8)
-                ) {
+        try (Socket cliente = servidor.accept();
+            BufferedReader in =
+                new BufferedReader(
+                    new InputStreamReader(cliente.getInputStream(), StandardCharsets.UTF_8));
+            PrintWriter out =
+                new PrintWriter(cliente.getOutputStream(), true, StandardCharsets.UTF_8)) {
 
-                    atender(in, out);
-
-                } catch (Exception e) {
-
-                    System.err.println(
-                            "Error atendiendo cliente: "
-                                    + e.getMessage());
-                }
-            }
-        }
-    }
-
-    private void atender(
-            BufferedReader in,
-            PrintWriter out) throws IOException {
-
-        String linea =
-                in.readLine();
-
-        if (linea == null
-                || !linea.trim()
-                        .equals("REPORTE")) {
-
-            out.println(
-                    "400 comando invalido");
-
-            return;
-        }
-
-        try {
-
-            String contenido =
-                    generarYGuardar();
-
-            String[] lineas =
-                    contenido.split("\n");
-
-            out.println(
-                    "200 "
-                            + lineas.length);
-
-            for (String lineaReporte : lineas) {
-                out.println(lineaReporte);
-            }
+          atender(in, out);
 
         } catch (Exception e) {
 
-            out.println(
-                    "500 "
-                            + mensajeSeguro(e));
+          System.err.println("Error atendiendo cliente: " + e.getMessage());
         }
+      }
+    }
+  }
+
+  private void atender(BufferedReader in, PrintWriter out) throws IOException {
+
+    String linea = in.readLine();
+
+    if (linea == null || !linea.trim().equals("REPORTE")) {
+
+      out.println("400 comando invalido");
+
+      return;
     }
 
-    /**
-     * Genera el reporte, lo guarda como archivo TXT y devuelve
-     * el contenido para enviarlo mediante el socket.
-     */
-    private String generarYGuardar()
-            throws Exception {
+    try {
 
-        int estudiantes;
-        int empleados;
-        int secciones;
-        int aulas;
-        int matriculas;
+      String contenido = generarYGuardar();
 
-        try (Connection con =
-                     abrirConexion()) {
+      String[] lineas = contenido.split("\n");
 
-            estudiantes =
-                    contar(
-                            con,
-                            "estudiante");
+      out.println("200 " + lineas.length);
 
-            empleados =
-                    contar(
-                            con,
-                            "empleado");
+      for (String lineaReporte : lineas) {
+        out.println(lineaReporte);
+      }
 
-            secciones =
-                    contar(
-                            con,
-                            "seccion");
+    } catch (Exception e) {
 
-            aulas =
-                    contar(
-                            con,
-                            "aula");
+      out.println("500 " + mensajeSeguro(e));
+    }
+  }
 
-            matriculas =
-                    contar(
-                            con,
-                            "matricula");
-        }
+  /**
+   * Genera el reporte, lo guarda como archivo TXT y devuelve el contenido para enviarlo mediante el
+   * socket.
+   */
+  private String generarYGuardar() throws Exception {
 
-        LocalDateTime fechaHora =
-                LocalDateTime.now();
+    int estudiantes;
+    int empleados;
+    int secciones;
+    int aulas;
+    int matriculas;
 
-        DateTimeFormatter formatoFechaReporte =
-                DateTimeFormatter.ofPattern(
-                        "dd/MM/yyyy HH:mm:ss");
+    try (Connection con = abrirConexion()) {
 
-        String contenido =
-                "========================================\n"
-                        + "            REPORTE EDUCORE\n"
-                        + "========================================\n"
-                        + "Fecha de generación: "
-                        + fechaHora.format(
-                                formatoFechaReporte)
-                        + "\n"
-                        + "----------------------------------------\n"
-                        + "Estudiantes registrados: "
-                        + estudiantes
-                        + "\n"
-                        + "Empleados registrados: "
-                        + empleados
-                        + "\n"
-                        + "Secciones registradas: "
-                        + secciones
-                        + "\n"
-                        + "Aulas registradas: "
-                        + aulas
-                        + "\n"
-                        + "Matrículas registradas: "
-                        + matriculas
-                        + "\n"
-                        + "========================================";
+      estudiantes = contar(con, "estudiante");
 
-        Files.createDirectories(
-                salidaDir);
+      empleados = contar(con, "empleado");
 
-        DateTimeFormatter formatoArchivo =
-                DateTimeFormatter.ofPattern(
-                        "yyyyMMdd_HHmmss");
+      secciones = contar(con, "seccion");
 
-        String nombreArchivo =
-                "reporte_educore_"
-                        + fechaHora.format(
-                                formatoArchivo)
-                        + ".txt";
+      aulas = contar(con, "aula");
 
-        Path archivoSalida =
-                salidaDir.resolve(
-                        nombreArchivo);
-
-        Files.writeString(
-                archivoSalida,
-                contenido,
-                StandardCharsets.UTF_8);
-
-        System.out.println(
-                "Reporte generado: "
-                        + archivoSalida);
-
-        return contenido;
+      matriculas = contar(con, "matricula");
     }
 
-    /**
-     * Cuenta todos los registros de una tabla conocida.
-     */
-    private int contar(
-            Connection con,
-            String tabla) throws Exception {
+    LocalDateTime fechaHora = LocalDateTime.now();
 
-        String sql;
+    DateTimeFormatter formatoFechaReporte = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
 
-        switch (tabla) {
+    String contenido =
+        "========================================\n"
+            + "            REPORTE EDUCORE\n"
+            + "========================================\n"
+            + "Fecha de generación: "
+            + fechaHora.format(formatoFechaReporte)
+            + "\n"
+            + "----------------------------------------\n"
+            + "Estudiantes registrados: "
+            + estudiantes
+            + "\n"
+            + "Empleados registrados: "
+            + empleados
+            + "\n"
+            + "Secciones registradas: "
+            + secciones
+            + "\n"
+            + "Aulas registradas: "
+            + aulas
+            + "\n"
+            + "Matrículas registradas: "
+            + matriculas
+            + "\n"
+            + "========================================";
 
-            case "estudiante" ->
-                    sql =
-                            "SELECT COUNT(*) AS cantidad "
-                                    + "FROM estudiante";
+    Files.createDirectories(salidaDir);
 
-            case "empleado" ->
-                    sql =
-                            "SELECT COUNT(*) AS cantidad "
-                                    + "FROM empleado";
+    DateTimeFormatter formatoArchivo = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss");
 
-            case "seccion" ->
-                    sql =
-                            "SELECT COUNT(*) AS cantidad "
-                                    + "FROM seccion";
+    String nombreArchivo = "reporte_educore_" + fechaHora.format(formatoArchivo) + ".txt";
 
-            case "aula" ->
-                    sql =
-                            "SELECT COUNT(*) AS cantidad "
-                                    + "FROM aula";
+    Path archivoSalida = salidaDir.resolve(nombreArchivo);
 
-            case "matricula" ->
-                    sql =
-                            "SELECT COUNT(*) AS cantidad "
-                                    + "FROM matricula";
+    Files.writeString(archivoSalida, contenido, StandardCharsets.UTF_8);
 
-            default ->
-                    throw new IllegalArgumentException(
-                            "Tabla no permitida para el reporte.");
-        }
+    System.out.println("Reporte generado: " + archivoSalida);
 
-        try (
-                PreparedStatement ps =
-                        con.prepareStatement(sql);
+    return contenido;
+  }
 
-                ResultSet rs =
-                        ps.executeQuery()
-        ) {
+  /** Cuenta todos los registros de una tabla conocida. */
+  private int contar(Connection con, String tabla) throws Exception {
 
-            if (!rs.next()) {
-                return 0;
-            }
+    String sql;
 
-            return rs.getInt(
-                    "cantidad");
-        }
+    switch (tabla) {
+      case "estudiante" -> sql = "SELECT COUNT(*) AS cantidad " + "FROM estudiante";
+
+      case "empleado" -> sql = "SELECT COUNT(*) AS cantidad " + "FROM empleado";
+
+      case "seccion" -> sql = "SELECT COUNT(*) AS cantidad " + "FROM seccion";
+
+      case "aula" -> sql = "SELECT COUNT(*) AS cantidad " + "FROM aula";
+
+      case "matricula" -> sql = "SELECT COUNT(*) AS cantidad " + "FROM matricula";
+
+      default -> throw new IllegalArgumentException("Tabla no permitida para el reporte.");
     }
 
-    private Connection abrirConexion()
-            throws Exception {
+    try (PreparedStatement ps = con.prepareStatement(sql);
+        ResultSet rs = ps.executeQuery()) {
 
-        return Conexion.getConnection(
-                config.url(),
-                config.usuario(),
-                config.contrasena());
+      if (!rs.next()) {
+        return 0;
+      }
+
+      return rs.getInt("cantidad");
+    }
+  }
+
+  private Connection abrirConexion() throws Exception {
+
+    return Conexion.getConnection(config.url(), config.usuario(), config.contrasena());
+  }
+
+  private String mensajeSeguro(Exception e) {
+
+    String mensaje = e.getMessage();
+
+    if (mensaje == null || mensaje.isBlank()) {
+
+      return "Error generando el reporte.";
     }
 
-    private String mensajeSeguro(
-            Exception e) {
-
-        String mensaje =
-                e.getMessage();
-
-        if (mensaje == null
-                || mensaje.isBlank()) {
-
-            return "Error generando el reporte.";
-        }
-
-        return mensaje
-                .replace("\n", " ")
-                .replace("\r", " ");
-    }
+    return mensaje.replace("\n", " ").replace("\r", " ");
+  }
 }

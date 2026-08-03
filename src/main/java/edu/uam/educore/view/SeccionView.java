@@ -14,8 +14,8 @@ import java.util.Scanner;
  * Vista de consola para el modulo de Secciones.
  *
  * <p>Su funcion es mostrar menus, pedir datos al usuario y llamar al controller. No realiza
- * validaciones de negocio; por ejemplo, no decide si un empleado es docente. Esa decision queda
- * en SeccionController.
+ * validaciones de negocio; por ejemplo, no decide si un empleado es docente. Esa decision queda en
+ * SeccionController.
  */
 public class SeccionView extends VistaBase {
 
@@ -40,12 +40,11 @@ public class SeccionView extends VistaBase {
 
     super(scanner);
     this.edificioRepo = edificioRepo;
-    this.controller = new SeccionController(seccionRepo, empleadoRepo, estudianteRepo, edificioRepo);
+    this.controller =
+        new SeccionController(seccionRepo, empleadoRepo, estudianteRepo, edificioRepo);
   }
 
-  /**
-   * Ciclo principal del menu de secciones.
-   */
+  /** Ciclo principal del menu de secciones. */
   public void iniciar() {
     boolean activo = true;
 
@@ -64,9 +63,7 @@ public class SeccionView extends VistaBase {
     }
   }
 
-  /**
-   * Registra una seccion solicitando codigo, nombre, ID de aula e ID de docente.
-   */
+  /** Registra una seccion solicitando codigo, nombre, ID de aula e ID de docente. */
   private void registrar() {
     try {
       String codigo = leerTexto("Codigo de la seccion");
@@ -86,9 +83,7 @@ public class SeccionView extends VistaBase {
     }
   }
 
-  /**
-   * Lista todas las secciones guardadas.
-   */
+  /** Lista todas las secciones guardadas. */
   private void listar() {
     try {
       List<Seccion> secciones = controller.listar();
@@ -108,9 +103,7 @@ public class SeccionView extends VistaBase {
     }
   }
 
-  /**
-   * Busca una seccion por ID y muestra sus datos.
-   */
+  /** Busca una seccion por ID y muestra sus datos. */
   private void buscar() {
     try {
       int id = leerEntero("ID de la seccion");
@@ -127,9 +120,7 @@ public class SeccionView extends VistaBase {
     }
   }
 
-  /**
-   * Actualiza codigo, nombre, aula y docente de una seccion.
-   */
+  /** Actualiza codigo, nombre, aula y docente de una seccion. */
   private void actualizar() {
     try {
       int id = leerEntero("ID de la seccion");
@@ -150,9 +141,7 @@ public class SeccionView extends VistaBase {
     }
   }
 
-  /**
-   * Inscribe un estudiante existente dentro de una seccion.
-   */
+  /** Inscribe un estudiante existente dentro de una seccion. */
   private void agregarEstudiante() {
     try {
       int seccionId = leerEntero("ID de la seccion");
@@ -166,9 +155,7 @@ public class SeccionView extends VistaBase {
     }
   }
 
-  /**
-   * Remueve un estudiante de una seccion.
-   */
+  /** Remueve un estudiante de una seccion. */
   private void removerEstudiante() {
     try {
       int seccionId = leerEntero("ID de la seccion");
@@ -182,9 +169,7 @@ public class SeccionView extends VistaBase {
     }
   }
 
-  /**
-   * Elimina una seccion si no tiene estudiantes inscritos.
-   */
+  /** Elimina una seccion si no tiene estudiantes inscritos. */
   private void eliminar() {
     try {
       int id = leerEntero("ID de la seccion");
@@ -233,16 +218,14 @@ public class SeccionView extends VistaBase {
     }
 
     if (!hayAulas) {
-      throw new IllegalArgumentException("Debe registrar un edificio y un aula antes de crear secciones.");
+      throw new IllegalArgumentException(
+          "Debe registrar un edificio y un aula antes de crear secciones.");
     }
   }
 
-  /**
-   * Imprime una seccion con todos los datos relevantes para la revision.
-   */
+  /** Imprime una seccion con todos los datos relevantes para la revision. */
   private void imprimirSeccion(Seccion seccion) {
-    String aulaTexto =
-        (seccion.getAula() != null) ? seccion.getAula().getCodigo() : "Sin aula";
+    String aulaTexto = (seccion.getAula() != null) ? seccion.getAula().getCodigo() : "Sin aula";
 
     String docenteTexto =
         (seccion.getDocente() != null)
@@ -260,14 +243,18 @@ public class SeccionView extends VistaBase {
     if (!seccion.getEstudiantes().isEmpty()) {
       System.out.println("Lista de estudiantes:");
       for (Estudiante estudiante : seccion.getEstudiantes()) {
-        System.out.println(" - ID " + estudiante.getId() + ": " + estudiante.getNombre() + " " + estudiante.getApellidos());
+        System.out.println(
+            " - ID "
+                + estudiante.getId()
+                + ": "
+                + estudiante.getNombre()
+                + " "
+                + estudiante.getApellidos());
       }
     }
   }
 
-  /**
-   * Menu especifico del modulo de secciones.
-   */
+  /** Menu especifico del modulo de secciones. */
   private int mostrarMenu() {
     System.out.println("\n===== GESTION DE SECCIONES =====");
     System.out.println("1. Registrar seccion");

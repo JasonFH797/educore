@@ -38,12 +38,11 @@ public class MenuPrincipalView extends VistaBase {
 
     // SeccionView recibe cuatro repositorios segun el enunciado:
     // secciones, empleados, estudiantes y edificios.
-    this.seccionView = new SeccionView(scanner, seccionRepo, empleadoRepo, estudianteRepo, edificioRepo);
+    this.seccionView =
+        new SeccionView(scanner, seccionRepo, empleadoRepo, estudianteRepo, edificioRepo);
   }
 
-  /**
-   * Inicia el ciclo del menu principal.
-   */
+  /** Inicia el ciclo del menu principal. */
   public void iniciar() {
     mostrarBienvenida();
     boolean corriendo = true;
@@ -62,9 +61,7 @@ public class MenuPrincipalView extends VistaBase {
     }
   }
 
-  /**
-   * Encabezado visual del programa.
-   */
+  /** Encabezado visual del programa. */
   public void mostrarBienvenida() {
     System.out.println("========================================");
     System.out.println("              EduCore v1.0              ");
@@ -72,9 +69,7 @@ public class MenuPrincipalView extends VistaBase {
     System.out.println("========================================");
   }
 
-  /**
-   * Menu principal del sistema.
-   */
+  /** Menu principal del sistema. */
   public int mostrarMenuPrincipal() {
     System.out.println("\n--- MENU PRINCIPAL ---");
     System.out.println("1. Gestion de Estudiantes");
@@ -85,9 +80,7 @@ public class MenuPrincipalView extends VistaBase {
     return leerEntero();
   }
 
-  /**
-   * Submenu academico. Agrupa Edificios, Aulas y Secciones.
-   */
+  /** Submenu academico. Agrupa Edificios, Aulas y Secciones. */
   private void menuAcademico() {
     boolean volver = false;
 

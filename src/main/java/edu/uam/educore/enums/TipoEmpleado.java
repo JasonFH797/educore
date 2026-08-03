@@ -5,13 +5,12 @@
 package edu.uam.educore.enums;
 
 /**
- *
  * @author jason
  */
 public enum TipoEmpleado {
-    DOCENTE,
-    ADMINISTRATIVO,
-    Guarda,
-    Miscelaneo,
-    MANTENIMIENTO
+  DOCENTE,
+  ADMINISTRATIVO,
+  Guarda,
+  Miscelaneo,
+  MANTENIMIENTO
 }

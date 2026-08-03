@@ -4,9 +4,9 @@ import edu.uam.educore.controller.AulaController;
 import edu.uam.educore.controller.EdificioController;
 import edu.uam.educore.dao.Repositorio;
 import edu.uam.educore.enums.TipoAula;
+import edu.uam.educore.model.academico.Seccion;
 import edu.uam.educore.model.infraestructura.Aula;
 import edu.uam.educore.model.infraestructura.Edificio;
-import edu.uam.educore.model.academico.Seccion;
 import java.util.List;
 import java.util.Scanner;
 
@@ -15,9 +15,10 @@ public class AulaView extends VistaBase {
   private final AulaController controller;
   private final EdificioController edificioController;
 
-  public AulaView(Scanner scanner, Repositorio<Edificio> edificioRepo, Repositorio<Seccion> seccionRepo) {
+  public AulaView(
+      Scanner scanner, Repositorio<Edificio> edificioRepo, Repositorio<Seccion> seccionRepo) {
     super(scanner);
-    
+
     this.controller = new AulaController(edificioRepo, seccionRepo);
     this.edificioController = new EdificioController(edificioRepo);
   }
@@ -161,7 +162,8 @@ public class AulaView extends VistaBase {
   }
 
   private void imprimirAula(Aula aula) {
-    String nombreEdificio = aula.getEdificio() != null ? aula.getEdificio().getNombre() : "Sin edificio";
+    String nombreEdificio =
+        aula.getEdificio() != null ? aula.getEdificio().getNombre() : "Sin edificio";
 
     System.out.println("-------------------------------------");
     System.out.println("ID: " + aula.getId());
