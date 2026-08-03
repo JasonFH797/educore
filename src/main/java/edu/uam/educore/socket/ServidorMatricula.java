@@ -100,8 +100,6 @@ public class ServidorMatricula {
 
       out.println(
           "201 estudiantes creados: "
-              + resultado.creados()
-              + ", matrículas realizadas: "
               + resultado.matriculados());
 
     } catch (Exception e) {
@@ -118,7 +116,6 @@ public class ServidorMatricula {
       throw new IllegalArgumentException("No existe el archivo indicado.");
     }
 
-    int creados = 0;
     int matriculados = 0;
     int numeroLinea = 0;
 
@@ -143,40 +140,32 @@ public class ServidorMatricula {
 
             continue;
           }
-
+          
           String[] campos = linea.split(",", -1);
 
-          if (campos.length != 7) {
+          if (campos.length != 2) {
             throw new IllegalArgumentException(
-                "Línea " + numeroLinea + ": se esperaban 7 columnas.");
+                "Línea " + numeroLinea + ": se esperaban 2 columnas.");
           }
 
-          String tipo = campos[0].trim().toUpperCase();
+          String carnet = campos[0].trim();
+          String codigoSeccion = campos[1].trim();
 
-          String nombre = campos[1].trim();
-
-          String apellidos = campos[2].trim();
-
-          String email = campos[3].trim();
-
-          String carnet = campos[4].trim();
-
-          String porcentajeTexto = campos[5].trim();
-
-          String codigoSeccion = campos[6].trim();
-
-          validarDatos(
-              numeroLinea, tipo, nombre, apellidos, email, carnet, porcentajeTexto, codigoSeccion);
+          if (carnet.isBlank() || codigoSeccion.isBlank()) {
+            throw new IllegalArgumentException(
+                "Línea " + numeroLinea + ": existen campos obligatorios vacíos.");
+          }
 
           Integer estudianteId = buscarEstudiantePorCarnet(con, carnet);
 
           if (estudianteId == null) {
-
-            estudianteId =
-                crearEstudiante(con, tipo, nombre, apellidos, email, carnet, porcentajeTexto);
-
-            creados++;
-          }
+            throw new IllegalArgumentException(
+                "Línea "
+                    + numeroLinea
+                    + ": no existe un estudiante con el carnet "
+                    + carnet
+                    + ".");
+         }
 
           DatosSeccion seccion = buscarSeccion(con, codigoSeccion, numeroLinea);
 
@@ -195,7 +184,7 @@ public class ServidorMatricula {
 
         con.commit();
 
-        return new ResultadoLote(creados, matriculados);
+        return new ResultadoLote(matriculados);
 
       } catch (Exception e) {
 
@@ -451,5 +440,5 @@ public class ServidorMatricula {
 
   private record DatosSeccion(int id, int capacidad) {}
 
-  private record ResultadoLote(int creados, int matriculados) {}
+  private record ResultadoLote(int matriculados) {}
 }
